@@ -15,6 +15,7 @@ Item {
     property real arcOffset: 0
     property bool isPie: false
     property bool showBackground: false
+    property bool animate: false
     property real lineWidth: 20
     property string colorCircle: "#CC3333"
     property string colorBackground: "#779933"
@@ -43,6 +44,10 @@ Item {
            duration: root.animationDuration
            easing.type: Easing.InOutCubic
        }
+    }
+    Behavior on animate {
+        NumberAnimation {property: "opacity"; from: 0; to: 1; duration: 300; loops: Animation.Infinite }
+
     }
 
     Canvas {

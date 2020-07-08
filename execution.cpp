@@ -70,7 +70,6 @@ Execution::Execution(QObject *parent) :
     }
     void Execution::quit()
     {
-
         exit(3);
     }
     /*

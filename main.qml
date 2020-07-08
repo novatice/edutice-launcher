@@ -223,7 +223,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         height:50
         Layout.topMargin : 50
-        Layout.bottomMargin :40
+        Layout.bottomMargin :60
         color : "transparent"
         Item{
             width : parent.width*(1/4)
@@ -384,7 +384,7 @@ ApplicationWindow {
                 color : "transparent"
                 anchors.horizontalCenter: parent.horizontalCenter
                 Rectangle {
-                    width: parent.width;
+                    width: parent.width-100;
 
                     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -409,20 +409,19 @@ ApplicationWindow {
                         property bool enabledd;
                         border.width: 0
                         color: "transparent" //"lightsteelblue"
-                        Button {
+                        Item {
+                            anchors.fill:parent
                                 property bool control;
-                                contentItem: Text {
+                                Text {
                                         id :textCategorie
                                         text: name
                                         //font: control.font
                                         font.pixelSize : 23
                                         font.family: font2.name
-                                        x : (listCategorie.currentIndex === index) ? parent.parent.x+1000 : parent.parent.x
-                                        opacity: (listCategorie.currentIndex == index) ? theme.mainOpacity : theme.mainOpacity//0.3
+                                        //x : (listCategorie.currentIndex === index) ? parent.parent.x+1000 : parent.parent.x
+                                        opacity: (listCategorie.currentIndex == index) ? theme.mainOpacity : 0.5//0.3
                                         color: (listCategorie.currentIndex == index) ? "#00BFFF" /*"#17a81a"*/ :  theme.mainTextColor
-                                        horizontalAlignment: Text.AlignRight
-                                        //verticalAlignment: Text.AlignRight
-                                        verticalAlignment: Text.AlignVCenter
+                                        //anchors.horizontalCenter: parent.horizontalCenter
                                         elide: Text.ElideRight
 
                                         states: [ "mouseIn", "mouseOut" ]
@@ -486,11 +485,6 @@ ApplicationWindow {
                                             */
                                         }
                                     }
-                                background: Rectangle {
-                                            //radius: myRoundButton.radius
-                                            color: "transparent"
-                                        }
-                                font.family: "Times New Roman"
                                 anchors.centerIn: parent
                               //model.submit()
                             }
@@ -498,10 +492,15 @@ ApplicationWindow {
 
                     add: Transition {
                             id: addTrans
-                            //SequentialAnimation
-                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1200 }
-                            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 1200 }
-                            NumberAnimation { property: "x"; from: addTrans.ViewTransition.destination.x-1000; to: addTrans.ViewTransition.destination.x; duration: 850 }
+                            SequentialAnimation{
+                                NumberAnimation { property: "x"; to: addTrans.ViewTransition.destination.x-1000; duration: 0}
+                            PauseAnimation {
+                                            duration: (addTrans.ViewTransition.index -
+                                                    addTrans.ViewTransition.targetIndexes[0]) * 100
+
+                                        }
+                            NumberAnimation { property: "x"; from: addTrans.ViewTransition.destination.x-1000; to: addTrans.ViewTransition.destination.x; duration: 700 }
+                            }
                             /*
                             PauseAnimation {
                                 duration: (addTrans.ViewTransition.index -
@@ -799,7 +798,7 @@ ApplicationWindow {
         color : "transparent"
         ColumnLayout{
             anchors.fill:parent
-            spacing:80
+            spacing:40
             Item{
                 id :nameApplications
                 width: parent.width -200
@@ -845,6 +844,7 @@ ApplicationWindow {
                 id: sortFilterModel
                 model: myModel
                 property string actualCategorie : ""
+                modelCategories : modelCategorie
 
                 filterAcceptsItem: function(item) {
                     var itemName = item.name.toLowerCase();
@@ -861,6 +861,25 @@ ApplicationWindow {
                         var rightVal = right.name.toLowerCase();
                     //return leftVal.localeCompare(rightVal);
                     return leftVal < rightVal ? -1 : 1;
+                }
+
+                updateCategorie: function(){
+                    /*
+                    var item;
+                    for (var i = 0; i < items.count; ++i) {
+                        item = items.get(i).model;
+                          var itemCategorie = item.categorie.toLowerCase();
+                        for (var j=0 ; j< listCategorie.count ; ++j)
+                        {
+                            var categorieItem = listCategorie.itemAtIndex(j);
+
+                            if (categorieItem.name.toLowerCase() === itemCategorie)
+                            {
+                                categorieItem.apps.push_back(i);
+                            }
+                        }
+                    }
+                    /**/
                 }
 
                 delegate:
@@ -1274,8 +1293,8 @@ ApplicationWindow {
                 }
                 Timer {
                     id:timeTimer
-                    property date timeToBeConsumed : new Date(new Date().getTime()+30000);
-                    property date timeDataStart : new Date(new Date().getTime()+30000);
+                    property date timeToBeConsumed : new Date(new Date().getTime()+300000);
+                    property date timeDataStart : new Date(new Date().getTime()+300000);
                     property var arcDest : 0;
                     property var milliS : (new Date()).getTime();
                     interval: 500; running: true; repeat: true
@@ -1299,6 +1318,10 @@ ApplicationWindow {
                         if (arcDest > 324)
                         {
                             circleTime.colorCircle = "red";
+                            circleTime.animate = true;
+
+                            if(arcDest >360)
+                                execution.quit();
                         }
                         else
                         {

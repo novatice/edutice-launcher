@@ -11,6 +11,7 @@ class Categorie
         Categorie(const QString &type, const QString &name);
         QString type() const;
         QString name() const;
+        QVector<QString> apps();
 
         void setType(QString q) {
             m_type = q;
@@ -19,6 +20,7 @@ class Categorie
     //private:
         QString m_type;
         QString m_name;
+        QVector<QString> m_apps;
 };
 
 class CategorieModel : public QAbstractListModel

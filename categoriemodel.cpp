@@ -14,7 +14,10 @@ QString Categorie::name() const
 {
     return m_name;
 }
-
+QVector<QString> Categorie::apps()
+{
+    return m_apps;
+}
 CategorieModel::CategorieModel(QObject *parent) : QAbstractListModel(parent)
 {
 

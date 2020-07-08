@@ -7,6 +7,8 @@ DelegateModel {
     property var viewIndex : 0
     property var lessThan: function(left, right) { return true; }
     property var filterAcceptsItem: function(item) { return true; }
+    property var updateCategorie: function() { return true; }
+    property var modelCategories;
 
     function update() {
         if (items.count > 0) {
@@ -39,7 +41,11 @@ DelegateModel {
         /**/
     }
 
-    items.onChanged: update()
+
+    items.onChanged: {
+        update();
+        updateCategorie();
+    }
     onLessThanChanged: update()
     onFilterAcceptsItemChanged: update()
 
