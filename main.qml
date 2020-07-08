@@ -17,9 +17,12 @@ ApplicationWindow {
     onClosing: {close.accepted = false; execution.quit(); }
     //y : Screen.height
      screen: Qt.application.screens[1]
-    width:Screen.width
-    height :Screen.height
-
+     width:Screen.width
+     height:Screen.height
+     /*
+       width: 900*1.5
+       height : 600*1.5
+    /**/
     Component.onCompleted: console.log("mainWindow width: " + Screen.virtualY)
 
     Item{
@@ -92,14 +95,6 @@ ApplicationWindow {
         id: font3
         source: "SFProText-Medium.ttf"
     }
-    /*
-    NumberAnimation on opacity {
-            from: 0
-            to: 0.96
-            duration: 600
-            running: true
-        }
-    /**/
     MouseArea {
            anchors.fill: parent
            onClicked: forceActiveFocus()
@@ -360,7 +355,7 @@ ApplicationWindow {
                     anchors.rightMargin: -border.width
                     anchors.topMargin:  -border.width
                     anchors.leftMargin: -border.width
-                    border.width: 3
+                    border.width: 2
                     color : "transparent"
                     border.color: theme.mainLineColor
                     opacity:0.2
@@ -422,9 +417,11 @@ ApplicationWindow {
                                         //font: control.font
                                         font.pixelSize : 23
                                         font.family: font2.name
+                                        x : (listCategorie.currentIndex === index) ? parent.parent.x+1000 : parent.parent.x
                                         opacity: (listCategorie.currentIndex == index) ? theme.mainOpacity : theme.mainOpacity//0.3
                                         color: (listCategorie.currentIndex == index) ? "#00BFFF" /*"#17a81a"*/ :  theme.mainTextColor
-                                        horizontalAlignment: Text.AlignHCenter
+                                        horizontalAlignment: Text.AlignRight
+                                        //verticalAlignment: Text.AlignRight
                                         verticalAlignment: Text.AlignVCenter
                                         elide: Text.ElideRight
 
@@ -438,7 +435,7 @@ ApplicationWindow {
                                                     NumberAnimation {
                                                         target: textCategorie
                                                         properties: "font.pixelSize"
-                                                        from: 20
+                                                        from: 23
                                                         to: 28
                                                         duration: 250
                                                     }
@@ -450,7 +447,7 @@ ApplicationWindow {
                                                     target: textCategorie
                                                     properties: "font.pixelSize"
                                                     from: 28
-                                                    to: 20
+                                                    to: 23
                                                     duration: 250
                                                 }
                                             }
@@ -502,9 +499,9 @@ ApplicationWindow {
                     add: Transition {
                             id: addTrans
                             //SequentialAnimation
-                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1000 }
-                            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 1000 }
-                            NumberAnimation { property: "x"; from: addTrans.ViewTransition.destination.x-1000; to: addTrans.ViewTransition.destination.x; duration: 800 }
+                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1200 }
+                            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 1200 }
+                            NumberAnimation { property: "x"; from: addTrans.ViewTransition.destination.x-1000; to: addTrans.ViewTransition.destination.x; duration: 850 }
                             /*
                             PauseAnimation {
                                 duration: (addTrans.ViewTransition.index -
@@ -837,10 +834,10 @@ ApplicationWindow {
 
             }
             Rectangle{
-                width:parent.width-200
+                width:parent.width-parent.width/6
                 anchors.horizontalCenter: parent.horizontalCenter
                 Layout.fillHeight: true
-                color :"transparent" //color : "red"
+                color :"transparent" //color : "blue"
                 ListModel {
                       id: appModel
                   }
@@ -870,14 +867,18 @@ ApplicationWindow {
                     maingrid.state = "down";
 
                     Item {
-                    width: parent.width/6; height:parent.width/6
+                        Component.onCompleted: {
+                        }
 
+                    //width: parent.width/6; height:parent.width/6
+                    width: maingrid.cellWidth
+                    height: maingrid.cellHeight
                     //PropertyAnimation on x { from : -100 ; to: x; duration: 1000; loops: Animation.Infinite }
                     //PropertyAnimation on y { from : 100 ; to: y; duration: 1000; loops: Animation.Infinite }
                     Rectangle
                     {
                            id : apps
-                           width: parent.width-40; height: parent.height-40
+                           width: parent.width-parent.width/5; height: parent.height-parent.width/6
                            clip:true
                            color: "transparent"//"blue"
                            state: "mouseOut"
@@ -1042,57 +1043,114 @@ ApplicationWindow {
             }
                             Rectangle{
                                 color: "transparent"
-                                width:parent.width
-                                height: parent.height
-                            GridView {
-                            id:maingrid
-                            width: parent.width-100
-                            height: parent.height-150
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            //anchors.verticalCenter: parent.verticalCenter
+                                width:parent.width -100
+                                height: parent.width - 300
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.top: parent.top
 
-                            property bool first : true
-                           cellWidth: width/6; cellHeight: width/6
+                                ScrollView {
+                                        id:scrollV
+                                        anchors.fill:parent
+                                        contentHeight: (maingrid.childrenRect.height > parent.height) ?maingrid.childrenRect.height : parent.height
 
-                           clip : true
-                           focus: true
-                           state : "deb"
-                           opacity : 1
-                           property int viewIndex: 0
-                           model: sortFilterModel
+                                        ScrollBar.vertical: ScrollBar {
+                                            id: scrollBar
+                                            parent: scrollV.parent
 
-                           //highlight: Rectangle { width: 80; height: 80; color: "lightsteelblue" }
-                            interactive : false
-                            states: State {
-                                        name: "down";
-                                    }
-                                    State {
-                                    name: "debut";
-                                }
-                            add :
-                                Transition {
-                                id :tr
-                                enabled : true
-                                SequentialAnimation {
-                                    id :animationX
-                                    /*
-                                          ParallelAnimation {
-                                              NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1000 }
-                                              ScaleAnimator{from: 0; to: 1.0; duration: 1000;easing.type: Easing.OutBounce}
-                                              NumberAnimation { property: "y"; from: tr.ViewTransition.destination.y-1000; to: tr.ViewTransition.destination.y; duration: 700;easing.type: Easing.OutBounce }
-                                          }
-                                          /**/
-                                          ///*
-                                            ParallelAnimation {
-                                           NumberAnimation {
-                                               property: "opacity"; from:0; to: 1 ; duration :1000;
-                                           }
-                                           //NumberAnimation { properties: "maingrid.width"; to : parent.width; duration: 500; easing.type: Easing.OutBounce }
-                                           //NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce}
+                                            policy: ScrollBar.AlwaysOn
+                                            height: scrollV.availableHeight
+                                            x: scrollV.mirrored ? 0 : scrollV.width - width
+                                            y: scrollV.topPadding
+                                            active:false
+                                            snapMode : ScrollBar.SnapAlways
+                                            visible: scrollV.contentHeight > scrollV.height ? true : false
+                                            //stepSize: 0.5
+                                            //active: scrollV.ScrollBar.horizontal.active
+                                            contentItem: Rectangle {
+                                                implicitWidth: 6
+                                                implicitHeight: 100
+                                                opacity:0.05
+                                                radius: width/2
+                                                color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
                                             }
-                                           /**/
-                                          }
-                                /**/
+
+
+                                        }
+
+                                        //contentHeight: maingrid.height
+                                        //contentWidth: width
+                                        clip: true
+                                        MouseArea{
+                                             onWheel: {
+                                            if(wheel.angleDelta.y > 0){
+                                              scroller.decrease()
+                                            }else{
+                                              scroller.increase()
+                                            }
+                                             }
+                                        }
+                                GridView {
+                                    id:maingrid
+                                    //width: parent.width-100
+                                    //height: parent.width-100
+                                    anchors.fill: parent
+                                    //anchors.horizontalCenter: parent.horizontalCenter
+                                    //anchors.verticalCenter: parent.verticalCenter
+
+                                    property bool first : true
+                                    property var cellSize : width/6
+
+                                    Component.onCompleted: {
+                                        cellSize = width/6
+                                        for (var i=0;cellSize < 150;i++)
+                                        {
+                                            cellSize = width/(6-i)
+                                        }
+                                    }
+
+                                   cellWidth: cellSize; cellHeight: cellSize
+
+                                   focus: true
+                                   state : "deb"
+                                   opacity : 1
+                                   property int viewIndex: 0
+                                   model: sortFilterModel
+
+                                   //highlight: Rectangle { width: 80; height: 80; color: "lightsteelblue" }
+                                    interactive : false
+                                    states: State {
+                                                name: "down";
+                                            }
+                                            State {
+                                            name: "debut";
+                                        }
+                                    add :
+                                        Transition {
+                                        id :tr
+                                        enabled : true
+                                        SequentialAnimation {
+                                            id :animationX
+                                            /*
+                                                  ParallelAnimation {
+                                                      NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1000 }
+                                                      ScaleAnimator{from: 0; to: 1.0; duration: 1000;easing.type: Easing.OutBounce}
+                                                      NumberAnimation { property: "y"; from: tr.ViewTransition.destination.y-1000; to: tr.ViewTransition.destination.y; duration: 700;easing.type: Easing.OutBounce }
+                                                  }
+                                                  /**/
+                                                  ///*
+                                                    ParallelAnimation {
+                                                   NumberAnimation {
+                                                       property: "opacity"; from:0; to: 1 ; duration :2000;
+                                                   }
+                                                   //NumberAnimation { properties: "maingrid.width"; to : parent.width; duration: 500; easing.type: Easing.OutBounce }
+                                                   //NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce}
+                                                    }
+                                                   /**/
+                                                  }
+                                        /**/
+                                        }
+                                    }
+                                }
 
                                 //NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
                                 //NumberAnimation { property: "x";  from : -1000; to : x;  duration: 5000 }
@@ -1105,7 +1163,6 @@ ApplicationWindow {
                                 NumberAnimation { property: "scale"; easing.type: Easing.OutBounce; from: 0; to: 1.0; duration: 400 }
                                 NumberAnimation {  property: "opacity"; from: 0; to: 1.0; duration: 300 }
                             }
-                           }}
 /*
         MouseArea {
             anchors.fill:scrollV
@@ -1149,24 +1206,59 @@ ApplicationWindow {
                 height:parent.height
                 spacing:2
 
-            Rectangle{
-                Layout.preferredWidth: parent.width
-                height: 120
+            Item{
+                width: parent.width/2
+                height: parent.width/2
                 id:timeItem
                 anchors.centerIn : parent
-                color:"transparent"
+                opacity:1
+                property bool started : false
+                SequentialAnimation{
+                    id:animationStartCircle
+                    ParallelAnimation{
 
+                        NumberAnimation {target: circleTime; property: "arcBegin"; from: 360; to: timeTimer.arcDest ; duration: 1500 }
+                        NumberAnimation {target: timeText; property: "opacity"; from: 0; to: 0.7; duration: 1000 }
+                       // ScriptAction { script:{ timerAnimationText.start()}} }
+
+                    }
+                /*
+                Timer {
+                    id: timerAnimationText
+                    property var data : 0;
+                        interval: 1
+                        repeat: true
+                        onTriggered: {
+                            data+=10000;
+                            time.text = msToTime(data);
+                            if (data >=timeTimer.timeDataStart)
+                             this.destroy();
+                    }
+                        function msToTime(duration) {
+                          var milliseconds = parseInt((duration % 1000) / 100),
+                            seconds = Math.floor((duration / 1000) % 60),
+                            minutes = Math.floor((duration / (1000 * 60)) % 60),
+                            hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+                          hours = (hours < 10) ? "0" + hours : hours;
+                          minutes = (minutes < 10) ? "0" + minutes : minutes;
+                          seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+                          return hours + ":" + minutes + ":" + seconds; //+ "." + milliseconds;
+                        }
+
+                /**/
+                }
                 ProgressCircle {
-                    id:circleTime
-                        size: parent.width/2
+                        id:circleTime
+                        size: parent.width
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                         colorCircle: "#0092CC"
                         colorBackground: "#E6E6E6"
-                        arcBegin: 0
+                        arcBegin: 360
                         arcEnd: 360
                         lineWidth: 10
-                        property bool started : false
                         /*
                         states: State {
                                     name: "start";
@@ -1175,36 +1267,45 @@ ApplicationWindow {
                             Transition { from: "*"; to: "*"; NumberAnimation {  property: "opacity"; from: 0; to: 1.0; duration: 10000 } }
                         ]
                         */
-                        SequentialAnimation{
-                            id:animationStartCircle
-                            NumberAnimation {  property: "opacity"; from: 0; to: 1.0; duration: 10000 }
-                        }
-                        Component.onCompleted: circleTime.state = "start"
                     }
                 FontLoader {
                     id: hourFont
                     source: "digital-7.ttf"
                 }
                 Timer {
-
-                    property date timeToBeConsumed : new Date(new Date().getTime()+300000);
-                    property date timeDataStart : new Date(new Date().getTime()+300000);
+                    id:timeTimer
+                    property date timeToBeConsumed : new Date(new Date().getTime()+30000);
+                    property date timeDataStart : new Date(new Date().getTime()+30000);
+                    property var arcDest : 0;
                     property var milliS : (new Date()).getTime();
                     interval: 500; running: true; repeat: true
 
                     onTriggered:{
+
                         timeToBeConsumed = new Date(timeToBeConsumed.getTime()-500);
                         time.text = msToTime(timeToBeConsumed.getTime()-milliS);
-                        circleTime.arcBegin = (((timeDataStart.getTime()-milliS)/(timeToBeConsumed.getTime()-milliS))*360-360);
-                        if(!circleTime.started)
+                        arcDest = -((((timeToBeConsumed.getTime()-milliS)*360)/(timeDataStart.getTime()-milliS))-360);
+                        if(!timeItem.started)
                         {
                             animationStartCircle.start();
+                            timeItem.started = true;
+                            timeTimer.interval = 500
+                            return;
                         }
-                        circleTime.started = true;
-                        if (circleTime.arcBegin > 324)
+                        if (animationStartCircle.running)
+                            return;
+
+                        circleTime.arcBegin = arcDest
+                        if (arcDest > 324)
                         {
                             circleTime.colorCircle = "red";
                         }
+                        else
+                        {
+                             circleTime.colorCircle = "#0092CC";
+                        }
+
+
 
                     }
 
@@ -1223,30 +1324,52 @@ ApplicationWindow {
                     }
 
                 }
-                Text
-                {
-                    id: time
-                    font.bold: true
-                    //fontSizeMode: Text.Fit; minimumPixelSize: 10; font.pixelSize: 500
-                    font.pointSize:30
-                    font.family : hourFont.name
-                    color : theme.mainTextColor
-                    //anchors.fill : parent
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: ""
+               Rectangle
+               {
+
+                   width:parent.width
+                   height:parent.height
+                   color:"transparent"
+                   //height: parent.height/3
+                   anchors.horizontalCenter: parent.horizontalCenter
+                   anchors.verticalCenter: parent.verticalCenter
+                   Text
+                   {
+                       id: time
+
+                       width:parent.width
+                       height : 30
+                       anchors.horizontalCenter: parent.horizontalCenter
+                       anchors.verticalCenter: parent.verticalCenter
+                       anchors.centerIn: parent
+                       horizontalAlignment: TextInput.AlignHCenter
+                       fontSizeMode: Text.Fit;
+                       font.pointSize: 1000
+                       font.family : hourFont.name
+                       color : theme.mainTextColor
+                       text: "00:00:00"
+                   }
+
                 }
 
                 Text
                 {
+                    id: timeText
+                    width:parent.width/3
+                    height : parent.height/20
                     font.bold: true
+
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color : "#0092CC"//theme.mainTextColor
-                    opacity:0.7
-                    text: "Remaining time"
+                    horizontalAlignment: TextInput.AlignHCenter
+
+                    fontSizeMode: Text.Fit;
+                    font.pointSize: 1000
+                    color : "#0092CC"
+                    opacity:0
+                    text: "Temps restant"
                     font.family:font2.name
                     anchors.top: circleTime.top
-                    anchors.topMargin: 30
+                    anchors.topMargin: parent.height/6
                 }
             }
             }
@@ -1266,6 +1389,7 @@ ApplicationWindow {
                     Item{
                         Layout.fillWidth: true
                         height:100
+                        opacity:0.8
                         ColumnLayout{
                             anchors.fill:parent
                             Item{
@@ -1292,8 +1416,6 @@ ApplicationWindow {
                                         Rectangle
                                         {
                                             anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
                                             radius: 2
                                             opacity:0.3
                                             color : "transparent"
@@ -1304,7 +1426,7 @@ ApplicationWindow {
                                             height:parent.width-20
                                             anchors.horizontalCenter : parent.horizontalCenter
                                             anchors.verticalCenter: parent.verticalCenter
-                                            opacity:0.7
+                                            opacity:0.5
                                             Image {
                                                 source: "icon_espacetravial.png"
                                                 anchors.fill:parent
@@ -1325,8 +1447,6 @@ ApplicationWindow {
                                         Rectangle
                                         {
                                             anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
                                             radius: 2
                                             opacity:0.3
                                             color : "transparent"
@@ -1367,6 +1487,7 @@ ApplicationWindow {
                     Item{
                         Layout.fillWidth: true
                         height:100
+                        opacity:0.8
                         ColumnLayout{
                             anchors.fill:parent
                             Item{
@@ -1393,8 +1514,6 @@ ApplicationWindow {
                                         Rectangle
                                         {
                                             anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
                                             radius: 2
                                             opacity:0.3
                                             color : "transparent"
@@ -1405,9 +1524,203 @@ ApplicationWindow {
                                             height:parent.width-20
                                             anchors.horizontalCenter : parent.horizontalCenter
                                             anchors.verticalCenter: parent.verticalCenter
-                                            opacity:0.7
+                                            opacity:0.5
                                             Image {
                                                 source: "user.png"
+                                                anchors.fill:parent
+                                               Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
+                                                Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
+                                                ColorOverlay {
+                                                        anchors.fill: parent
+                                                        source: parent
+                                                        color: theme.mainTextColor
+                                                    }
+                                            }
+                                        }
+
+                                    }
+                                    Item{
+                                        Layout.fillHeight: true
+                                        Layout.fillWidth: true
+                                        Rectangle
+                                        {
+                                            anchors.fill:parent
+                                            radius: 2
+                                            opacity:0.3
+                                            color : "transparent"
+                                        }
+
+                                        Text
+                                        {
+                                            anchors.left:parent.left
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            font.pointSize: 15
+                                            opacity:0.9
+                                            font.family : font3.name
+                                            text: "Utilisateur"
+                                            color : theme.mainTextColor
+                                        }
+                                    }
+
+                                }
+                            }
+                            Item{
+                                Layout.fillWidth: true
+                                height:50
+                                Text
+                                {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    font.pointSize: 15
+                                    opacity:0.7
+                                    font.family : font1.name
+                                    text: "User-923"
+                                    color : theme.mainTextColor
+                                }
+                            }
+                        }
+
+                    }
+                    Item{
+                        Layout.fillWidth: true
+                        height:100
+                        opacity:0.8
+                        ColumnLayout{
+                            anchors.fill:parent
+                            Item{
+                                Layout.fillWidth: true
+                                height:50
+                                clip:true
+
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.rightMargin: -border.width
+                                    anchors.topMargin:  -border.width
+                                    anchors.leftMargin: -border.width
+                                    border.width: 3
+                                    color : "transparent"
+                                    border.color: theme.mainBorderColor
+                                    opacity:0.2
+                                }
+                                RowLayout
+                                {
+                                    anchors.fill:parent
+                                    Item{
+                                        width:50
+                                        Layout.fillHeight: true
+                                        Rectangle
+                                        {
+                                            anchors.fill:parent
+                                            radius: 2
+                                            opacity:0.3
+                                            color : "transparent"
+                                        }
+
+                                        Item{
+                                            width:parent.width-20
+                                            height:parent.width-20
+                                            anchors.horizontalCenter : parent.horizontalCenter
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            opacity:0.4
+                                            Image {
+                                                source: "pc.png"
+                                                anchors.fill:parent
+                                               Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
+                                                Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
+                                                ColorOverlay {
+                                                        anchors.fill: parent
+                                                        source: parent
+                                                        color: theme.mainTextColor
+                                                    }
+                                            }
+                                        }
+
+                                    }
+                                    Item{
+                                        Layout.fillHeight: true
+                                        Layout.fillWidth: true
+                                        Rectangle
+                                        {
+                                            anchors.fill:parent
+                                            radius: 2
+                                            opacity:0.3
+                                            color : "transparent"
+                                        }
+
+                                        Text
+                                        {
+                                            anchors.left:parent.left
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            font.pointSize: 15
+                                            opacity:0.9
+                                            font.family : font3.name
+                                            text: "Ordinateur"
+                                            color : theme.mainTextColor
+                                        }
+                                    }
+
+                                }
+                            }
+                            Item{
+                                Layout.fillWidth: true
+                                height:50
+                                Text
+                                {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    font.pointSize: 15
+                                    opacity:0.7
+                                    font.family : font1.name
+                                    text: "Machine-1924"
+                                    color : theme.mainTextColor
+                                }
+                            }
+                        }
+
+                    }
+                    Item{
+                        Layout.fillWidth: true
+                        height:100
+                        opacity:0.8
+                        ColumnLayout{
+                            anchors.fill:parent
+                            Item{
+                                Layout.fillWidth: true
+                                height:50
+                                clip:true
+
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.rightMargin: -border.width
+                                    anchors.topMargin:  -border.width
+                                    anchors.leftMargin: -border.width
+                                    border.width: 3
+                                    color : "transparent"
+                                    border.color: theme.mainBorderColor
+                                    opacity:0.2
+                                }
+                                RowLayout
+                                {
+                                    anchors.fill:parent
+                                    Item{
+                                        width:50
+                                        Layout.fillHeight: true
+                                        Rectangle
+                                        {
+                                            anchors.fill:parent
+                                            radius: 2
+                                            opacity:0.3
+                                            color : "transparent"
+                                        }
+
+                                        Item{
+                                            width:parent.width-20
+                                            height:parent.width-20
+                                            anchors.horizontalCenter : parent.horizontalCenter
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            opacity:0.4
+                                            Image {
+                                                source: "icon_group.png"
                                                 anchors.fill:parent
                                                Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
                                                 Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
@@ -1440,206 +1753,6 @@ ApplicationWindow {
                                             font.pointSize: 15
                                             opacity:0.9
                                             font.family : font3.name
-                                            text: "Utilisateur"
-                                            color : theme.mainTextColor
-                                        }
-                                    }
-
-                                }
-                            }
-                            Item{
-                                Layout.fillWidth: true
-                                height:50
-                                Text
-                                {
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    font.pointSize: 23
-                                    opacity:0.9
-                                    font.family : font2.name
-                                    text: "User-923"
-                                    color : theme.mainTextColor
-                                }
-                            }
-                        }
-
-                    }
-                    Item{
-                        Layout.fillWidth: true
-                        height:100
-                        ColumnLayout{
-                            anchors.fill:parent
-                            Item{
-                                Layout.fillWidth: true
-                                height:50
-                                clip:true
-
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.rightMargin: -border.width
-                                    anchors.topMargin:  -border.width
-                                    anchors.leftMargin: -border.width
-                                    border.width: 3
-                                    color : "transparent"
-                                    border.color: theme.mainBorderColor
-                                    opacity:0.2
-                                }
-                                RowLayout
-                                {
-                                    anchors.fill:parent
-                                    Item{
-                                        width:50
-                                        Layout.fillHeight: true
-                                        Rectangle
-                                        {
-                                            anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
-                                            radius: 2
-                                            opacity:0.3
-                                            color : "transparent"
-                                        }
-
-                                        Item{
-                                            width:parent.width-20
-                                            height:parent.width-20
-                                            anchors.horizontalCenter : parent.horizontalCenter
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            opacity:0.7
-                                            Image {
-                                                source: "pc.png"
-                                                anchors.fill:parent
-                                               Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
-                                                Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
-                                            }
-                                        }
-
-                                    }
-                                    Item{
-                                        Layout.fillHeight: true
-                                        Layout.fillWidth: true
-                                        Rectangle
-                                        {
-                                            anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
-                                            radius: 2
-                                            opacity:0.3
-                                            color : "transparent"
-                                        }
-
-                                        Text
-                                        {
-                                            anchors.left:parent.left
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            font.pointSize: 23
-                                            opacity:0.9
-                                            font.family : font2.name
-                                            text: "Ordinateur"
-                                            color : theme.mainTextColor
-                                        }
-                                    }
-
-                                }
-                            }
-                            Item{
-                                Layout.fillWidth: true
-                                height:50
-                                Text
-                                {
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    font.pointSize: 23
-                                    opacity:0.9
-                                    font.family : font2.name
-                                    text: "Machine-1924"
-                                    color : theme.mainTextColor
-                                }
-                            }
-                        }
-
-                    }
-                    Item{
-                        Layout.fillWidth: true
-                        height:100
-                        ColumnLayout{
-                            anchors.fill:parent
-                            Item{
-                                Layout.fillWidth: true
-                                height:50
-                                clip:true
-
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.rightMargin: -border.width
-                                    anchors.topMargin:  -border.width
-                                    anchors.leftMargin: -border.width
-                                    border.width: 3
-                                    color : "transparent"
-                                    border.color: theme.mainBorderColor
-                                    opacity:0.2
-                                }
-                                RowLayout
-                                {
-                                    anchors.fill:parent
-                                    Item{
-                                        width:50
-                                        Layout.fillHeight: true
-                                        Rectangle
-                                        {
-                                            anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
-                                            radius: 2
-                                            opacity:0.3
-                                            color : "transparent"
-                                        }
-
-                                        Item{
-                                            width:parent.width-20
-                                            height:parent.width-20
-                                            anchors.horizontalCenter : parent.horizontalCenter
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            opacity:0.7
-                                            Image {
-                                                source: "icon_group.png"
-                                                anchors.fill:parent
-                                               Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
-                                                Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
-                                            }
-                                        }
-
-                                    }
-                                    Item{
-                                        Layout.fillHeight: true
-                                        Layout.fillWidth: true
-                                        Rectangle
-                                        {
-                                            anchors.fill:parent
-                                            border.color: "white"
-                                            border.width: 1
-                                            radius: 2
-                                            opacity:0.3
-                                            color : "transparent"
-                                        }
-
-                                        Text
-                                        {
-                                            anchors.left:parent.left
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            font.pointSize: 23
-                                            opacity:0.9
-                                            font.family : font2.name
                                             text: "Groupe"
                                             color : theme.mainTextColor
                                         }
@@ -1654,9 +1767,9 @@ ApplicationWindow {
                                 {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     anchors.verticalCenter: parent.verticalCenter
-                                    font.pointSize: 23
-                                    opacity:0.9
-                                    font.family : font2.name
+                                    font.pointSize: 15
+                                    opacity:0.7
+                                    font.family : font1.name
                                     text: "G-923"
                                     color : theme.mainTextColor
                                 }

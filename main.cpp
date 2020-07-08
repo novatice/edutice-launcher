@@ -22,6 +22,11 @@ int main(int argc, char *argv[])
 
     char* timeR = "03:00:00";
 
+
+
+
+    int i = 1;
+
     AppModel* model= new AppModel();
     //->addAnimal(Animal("Wolf", "Medium","gimp","Application Photos"));
     //model->addAnimal(Animal("Polar bear", "Large","firefox","Application Photos"));
@@ -36,7 +41,7 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())
-        return -1;   // here we show our view in fullscreen
+        return -1;
 
 
     modelCategorie->addCategorie(Categorie("1", "Application Internet"));
@@ -82,28 +87,7 @@ int main(int argc, char *argv[])
         (qobject_cast<Execution*>(rect))->addRow("Service", "service.png","firefox","Navigateur Internet");
 
 
-        (qobject_cast<Execution*>(rect))->addRow("Firefox", "mozilla.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Photoshop", "Adobe_Photoshop_CS6_icon.png","photoshop","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Gimp", "600px-The_GIMP_icon_-_gnome.svg.png","gimp","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Matlab", "Matlab_Logo.png","firefox","Mathématiques");
 
-        (qobject_cast<Execution*>(rect))->addRow("Facebook", "icon-facebook-logo.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Visual Studio", "visual studio icon.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Discord", "discord_101785.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Skype", "Skype-icon-new.png","firefox","Navigateur Internet");
-
-        (qobject_cast<Execution*>(rect))->addRow("Twitter", "Twitter_Bird.svg.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Chrome", "Google_Chrome_icon_(2011).png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Word", "word.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Acrobat Reader", "acroat.png","firefox","Navigateur Internet");
-
-        (qobject_cast<Execution*>(rect))->addRow("VLC media player", "vlc.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Football", "soccerball.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Logithèque Ubuntu", "1200px-Ubuntu_Software_Center_icon_v3.svg.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Instagram", "1024px-Instagram_icon.png","firefox","Navigateur Internet");
-
-        (qobject_cast<Execution*>(rect))->addRow("Help", "help.png","firefox","Navigateur Internet");
-        (qobject_cast<Execution*>(rect))->addRow("Service", "service.png","firefox","Navigateur Internet");
 
 
     }

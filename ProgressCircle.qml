@@ -9,13 +9,13 @@ Item {
     width: size
     height: size
 
-    property int size: 200               // The size of the circle in pixel
-    property real arcBegin: 0            // start arc angle in degree
-    property real arcEnd: 270            // end arc angle in degree
-    property real arcOffset: 0           // rotation
-    property bool isPie: false           // paint a pie instead of an arc
-    property bool showBackground: false  // a full circle as a background of the arc
-    property real lineWidth: 20          // width of the line
+    property int size: 200
+    property real arcBegin: 0
+    property real arcEnd: 270
+    property real arcOffset: 0
+    property bool isPie: false
+    property bool showBackground: false
+    property real lineWidth: 20
     property string colorCircle: "#CC3333"
     property string colorBackground: "#779933"
 
