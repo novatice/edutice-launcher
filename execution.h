@@ -1,8 +1,22 @@
 #ifndef EXECUTION_H
 #define EXECUTION_H
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+
 #include <QObject>
 #include <QProcess>
 #include <appmodel.h>
+#include <time.h>
+#include <QGuiApplication>
+#include <QGuiApplication>
+#include <QtQuick/QQuickView>
+#include <QtQuick/QQuickItem>
+#include <QQmlContext>
+#include <QProcess>
+#include <iostream>
 
 class Execution : public QObject
 {
@@ -15,11 +29,11 @@ class Execution : public QObject
     Q_INVOKABLE void disconnectScreen();
         Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat);
     Q_INVOKABLE QString getTimeRemaining(int interval);
-        void setTimeR(char* time);
+        //void setTimeR(char* time);
         QQmlContext *ctxt;
         AppModel* model;
         int p;
-
+        QWindow* mainWindows;
         Q_INVOKABLE void quit();
     signals:
         void signalData(QString data);

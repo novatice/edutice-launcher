@@ -6,10 +6,10 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 #include <QQmlContext>
-class Animal
+class Application
 {
     public:
-        Animal(const QString &type, const QString &size, const QString &src, const QString &categorie);
+        Application(const QString &type, const QString &size, const QString &src, const QString &categorie);
         QString type() const;
         QString size() const;
         QString src() const;
@@ -40,7 +40,7 @@ class AppModel : public QAbstractListModel
         explicit AppModel(QObject *parent = 0);
 
         QHash<int, QByteArray> roleNames() const;
-        void addAnimal(const Animal &animal);
+        void addApplication(const Application &application);
 
        int rowCount(const QModelIndex & parent = QModelIndex()) const;
 
@@ -48,7 +48,7 @@ class AppModel : public QAbstractListModel
 
     //private:
         QVector<QString> backing;
-        QList<Animal> m_animals;
+        QList<Application> m_applications;
 };
 
 #endif // APPMODEL_H

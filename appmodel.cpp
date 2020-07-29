@@ -1,25 +1,25 @@
 #include "appmodel.h"
 
-Animal::Animal(const QString &type, const QString &size, const QString &src, const QString &categorie)
+Application::Application(const QString &type, const QString &size, const QString &src, const QString &categorie)
     : m_type(type), m_size(size),m_src(src), m_categorie(categorie)
 {
 }
 
-QString Animal::type() const
+QString Application::type() const
 {
     return m_type;
 }
 
-QString Animal::size() const
+QString Application::size() const
 {
     return m_size;
 }
 
-QString Animal::src() const
+QString Application::src() const
 {
     return m_src;
 }
-QString Animal::categorie() const
+QString Application::categorie() const
 {
     return m_categorie;
 }
@@ -49,32 +49,32 @@ QVariant AppModel::data(const QModelIndex &index, int role) const {
 }
 */
 
-void AppModel::addAnimal(const Animal &animal)
+void AppModel::addApplication(const Application &application)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    m_animals << animal;
+    m_applications << application;
     endInsertRows();
     //emit AppModel::dataChanged(QModelIndex(),0);
 }
 
 int AppModel::rowCount(const QModelIndex & parent) const {
     Q_UNUSED(parent);
-    return m_animals.count();
+    return m_applications.count();
 }
 
 QVariant AppModel::data(const QModelIndex & index, int role) const {
-    if (index.row() < 0 || index.row() >= m_animals.count())
+    if (index.row() < 0 || index.row() >= m_applications.count())
         return QVariant();
 
-    const Animal &animal = m_animals[index.row()];
+    const Application &application = m_applications[index.row()];
     if (role == name)
-        return animal.type();
+        return application.type();
     else if (role == icon)
-        return animal.size();
+        return application.size();
     else if (role == src)
-        return animal.src();
+        return application.src();
     else if (role == categorie)
-        return animal.categorie();
+        return application.categorie();
     return QVariant();
 }
 

@@ -1,23 +1,23 @@
 #include "execution.h"
-#include <QProcess>
-#include <iostream>
+
 
 Execution::Execution(QObject *parent) :
     QObject(parent),
     model(),
+    mainWindows(),
     m_process(new QProcess(this))
     {
         p=3;
-
     }
+/*
     void Execution::setTimeR(char* time)
     {
         struct tm tm;
-        strptime(time, "%H:%M:%S", &tm);
+        _strptime(time, "%H:%M:%S", &tm);
         timeRemaining = mktime(&tm);
         emit signalData("");
     }
-
+    */
     QString Execution::launch(const QString &program)
     {
         QString l = "";
@@ -35,6 +35,7 @@ Execution::Execution(QObject *parent) :
     void Execution::lockScreen()
     {
         QString l = "";
+        std::cout << "def" << std::endl;
         #ifdef linux
             l = "dbus-send --type=method_call --dest=org.gnome.ScreenSaver \
                 /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock";
@@ -64,13 +65,21 @@ Execution::Execution(QObject *parent) :
     }
     void Execution :: addRow(QString name, QString img,QString src,QString cat)
     {
-        (model)->addAnimal(Animal(name, img, src, cat));
+        (model)->addApplication(Application(name, img, src, cat));
 
 
     }
     void Execution::quit()
     {
-        exit(3);
+            #ifdef _WIN32
+                HWND hWnd = (HWND)mainWindows->winId();
+
+                ShowWindow(hWnd,SW_SHOWMINNOACTIVE);
+            #endif
+
+            #ifdef linux
+                mainWindows->hide();
+            #endif
     }
     /*
         std::cout << "de :"+model.m_animals[0].m_size.toStdString() << std::endl;

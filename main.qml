@@ -5,25 +5,44 @@ import QtQuick.Layouts 1.3
 import QtQml.Models 2.3
 import QtGraphicalEffects 1.12
 import Eexecution 1.0
+
 ApplicationWindow {
     id :mainAppliWindow
 
     visible: true
-    flags: Qt.Window | Qt.FramelessWindowHint
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool //| Qt.WindowMinimized|
     //visibility: Window.FullScreen
     /**/
     //color : "#f4f4f4"
     color : "transparent"
-    onClosing: {close.accepted = false; execution.quit(); }
-    //y : Screen.height
-     screen: Qt.application.screens[1]
-     width:Screen.width
-     height:Screen.height
-     /*
-       width: 900*1.5
-       height : 600*1.5
-    /**/
-    Component.onCompleted: console.log("mainWindow width: " + Screen.virtualY)
+    screen: screenNumberId
+    width: screenWidth
+    height : screenHeight
+    x: screenNumberId.virtualX + ((screenNumberId.width - width) / 2)
+    y: screenNumberId.virtualY + ((screenNumberId.height - height) / 2)
+
+    Component.onCompleted: {
+        /*
+        var width = Qt.application.screens[0].desktopAvailableWidth;
+        var height = Qt.application.screens[0].desktopAvailableHeight;
+        var currentScreen =0;
+        for (var i = 0; i < Qt.application.screens.length ; i++)
+       {
+            console.log(width);
+            if (i !== currentScreen)
+                width = width - Qt.application.screens[i].width;
+        }
+        console.log(width);
+        for (var i = 0; i < Qt.application.screens.length ; i++)
+       {
+            if (i !== currentScreen)
+                height = height - Qt.application.screens[i].height;
+        }
+        mainAppliWindow.width = width;
+        mainAppliWindow.height =  Screen.height*/
+
+    }
+        //console.log("mdlrp : "+ Qt.application.screens[0].desktopAvailableWidth + " "+ Qt.application.screens[0].width);
 
     Item{
         id:theme
@@ -200,12 +219,11 @@ ApplicationWindow {
     {
         width : parent.width;
         height : parent.height;
-        Rectangle
+        Item
         {
             id:title
             width : parent.width;
             height: 30 ;
-            color :"transparent"
             /*
             Text {
 
@@ -217,14 +235,13 @@ ApplicationWindow {
         }
 
 
-    Rectangle {
+    Item{
         id:search
         width: parent.width
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.alignment : Qt.AlignHCenter
         height:50
         Layout.topMargin : 50
         Layout.bottomMargin :60
-        color : "transparent"
         Item{
             width : parent.width*(1/4)
             //color:"blue"
@@ -243,6 +260,7 @@ ApplicationWindow {
                             id: iconSearchtext
                             smooth: true
                             fillMode: Image.PreserveAspectFit
+                            asynchronous: true
                             source: "search.png"
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
@@ -250,12 +268,14 @@ ApplicationWindow {
                             height: 30 //parent.height - platformStyle.paddingMedium * 2
                             width:30 //parent.height - platformStyle.paddingMedium * 2
 
-                            ColorOverlay {
-                                    anchors.fill: parent
-                                    source: parent
-                                    color: theme.mainTextColor
-                                }
+
                         }
+                   ColorOverlay {
+                           anchors.fill:iconSearchtext
+                           source: iconSearchtext
+                           color: theme.mainTextColor
+                           opacity:0.15
+                       }
                }
             Item{
                 width: 300
@@ -285,8 +305,8 @@ ApplicationWindow {
                         repeat: false
                         onTriggered: {
                             console.log("ede");
-                            tr.animations = animationN;
-                            sortFilterModel.update()
+                           tr.animations = animationN;
+                          sortFilterModel.update()
                         }
 
                     }
@@ -312,902 +332,462 @@ ApplicationWindow {
 
     }
 
-    Rectangle {
+    Item{
        // Layout.alignment: Qt.AlignBottom
         width: parent.width
                 Layout.fillHeight: true
-                color: "transparent"
                 Layout.preferredWidth: parent.width
     RowLayout{
         width : parent.width
         height : parent.height-100
         anchors.horizontalCenter: parent.horizontalCenter
 
-        Rectangle {
+        Item {
             width : parent.width* (1/5)
             height : parent.height
             Layout.fillHeight: true
-            color : "transparent"
-        RowLayout
-        {
-            width : parent.width
-            height : parent.height
-            Rectangle{
-                Layout.fillWidth: true
-                color : "transparent"
-                Layout.fillHeight: true
-        ColumnLayout
-        {
-            width : parent.width
+            Loader {
+                id: categoriesLoader
+                asynchronous: true
+                anchors.fill: parent
+                source : "Categories.qml"
+
+            }
+        }
+
+   /**/
+        Item {
+            id: page
+            objectName: "page"
+            //width : parent.width -300
+            width : parent.width* (3/5)
+            //anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.verticalCenter: parent.verticalCenter
             Layout.fillHeight: true
-            anchors.verticalCenter: parent.verticalCenter
-            height : parent.height
-            Item{
-                id :nameCategories
-                Layout.fillWidth: true
-                height:35
-                clip: true
-                opacity: theme.mainOpacity
-
-                //visible : false
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.rightMargin: -border.width
-                    anchors.topMargin:  -border.width
-                    anchors.leftMargin: -border.width
-                    border.width: 2
-                    color : "transparent"
-                    border.color: theme.mainLineColor
-                    opacity:0.2
-                }
-                Item{
-                    width: parent.width
-                    anchors.top:parent.top
-                    height:30
-
-                    Text{
-                        text : "Categories"
-                        font.pointSize: 20
-                        font.family: titleFont.name
-                        anchors.left : parent.left
-                        color : theme.mainTextColor
-                    }
-                }
+            /*
+            Loader {
+                id: pageLoader
+                asynchronous: true
+                anchors.fill: parent
+                source : "Apps.qml"
+                focus: true;
+                active: true;
 
             }
-
-            Rectangle{
-                id:categories
-                Layout.fillWidth: true
-
-                Layout.fillHeight: true
-                color : "transparent"
-                anchors.horizontalCenter: parent.horizontalCenter
-                Rectangle {
-                    width: parent.width-100;
-
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    anchors.verticalCenter: parent.verticalCenter
-                    color : "transparent"
-                    height : parent.height-100
-
-                ListView {
-                    id:listCategorie
-                    clip: true
-                    model: modelCategorie
-
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    currentIndex: -1
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.fill : parent
-                    orientation: ListView.Vertical
-                    delegate: Rectangle {
-                        width: parent.width; height: 60
-
-                        id:buttonCategorie
-                        property bool enabledd;
-                        border.width: 0
-                        color: "transparent" //"lightsteelblue"
-                        Item {
-                            anchors.fill:parent
-                                property bool control;
-                                Text {
-                                        id :textCategorie
-                                        text: name
-                                        //font: control.font
-                                        font.pixelSize : 23
-                                        font.family: font2.name
-                                        //x : (listCategorie.currentIndex === index) ? parent.parent.x+1000 : parent.parent.x
-                                        opacity: (listCategorie.currentIndex == index) ? theme.mainOpacity : 0.5//0.3
-                                        color: (listCategorie.currentIndex == index) ? "#00BFFF" /*"#17a81a"*/ :  theme.mainTextColor
-                                        //anchors.horizontalCenter: parent.horizontalCenter
-                                        elide: Text.ElideRight
-
-                                        states: [ "mouseIn", "mouseOut" ]
-                                            state: "mouseOut"
-
-                                        transitions: [
-                                                Transition {
-                                                    from: "*"
-                                                    to: "mouseIn"
-                                                    NumberAnimation {
-                                                        target: textCategorie
-                                                        properties: "font.pixelSize"
-                                                        from: 23
-                                                        to: 28
-                                                        duration: 250
-                                                    }
-                                                },
-                                            Transition {
-                                                from: "mouseIn"
-                                                to: "mouseOut"
-                                                NumberAnimation {
-                                                    target: textCategorie
-                                                    properties: "font.pixelSize"
-                                                    from: 28
-                                                    to: 23
-                                                    duration: 250
-                                                }
-                                            }
-                                            ]
-
-
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            cursorShape: Qt.PointingHandCursor
-                                            hoverEnabled: true
-                                            onClicked: {
-
-                                                if (listCategorie.currentIndex != index)
-                                                {
-                                                    listCategorie.currentIndex = index;
-                                                    sortFilterModel.actualCategorie = name;
-                                                }
-                                                else
-                                                 {
-                                                    listCategorie.currentIndex = -1;
-                                                    sortFilterModel.actualCategorie = "";
-                                                 }
-                                                tr.animations = animationX;
-                                                sortFilterModel.update();
-                                            }
-                                            onContainsMouseChanged: {
-                                                        parent.state = containsMouse ? "mouseIn" : "mouseOut"
-                                                    }
-
-                                            /*
-                                            onEntered: {
-                                                parent.color = "orange"
-                                            }
-                                            onExited: {
-                                                parent.color = (listCategorie.currentIndex == index) ? "#17a81a" :  "black"
-                                            */
-                                        }
-                                    }
-                                anchors.centerIn: parent
-                              //model.submit()
-                            }
-                    }
-
-                    add: Transition {
-                            id: addTrans
-                            SequentialAnimation{
-                                NumberAnimation { property: "x"; to: addTrans.ViewTransition.destination.x-1000; duration: 0}
-                            PauseAnimation {
-                                            duration: (addTrans.ViewTransition.index -
-                                                    addTrans.ViewTransition.targetIndexes[0]) * 100
-
-                                        }
-                            NumberAnimation { property: "x"; from: addTrans.ViewTransition.destination.x-1000; to: addTrans.ViewTransition.destination.x; duration: 700 }
-                            }
-                            /*
-                            PauseAnimation {
-                                duration: (addTrans.ViewTransition.index -
-                                        addTrans.ViewTransition.targetIndexes[0]) * 100
-
-                            }
-                            PathAnimation {
-                                duration: 1000
-
-                                path: Path {
-                                    startX: addTrans.ViewTransition.destination.x + 200
-                                    startY: addTrans.ViewTransition.destination.y + 200
-                                    PathCurve { relativeX: -100; relativeY: -50 }
-                                    PathCurve { relativeX: 50; relativeY: -150 }
-                                    PathCurve {
-                                        x: addTrans.ViewTransition.destination.x
-                                        y: addTrans.ViewTransition.destination.y
-                                    }
-                                }
-                            }
-                            */
-                        }
-                    focus: true
-                    //Keys.onSpacePressed: model.insert(0, { "name": "Item " + model.count })
-                }
-                }
-        }
-    Rectangle
-    {
-        id:menuButtons
-        Layout.fillWidth: true
-        height:200
-        color: "transparent"
-        Rectangle{
-
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-            height : parent.height
-            color : "transparent"
-        RowLayout{
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            Item{
-                        implicitWidth: 110
-                        implicitHeight:110
-                        opacity:0.8
-                   Rectangle
-                   {
-                       id:backButtonL
-                       anchors.fill: parent;
-                       color: "transparent"
-                       opacity :1
-                       border.color:theme.mainBorderColor//control.down ? "#17a81a" : "#21be2b"
-                       border.width: 1
-                       radius: 2
-
-                   }
-                   InnerShadow {
-                       anchors.fill: parent
-                       horizontalOffset:1
-                       verticalOffset: 1
-                       source: backButtonL
-                       radius: 20
-                       color: "black"
-                       opacity:0.45
-                       spread: 0.2
-                       samples: 32
-                   }
-                   Rectangle{
-                       width:parent.width-10
-                       height:parent.height-20
-                       anchors.verticalCenter: parent.verticalCenter
-                       anchors.horizontalCenter: parent.horizontalCenter
-                       color : "transparent"
-                       ColumnLayout{
-                            anchors.fill : parent
-                            Item {
-                                width : parent.width
-                                implicitHeight: 50
-                                Image {
-                                    anchors {  horizontalCenter: parent.horizontalCenter; }
-                                    //width : parent.width/2-20
-                                    height : parent.height
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "lockButtonWhite.png"
-                                    ColorOverlay {
-                                            anchors.fill: parent
-                                            source: parent
-                                            color: theme.mainTextColor
-                                        }
-                                }
-
-                            }
-                            Item{
-                                Layout.fillHeight: true;
-                                Layout.preferredWidth: parent.width
-                                Text {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    font.family : font1.name
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    text : "Verrouiller"
-                                    color : theme.mainTextColor
-                                }
-                            }
-
-                       }
-                   }
-                   transitions: [
-                       Transition {
-                           to: "pressed"
-                           SequentialAnimation{
-
-                           NumberAnimation {
-                               target: backButtonL.parent
-                               properties: "scale"
-                               from: 1
-                               to: 0.9
-                               duration: 100
-                           }
-                           NumberAnimation {
-                               target: backButtonL.parent
-                               properties: "scale"
-                               from: 0.9
-                               to: 1
-                               duration: 100
-                           }
-                           }
-                           onRunningChanged:{
-                               if( running === false )
-                               {
-                                   backButtonL.parent.state = ""
-                               }
-                           }
-                       }
-                   ]
-
-                   MouseArea {
-                       anchors.fill: parent
-                       cursorShape: Qt.PointingHandCursor
-                       hoverEnabled: true
-
-                       onEntered: {
-                            backButtonL.color = "lightsteelblue"
-                           backButtonL.opacity =0.5
-                       }
-                       onExited: {
-                           backButtonL.color = "transparent"
-                           backButtonL.opacity = 0.3
-                       }
-
-                   onClicked:{ parent.state = "pressed"; execution.lockScreen();
-                   }
-                   }
-                    }
-            Item{
-                        implicitWidth: 110
-                        implicitHeight:110
-                        state : "nothing"
-                        opacity:0.8
-                   Rectangle
-                   {
-                       id:backButtonL2
-                       anchors.fill: parent;
-                       color: "transparent"
-                       opacity : 0.1
-                       border.color: theme.mainBorderColor//control.down ? "#17a81a" : "#21be2b"
-                       border.width: 1
-                       radius: 2
-                   }
-
-                   InnerShadow {
-                       anchors.fill: parent
-                       horizontalOffset:1
-                       verticalOffset: 1
-                       source: backButtonL2
-                       radius: 20
-                       color: "black"
-                       opacity:0.45
-                       spread: 0.2
-                       samples: 32
-                   }
-
-                   Rectangle{
-                       width:parent.width-10
-                       height:parent.height-20
-                       anchors.verticalCenter: parent.verticalCenter
-                       anchors.horizontalCenter: parent.horizontalCenter
-                       color : "transparent"
-                       ColumnLayout{
-                            anchors.fill : parent
-                            Item {
-                                width : parent.width
-                                implicitHeight:50
-                                Image {
-                                    anchors {  horizontalCenter: parent.horizontalCenter; }
-                                    //width : parent.width/2-20
-                                    height : parent.height
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "windows_log_off.png"
-
-                                    ColorOverlay {
-                                            anchors.fill: parent
-                                            source: parent
-                                            color: theme.mainTextColor
-                                        }
-                                }
-                            }
-
-                           Label {
-                               Layout.fillHeight: true;
-                               anchors.horizontalCenter: parent.horizontalCenter
-                               text : "Fermer la session"
-                               Layout.preferredWidth: Math.min(100, contentWidth)
-                               wrapMode: Text.WordWrap
-                               font.family : font1.name
-                               horizontalAlignment: Text.AlignHCenter
-                               color : theme.mainTextColor
-                           }
-                       }
-                   }
-                   transitions: [
-                       Transition {
-                           to: "pressed"
-                           SequentialAnimation{
-
-                           NumberAnimation {
-                               target: backButtonL2.parent
-                               properties: "scale"
-                               from: 1
-                               to: 0.9
-                               duration: 100
-                           }
-                           NumberAnimation {
-                               target: backButtonL2.parent
-                               properties: "scale"
-                               from: 0.9
-                               to: 1
-                               duration: 100
-                           }
-                           }
-                           onRunningChanged:{
-                               if( running === false )
-                               {
-                                   backButtonL2.parent.state = ""
-                               }
-                           }
-                       }
-                   ]
-
-                   MouseArea {
-                       anchors.fill: parent
-                       cursorShape: Qt.PointingHandCursor
-                       hoverEnabled: true
-
-                       onEntered: {
-                            backButtonL2.color = "lightsteelblue"
-                           backButtonL.opacity =0.1
-                       }
-                       onExited: {
-                           backButtonL2.color = "transparent"
-                           backButtonL.opacity = 0.1
-                       }
-
-                   onClicked:
-                   {
-                       parent.state = "pressed";
-                       //execution.disconnectScreen();
-                   }
-
-                   }
-                    }
-        }
-        }
-    }
-}}
-            Rectangle{
-                width: 5
-                height : 900
-                radius: 10
-
-                color : "transparent"
-                opacity : 0.2
-            }
-        }}
-
-    Rectangle {
-        id: page
-        objectName: "page"
-        //width : parent.width -300
-        width : parent.width* (3/5)
-        //anchors.horizontalCenter: parent.horizontalCenter
-        //anchors.verticalCenter: parent.verticalCenter
-        Layout.fillHeight: true
-        color : "transparent"
-        ColumnLayout{
-            anchors.fill:parent
-            spacing:40
-            Item{
-                id :nameApplications
-                width: parent.width -200
-                anchors.horizontalCenter: parent.horizontalCenter
-                height:35
-                clip: true
-                opacity: theme.mainOpacity
-                //visible : false
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.rightMargin: -border.width
-                    anchors.topMargin:  -border.width
-                    anchors.leftMargin: -border.width
-                    border.width: 2
-                    color : "transparent"
-                    border.color: theme.mainBorderColor
-                    opacity: 0.2
-                }
-                Item{
-                    width: parent.width
-                    anchors.top:parent.top
-                    height:30
-
-                    Text{
-                        text : "Applications"
-                        font.pointSize: 20
-                        font.family: titleFont.name
-                        anchors.left : parent.left
-                        color : theme.mainTextColor
-                    }
-                }
-
-            }
-            Rectangle{
-                width:parent.width-parent.width/6
-                anchors.horizontalCenter: parent.horizontalCenter
-                Layout.fillHeight: true
-                color :"transparent" //color : "blue"
-                ListModel {
-                      id: appModel
-                  }
-                SortFilterModel {
-                id: sortFilterModel
-                model: myModel
-                property string actualCategorie : ""
-                modelCategories : modelCategorie
-
-                filterAcceptsItem: function(item) {
-                    var itemName = item.name.toLowerCase();
-                    var itemCategorie = item.categorie.toLowerCase();
-                    var actualCategorie = (String)(sortFilterModel.actualCategorie).toLowerCase();
-                    if (actualCategorie !== "" && itemCategorie !== actualCategorie)
-                        return false;
-                    var itemSearch = searchText.text.toLowerCase();
-                    return itemName.includes(itemSearch) ;
-                }
-
-                lessThan: function(left, right) {
-                        var leftVal = left.name.toLowerCase();
-                        var rightVal = right.name.toLowerCase();
-                    //return leftVal.localeCompare(rightVal);
-                    return leftVal < rightVal ? -1 : 1;
-                }
-
-                updateCategorie: function(){
-                    /*
-                    var item;
-                    for (var i = 0; i < items.count; ++i) {
-                        item = items.get(i).model;
-                          var itemCategorie = item.categorie.toLowerCase();
-                        for (var j=0 ; j< listCategorie.count ; ++j)
-                        {
-                            var categorieItem = listCategorie.itemAtIndex(j);
-
-                            if (categorieItem.name.toLowerCase() === itemCategorie)
-                            {
-                                categorieItem.apps.push_back(i);
-                            }
-                        }
-                    }
-                    /**/
-                }
-
-                delegate:
-                    maingrid.state = "down";
-
-                    Item {
-                        Component.onCompleted: {
-                        }
-
-                    //width: parent.width/6; height:parent.width/6
-                    width: maingrid.cellWidth
-                    height: maingrid.cellHeight
-                    //PropertyAnimation on x { from : -100 ; to: x; duration: 1000; loops: Animation.Infinite }
-                    //PropertyAnimation on y { from : 100 ; to: y; duration: 1000; loops: Animation.Infinite }
-                    Rectangle
-                    {
-                           id : apps
-                           width: parent.width-parent.width/5; height: parent.height-parent.width/6
-                           clip:true
-                           color: "transparent"//"blue"
-                           state: "mouseOut"
-
-                           states: State {
-                                       name: "mouseIn";
-                                   }
-                                   State {
-                                   name: "mouseOn";
-
-                               }
-                                   State {
-                                   name: "pressed";}
-                           transitions: [
-                                  Transition {
-                                      from: "*"
-                                      to: "pressed"
-                                      NumberAnimation {
-                                          target: backg
-                                          properties: "scale"
-                                          from: 1
-                                          to: 0.8
-                                          duration: 400
-                                          easing.type: Easing.OutBounce
-                                      }},
-                               Transition {
-                                   from: "*"
-                                   to: "mouseIn"
-                                   SequentialAnimation{
-                                       NumberAnimation {
-                                           target: apps
-                                           properties: "scale"
-                                           from: 0.95
-                                           to: 1
-                                           duration: 400
-                                       }
-                                       NumberAnimation {
-                                           target: apps
-                                           properties: "scale"
-                                           from:1
-                                           to: 0.95
-                                           duration: 400
-                                       }
-                                       loops: Animation.Infinite
-                                   }
-                                   }
-
-                           ]
-
-                    Rectangle
-                    {
-                        id : backg
-                        color : "transparent"
-                        width: parent.width
-                        height: parent.height
-                        radius:20
-
-                        RectangularGlow {
-                                id: effect
-                                anchors.fill: parent
-                                glowRadius: 10
-                                spread: 0.2
-                                color: "#61c2ff"
-                                cornerRadius:  30
-                                visible: false
-                            }
-                        /*
-                        LinearGradient {
-                            id:mask
-                            anchors.fill:parent
-
-                            start: Qt.point(0, 0)
-                            end: Qt.point(parent.width, 0)
-                            gradient: Gradient {
-                                GradientStop { position: 0.0; color: theme.appliBackgroundG1 }
-                                GradientStop { position: 1.0; color: theme.appliBackgroundG2 }
-                            }
-
-                            visible: false
-                        }
-                        OpacityMask {
-                                anchors.fill: parent
-                                source: parent
-                                maskSource: mask
-                            }
-                        */
-                    }
-                    ColumnLayout{
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter : parent.verticalCenter
-                        spacing : 8
-                        Item{
-                            width: parent.parent.width/2
-                            height: parent.parent.width/2
-                            Image {
-                                id: myIcon
-                                width: parent.width
-                                height: parent.width
-                                source: icon
-                            }
+            */
+                ColumnLayout{
+                    anchors.fill:parent
+                    spacing:40
+                    Item{
+                        id :nameApplications
+                        width: parent.width -200
+                        Layout.alignment : Qt.AlignHCenter
+                        height:35
+                        clip: true
+                        opacity: theme.mainOpacity
+                        //visible : false
+                        Rectangle {
+                            anchors.fill: parent
+                            anchors.rightMargin: -border.width
+                            anchors.topMargin:  -border.width
+                            anchors.leftMargin: -border.width
+                            border.width: 2
+                            color : "transparent"
+                            border.color: theme.mainBorderColor
+                            opacity: 0.2
                         }
                         Item{
+                            width: parent.width
+                            anchors.top:parent.top
+                            height:30
 
-                            Layout.fillWidth: true
-                            height:20
-                            Text {
-                                FontLoader {
-                                    id: appliFont
-                                    source: "SFCompactText-Medium.ttf"
-                                }
-                                text: name
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                font.family: appliFont.name
-                                 fontSizeMode: Text.Fit
-                                horizontalAlignment: Text.AlignHCenter
+                            Text{
+                                text : "Applications"
+                                font.pointSize: 20
+                                font.family: titleFont.name
+                                anchors.left : parent.left
                                 color : theme.mainTextColor
                             }
                         }
 
-
-                     }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-
-                        onClicked: {
-                            backg.color = "lightsteelblue"
-                            backg.opacity = 0.1
-                            parent.state ="pressed"
-                            if(mouse.button === Qt.LeftButton) {
-
-                                //console.log("Double Click");
-                                execution.launch(src);
-                            }
-                        }
-
-                        hoverEnabled: true;
-                        onEntered: {
-                           parent.state = "mouseIn"
-                           //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
-                            backg.visible = true
-                            effect.visible = true
-                           backg.opacity = 0.2
-                        }
-                        onExited: {
-                            parent.state ="mouseOut"
-                            //backg.color = "transparent"
-                            backg.visible = false
-                            effect.visible = false
-                        }
-                        onDoubleClicked: {
-
-
-                        }
                     }
-                }
-                }
+                    Rectangle{
+                        width:parent.width-parent.width/6
+                        Layout.alignment : Qt.AlignHCenter
+                        Layout.fillHeight: true
+                        color :"transparent" //color : "blue"
+                        ListModel {
+                              id: appModel
+                          }
+                        SortFilterModel {
+                        id: sortFilterModel
+                        model: myModel
+                        property string actualCategorie : ""
+                        modelCategories : modelCategorie
 
+                        filterAcceptsItem: function(item) {
+                            var itemName = item.name.toLowerCase();
+                            var itemCategorie = item.categorie.toLowerCase();
+                            var actualCategorie = (String)(sortFilterModel.actualCategorie).toLowerCase();
+                            if (actualCategorie !== "" && itemCategorie !== actualCategorie)
+                                return false;
+                            var itemSearch = searchText.text.toLowerCase();
+                            return itemName.includes(itemSearch) ;
+                        }
 
+                        lessThan: function(left, right) {
+                                var leftVal = left.name.toLowerCase();
+                                var rightVal = right.name.toLowerCase();
+                            //return leftVal.localeCompare(rightVal);
+                            return leftVal < rightVal ? -1 : 1;
+                        }
 
-            }
-                            Rectangle{
-                                color: "transparent"
-                                width:parent.width -100
-                                height: parent.width - 300
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.top: parent.top
+                        updateCategorie: function(){
+                            /*
+                            var item;
+                            for (var i = 0; i < items.count; ++i) {
+                                item = items.get(i).model;
+                                  var itemCategorie = item.categorie.toLowerCase();
+                                for (var j=0 ; j< listCategorie.count ; ++j)
+                                {
+                                    var categorieItem = listCategorie.itemAtIndex(j);
 
-                                ScrollView {
-                                        id:scrollV
-                                        anchors.fill:parent
-                                        contentHeight: (maingrid.childrenRect.height > parent.height) ?maingrid.childrenRect.height : parent.height
+                                    if (categorieItem.name.toLowerCase() === itemCategorie)
+                                    {
+                                        categorieItem.apps.push_back(i);
+                                    }
+                                }
+                            }
+                            /**/
+                        }
 
-                                        ScrollBar.vertical: ScrollBar {
-                                            id: scrollBar
-                                            parent: scrollV.parent
+                        delegate:
+                            //maingrid.state = "down";
 
-                                            policy: ScrollBar.AlwaysOn
-                                            height: scrollV.availableHeight
-                                            x: scrollV.mirrored ? 0 : scrollV.width - width
-                                            y: scrollV.topPadding
-                                            active:false
-                                            snapMode : ScrollBar.SnapAlways
-                                            visible: scrollV.contentHeight > scrollV.height ? true : false
-                                            //stepSize: 0.5
-                                            //active: scrollV.ScrollBar.horizontal.active
-                                            contentItem: Rectangle {
-                                                implicitWidth: 6
-                                                implicitHeight: 100
-                                                opacity:0.05
-                                                radius: width/2
-                                                color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
-                                            }
+                            Item {
+                                Component.onCompleted: {
+                                }
 
+                            //width: parent.width/6; height:parent.width/6
+                            width: maingrid.cellWidth
+                            height: maingrid.cellHeight
+                            //PropertyAnimation on x { from : -100 ; to: x; duration: 1000; loops: Animation.Infinite }
+                            //PropertyAnimation on y { from : 100 ; to: y; duration: 1000; loops: Animation.Infinite }
+                            Rectangle
+                            {
+                                   id : apps
+                                   width: parent.width-parent.width/5; height: parent.height-parent.width/6
+                                   clip:true
+                                   color: "transparent"//"blue"
+                                   state: "mouseOut"
 
-                                        }
+                                   states: State {
+                                               name: "mouseIn";
+                                           }
+                                           State {
+                                           name: "mouseOn";
 
-                                        //contentHeight: maingrid.height
-                                        //contentWidth: width
-                                        clip: true
-                                        MouseArea{
-                                             onWheel: {
-                                            if(wheel.angleDelta.y > 0){
-                                              scroller.decrease()
-                                            }else{
-                                              scroller.increase()
-                                            }
-                                             }
-                                        }
-                                GridView {
-                                    id:maingrid
-                                    //width: parent.width-100
-                                    //height: parent.width-100
-                                    anchors.fill: parent
-                                    //anchors.horizontalCenter: parent.horizontalCenter
-                                    //anchors.verticalCenter: parent.verticalCenter
+                                       }
+                                           State {
+                                           name: "pressed";}
+                                   transitions: [
+                                          Transition {
+                                              from: "*"
+                                              to: "pressed"
+                                              NumberAnimation {
+                                                  target: backg
+                                                  properties: "scale"
+                                                  from: 1
+                                                  to: 0.8
+                                                  duration: 400
+                                                  easing.type: Easing.OutBounce
+                                              }},
+                                       Transition {
+                                           from: "*"
+                                           to: "mouseIn"
+                                           SequentialAnimation{
+                                               NumberAnimation {
+                                                   target: apps
+                                                   properties: "scale"
+                                                   from: 0.95
+                                                   to: 1
+                                                   duration: 400
+                                               }
+                                               NumberAnimation {
+                                                   target: apps
+                                                   properties: "scale"
+                                                   from:1
+                                                   to: 0.95
+                                                   duration: 400
+                                               }
+                                               loops: Animation.Infinite
+                                           }
+                                           }
 
-                                    property bool first : true
-                                    property var cellSize : width/6
+                                   ]
 
-                                    Component.onCompleted: {
-                                        cellSize = width/6
-                                        for (var i=0;cellSize < 150;i++)
-                                        {
-                                            cellSize = width/(6-i)
-                                        }
+                            Rectangle
+                            {
+                                id : backg
+                                color : "transparent"
+                                width: parent.width
+                                height: parent.height
+                                radius:20
+
+                                RectangularGlow {
+                                        id: effect
+                                        anchors.fill: parent
+                                        glowRadius: 10
+                                        spread: 0.2
+                                        color: "#61c2ff"
+                                        cornerRadius:  30
+                                        visible: false
+                                    }
+                                /*
+                                LinearGradient {
+                                    id:mask
+                                    anchors.fill:parent
+
+                                    start: Qt.point(0, 0)
+                                    end: Qt.point(parent.width, 0)
+                                    gradient: Gradient {
+                                        GradientStop { position: 0.0; color: theme.appliBackgroundG1 }
+                                        GradientStop { position: 1.0; color: theme.appliBackgroundG2 }
                                     }
 
-                                   cellWidth: cellSize; cellHeight: cellSize
+                                    visible: false
+                                }
+                                OpacityMask {
+                                        anchors.fill: parent
+                                        source: parent
+                                        maskSource: mask
+                                    }
+                                */
+                            }
+                            ColumnLayout{
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.verticalCenter : parent.verticalCenter
+                                spacing : 8
+                                Item{
+                                    width: parent.parent.width/2
+                                    height: parent.parent.width/2
+                                    Image {
+                                        id: myIcon
+                                        asynchronous: true
+                                        width: parent.width
+                                        height: parent.width
+                                        source: icon
+                                    }
+                                }
+                                Item{
 
-                                   focus: true
-                                   state : "deb"
-                                   opacity : 1
-                                   property int viewIndex: 0
-                                   model: sortFilterModel
-
-                                   //highlight: Rectangle { width: 80; height: 80; color: "lightsteelblue" }
-                                    interactive : false
-                                    states: State {
-                                                name: "down";
-                                            }
-                                            State {
-                                            name: "debut";
+                                    Layout.fillWidth: true
+                                    height:20
+                                    Text {
+                                        FontLoader {
+                                            id: appliFont
+                                            source: "SFCompactText-Medium.ttf"
                                         }
-                                    add :
-                                        Transition {
-                                        id :tr
-                                        enabled : true
-                                        SequentialAnimation {
-                                            id :animationX
-                                            /*
-                                                  ParallelAnimation {
-                                                      NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1000 }
-                                                      ScaleAnimator{from: 0; to: 1.0; duration: 1000;easing.type: Easing.OutBounce}
-                                                      NumberAnimation { property: "y"; from: tr.ViewTransition.destination.y-1000; to: tr.ViewTransition.destination.y; duration: 700;easing.type: Easing.OutBounce }
-                                                  }
-                                                  /**/
-                                                  ///*
-                                                    ParallelAnimation {
-                                                   NumberAnimation {
-                                                       property: "opacity"; from:0; to: 1 ; duration :2000;
-                                                   }
-                                                   //NumberAnimation { properties: "maingrid.width"; to : parent.width; duration: 500; easing.type: Easing.OutBounce }
-                                                   //NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce}
-                                                    }
-                                                   /**/
-                                                  }
-                                        /**/
-                                        }
+                                        text: name
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        font.family: appliFont.name
+                                         fontSizeMode: Text.Fit
+                                        horizontalAlignment: Text.AlignHCenter
+                                        color : theme.mainTextColor
                                     }
                                 }
 
-                                //NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
-                                //NumberAnimation { property: "x";  from : -1000; to : x;  duration: 5000 }
-                                //NumberAnimation { property: "y";  from : -1000; to : y;  duration: 5000 }
-                                //PropertyAnimation on y { from : 0 ; to: y; duration: 1000; loops: Animation.Infinite }
-                                //NumberAnimation { property: "scale"; easing.type: Easing.OutBounce; from: 0; to: 1.0; duration: 400 } /**/
+
+                             }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+
+                                onClicked: {
+                                    backg.color = "lightsteelblue"
+                                    backg.opacity = 0.1
+                                    parent.state ="pressed"
+                                    if(mouse.button === Qt.LeftButton) {
+
+                                        //console.log("Double Click");
+                                        execution.launch(src);
+                                    }
+                                }
+
+                                hoverEnabled: true;
+                                onEntered: {
+                                   parent.state = "mouseIn"
+                                   //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
+                                    backg.visible = true
+                                    effect.visible = true
+                                   backg.opacity = 0.2
+                                }
+                                onExited: {
+                                    parent.state ="mouseOut"
+                                    //backg.color = "transparent"
+                                    backg.visible = false
+                                    effect.visible = false
+                                }
+                                onDoubleClicked: {
+
+
+                                }
                             }
-                            ParallelAnimation {
-                                id : animationN;
-                                NumberAnimation { property: "scale"; easing.type: Easing.OutBounce; from: 0; to: 1.0; duration: 400 }
-                                NumberAnimation {  property: "opacity"; from: 0; to: 1.0; duration: 300 }
+                        }
+                        }
+
+
+
+                    }
+                                    Item{
+                                        width:parent.width -100
+                                        height: parent.width - 300
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        anchors.top: parent.top
+
+                                        ScrollView {
+                                                id:scrollV
+                                                anchors.fill:parent
+                                                contentHeight: (maingrid.childrenRect.height > parent.height) ?maingrid.childrenRect.height : parent.height
+
+                                                ScrollBar.vertical: ScrollBar {
+                                                    id: scrollBar
+                                                    parent: scrollV.parent
+                                                    policy: ScrollBar.AlwaysOn
+                                                    height: scrollV.availableHeight
+                                                    x: scrollV.mirrored ? 0 : scrollV.width - width
+                                                    y: scrollV.topPadding
+                                                    active:false
+                                                    snapMode : ScrollBar.SnapAlways
+                                                    visible: scrollV.contentHeight > scrollV.height ? true : false
+                                                    //stepSize: 0.5
+                                                    //active: scrollV.ScrollBar.horizontal.active
+                                                    contentItem: Rectangle {
+                                                        implicitWidth: 6
+                                                        implicitHeight: 100
+                                                        opacity:0.05
+                                                        radius: width/2
+                                                        color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
+                                                    }
+
+
+                                                }
+
+                                                //contentHeight: maingrid.height
+                                                //contentWidth: width
+                                                clip: true
+                                                MouseArea{
+                                                     onWheel: {
+                                                    if(wheel.angleDelta.y > 0){
+                                                      scroller.decrease()
+                                                    }else{
+                                                      scroller.increase()
+                                                    }
+                                                     }
+                                                }
+                                        GridView {
+                                            id:maingrid
+                                            //width: parent.width-100
+                                            //height: parent.width-100
+                                            anchors.fill: parent
+                                            //anchors.horizontalCenter: parent.horizontalCenter
+                                            //anchors.verticalCenter: parent.verticalCenter
+
+                                            property bool first : true
+                                            property var cellSize : width/6
+
+                                            Component.onCompleted: {
+                                                cellSize = width/6
+                                                for (var i=0;cellSize < 150;i++)
+                                                {
+                                                    cellSize = width/(6-i)
+                                                }
+                                            }
+
+                                           cellWidth: cellSize; cellHeight: cellSize
+
+                                           focus: true
+                                           state : "deb"
+                                           opacity : 1
+                                           property int viewIndex: 0
+                                           model: sortFilterModel
+
+                                           //highlight: Rectangle { width: 80; height: 80; color: "lightsteelblue" }
+                                            interactive : false
+                                            states: State {
+                                                        name: "down";
+                                                    }
+                                                    State {
+                                                    name: "debut";
+                                                }
+                                            add :
+                                                Transition {
+                                                id :tr
+                                                enabled : true
+                                                SequentialAnimation {
+                                                    id :animationX
+                                                    /*
+                                                          ParallelAnimation {
+                                                              NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 1000 }
+                                                              ScaleAnimator{from: 0; to: 1.0; duration: 1000;easing.type: Easing.OutBounce}
+                                                              NumberAnimation { property: "y"; from: tr.ViewTransition.destination.y-1000; to: tr.ViewTransition.destination.y; duration: 700;easing.type: Easing.OutBounce }
+                                                          }
+                                                          /**/
+                                                          ///*
+                                                            ParallelAnimation {
+                                                           NumberAnimation {
+                                                               property: "opacity"; from:0; to: 1 ; duration :2000;
+                                                           }
+                                                           //NumberAnimation { properties: "maingrid.width"; to : parent.width; duration: 500; easing.type: Easing.OutBounce }
+                                                           //NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce}
+                                                            }
+                                                           /**/
+                                                          }
+                                                /**/
+                                                }
+                                            }
+                                        }
+
+                                        //NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
+                                        //NumberAnimation { property: "x";  from : -1000; to : x;  duration: 5000 }
+                                        //NumberAnimation { property: "y";  from : -1000; to : y;  duration: 5000 }
+                                        //PropertyAnimation on y { from : 0 ; to: y; duration: 1000; loops: Animation.Infinite }
+                                        //NumberAnimation { property: "scale"; easing.type: Easing.OutBounce; from: 0; to: 1.0; duration: 400 } /**/
+                                    }
+                                    ParallelAnimation {
+                                        id : animationN;
+                                        NumberAnimation { property: "scale"; easing.type: Easing.OutBounce; from: 0; to: 1.0; duration: 400 }
+                                        NumberAnimation {  property: "opacity"; from: 0; to: 1.0; duration: 300 }
+                                    }
+            /*
+                MouseArea {
+                    anchors.fill:scrollV
+                    hoverEnabled: true
+                    onWheel: {
+                        if (wheel.angleDelta.y > 0) {
+                            scrollV.visualPosition -= scrollV.scrollSpeed;
+                            if (scrollV.visualPosition < 0) {
+                                scrollV.visualPosition = 0;
                             }
-/*
-        MouseArea {
-            anchors.fill:scrollV
-            hoverEnabled: true
-            onWheel: {
-                if (wheel.angleDelta.y > 0) {
-                    scrollV.visualPosition -= scrollV.scrollSpeed;
-                    if (scrollV.visualPosition < 0) {
-                        scrollV.visualPosition = 0;
+                        } else {
+                            scrollV.visualPosition += scrollV.scrollSpeed;
+                            if (scrollV.visualPosition + scrollV.maingrid.width > scrollV.maingrid.contentWidth) {
+                                scrollV.visualPosition = scrollV.maingrid.contentWidth -  scrollV.maingrid.width;
+                            }
+                        }
                     }
-                } else {
-                    scrollV.visualPosition += scrollV.scrollSpeed;
-                    if (scrollV.visualPosition + scrollV.maingrid.width > scrollV.maingrid.contentWidth) {
-                        scrollV.visualPosition = scrollV.maingrid.contentWidth -  scrollV.maingrid.width;
-                    }
+                    onClicked: mouse.accepted = false;
+                       onPressed: mouse.accepted = false;
+                       onReleased: mouse.accepted = false;
+                       onDoubleClicked: mouse.accepted = false;
+                       onPositionChanged: mouse.accepted = false;
+                       onPressAndHold: mouse.accepted = false;
                 }
-            }
-            onClicked: mouse.accepted = false;
-               onPressed: mouse.accepted = false;
-               onReleased: mouse.accepted = false;
-               onDoubleClicked: mouse.accepted = false;
-               onPositionChanged: mouse.accepted = false;
-               onPressAndHold: mouse.accepted = false;
+                */
+            }}
+
         }
-        */
-    }}}
     Item {
         width : parent.width* (1/5)
         Layout.fillHeight: true
@@ -1229,7 +809,7 @@ ApplicationWindow {
                 width: parent.width/2
                 height: parent.width/2
                 id:timeItem
-                anchors.centerIn : parent
+                Layout.alignment : Qt.AlignHCenter | Qt.AlignVCenter
                 opacity:1
                 property bool started : false
                 SequentialAnimation{
@@ -1273,7 +853,7 @@ ApplicationWindow {
                         size: parent.width
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
-                        colorCircle: "#0092CC"
+                        colorCircle: "#0092CC" // "#00BFFF" //
                         colorBackground: "#E6E6E6"
                         arcBegin: 360
                         arcEnd: 360
@@ -1300,7 +880,6 @@ ApplicationWindow {
                     interval: 500; running: true; repeat: true
 
                     onTriggered:{
-
                         timeToBeConsumed = new Date(timeToBeConsumed.getTime()-500);
                         time.text = msToTime(timeToBeConsumed.getTime()-milliS);
                         arcDest = -((((timeToBeConsumed.getTime()-milliS)*360)/(timeDataStart.getTime()-milliS))-360);
@@ -1425,7 +1004,7 @@ ApplicationWindow {
                                     anchors.rightMargin: -border.width
                                     anchors.topMargin:  -border.width
                                     anchors.leftMargin: -border.width
-                                    border.width: 3
+                                    border.width: 2
                                     color : "transparent"
                                     border.color: theme.mainBorderColor
                                     opacity:0.2
@@ -1449,31 +1028,27 @@ ApplicationWindow {
                                             height:parent.width-20
                                             anchors.horizontalCenter : parent.horizontalCenter
                                             anchors.verticalCenter: parent.verticalCenter
-                                            opacity:0.5
+                                            opacity:0.4
                                             Image {
+                                                id : workspaceImage
+                                                asynchronous: true
                                                 source: "icon_espacetravial.png"
                                                 anchors.fill:parent
                                                Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
                                                 Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
+
                                             }
+                                            ColorOverlay {
+                                                    anchors.fill:  workspaceImage
+                                                    source:  workspaceImage
+                                                    color: theme.mainTextColor
+                                                }
                                         }
 
                                     }
                                     Item{
                                         Layout.fillHeight: true
                                         Layout.fillWidth: true
-                                        Rectangle
-                                        {
-                                            anchors.fill:parent
-                                            radius: 2
-                                            opacity:0.3
-                                            color : "transparent"
-                                        }
 
                                         Text
                                         {
@@ -1490,12 +1065,11 @@ ApplicationWindow {
                                 }
                             }
                             Item{
-                                Layout.fillWidth: true
+                                Layout.fillWidth: parent.width
                                 height:50
+
                                 Text
                                 {
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
                                     font.pointSize: 15
                                     opacity:0.7
                                     font.family : font1.name
@@ -1523,7 +1097,7 @@ ApplicationWindow {
                                     anchors.rightMargin: -border.width
                                     anchors.topMargin:  -border.width
                                     anchors.leftMargin: -border.width
-                                    border.width: 3
+                                    border.width: 2
                                     color : "transparent"
                                     border.color: theme.mainBorderColor
                                     opacity:0.2
@@ -1549,16 +1123,19 @@ ApplicationWindow {
                                             anchors.verticalCenter: parent.verticalCenter
                                             opacity:0.5
                                             Image {
+                                                id: userImage
+                                                asynchronous: true
                                                 source: "user.png"
                                                 anchors.fill:parent
                                                Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
                                                 Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
+
                                             }
+                                            ColorOverlay {
+                                                    anchors.fill: userImage
+                                                    source: userImage
+                                                    color: theme.mainTextColor
+                                                }
                                         }
 
                                     }
@@ -1620,7 +1197,7 @@ ApplicationWindow {
                                     anchors.rightMargin: -border.width
                                     anchors.topMargin:  -border.width
                                     anchors.leftMargin: -border.width
-                                    border.width: 3
+                                    border.width: 2
                                     color : "transparent"
                                     border.color: theme.mainBorderColor
                                     opacity:0.2
@@ -1646,16 +1223,19 @@ ApplicationWindow {
                                             anchors.verticalCenter: parent.verticalCenter
                                             opacity:0.4
                                             Image {
+                                                id: computerImage
                                                 source: "pc.png"
+                                                asynchronous: true
                                                 anchors.fill:parent
                                                Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
                                                 Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
+
                                             }
+                                            ColorOverlay {
+                                                    anchors.fill: computerImage
+                                                    source: computerImage
+                                                    color: theme.mainTextColor
+                                                }
                                         }
 
                                     }
@@ -1717,7 +1297,7 @@ ApplicationWindow {
                                     anchors.rightMargin: -border.width
                                     anchors.topMargin:  -border.width
                                     anchors.leftMargin: -border.width
-                                    border.width: 3
+                                    border.width: 2
                                     color : "transparent"
                                     border.color: theme.mainBorderColor
                                     opacity:0.2
@@ -1743,16 +1323,19 @@ ApplicationWindow {
                                             anchors.verticalCenter: parent.verticalCenter
                                             opacity:0.4
                                             Image {
+                                                id : groupImage
                                                 source: "icon_group.png"
+                                                asynchronous: true
                                                 anchors.fill:parent
                                                Layout.preferredHeight: parent.width//parent.height - platformStyle.paddingMedium * 2
                                                 Layout.preferredWidth: parent.height //parent.height - platformStyle.paddingMedium * 2
-                                                ColorOverlay {
-                                                        anchors.fill: parent
-                                                        source: parent
-                                                        color: theme.mainTextColor
-                                                    }
+
                                             }
+                                            ColorOverlay {
+                                                    anchors.fill:  groupImage
+                                                    source:  groupImage
+                                                    color: theme.mainTextColor
+                                                }
                                         }
 
                                     }
