@@ -12,6 +12,11 @@
 #include <QSortFilterProxyModel>
 #include <QQmlProperty>
 #include <QCursor>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QDebug>
 #include "appwindow.h"
 
 int main(int argc, char *argv[])
@@ -27,11 +32,7 @@ int main(int argc, char *argv[])
     char timeRA[] = "03:00:00";
     char* timeR = timeRA;
 
-
     AppModel* model= new AppModel();
-    //->addAnimal(Animal("Wolf", "Medium","gimp","Application Photos"));
-    //model->addAnimal(Animal("Polar bear", "Large","firefox","Application Photos"));
-    //model->addAnimal(Animal("Quoll", "Small","gimp","Application Photos"));
 
     CategorieModel* modelCategorie = new CategorieModel();
     engine.rootContext()->setContextProperty("myModel",model);
@@ -50,27 +51,20 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
 
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 
 
-    modelCategorie->addCategorie(Categorie("1", "Application Internet"));
+    modelCategorie->addCategorie(Categorie("1", "Navigateur Internet"));
     modelCategorie->addCategorie(Categorie("2", "Mathématiques"));
     modelCategorie->addCategorie(Categorie("3", "Physique"));
     modelCategorie->addCategorie(Categorie("4", "Chimie"));
     modelCategorie->addCategorie(Categorie("5", "Applications Photos"));
     modelCategorie->addCategorie(Categorie("6", "Traitement de texte"));
-    modelCategorie->addCategorie(Categorie("4", "Chimie"));
-    modelCategorie->addCategorie(Categorie("5", "Applications Photos"));
-    modelCategorie->addCategorie(Categorie("6", "Traitement de texte"));
 
-
-    //QObject *win = (engine.rootObjects().first())->findChild<QObject*>("mainAppliWindow");
     QObject *rect = (engine.rootObjects().first())->findChild<QObject*>("execution");
     Execution* ex = (qobject_cast<Execution*>(rect));
-
 
     if (rect)
     {
@@ -79,36 +73,51 @@ int main(int argc, char *argv[])
             ex->mainWindows = window;
         }
 
-        //AppModel* add = ((qobject_cast<Execution*>(rect))->model) ;
         ex->model = model;
-        //(qobject_cast<Execution*>(rect))->setTimeR(timeR);
 
-        ex->addRow("Firefox", "mozilla.png","firefox","Navigateur Internet");
-        ex->addRow("Photoshop", "Adobe_Photoshop_CS6_icon.png","photoshop","Navigateur Internet");
-        ex->addRow("Gimp", "600px-The_GIMP_icon_-_gnome.svg.png","gimp","Navigateur Internet");
-        ex->addRow("Matlab", "Matlab_Logo.png","firefox","Mathématiques");
+        QJsonParseError err;
 
-        ex->addRow("Facebook", "icon-facebook-logo.png","firefox","Navigateur Internet");
-        ex->addRow("Visual Studio", "visual studio icon.png","firefox","Navigateur Internet");
-        ex->addRow("Discord", "discord_101785.png","firefox","Navigateur Internet");
-        ex->addRow("Skype", "Skype-icon-new.png","firefox","Navigateur Internet");
+        QString val;
+        QFile file;
+        // Modifier le chemin d'accès au Json
+        file.setFileName("path/to/file.json");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        val = file.readAll();
+        file.close();
+        qInfo() << "val :: " << val;
 
-        ex->addRow("Twitter", "Twitter_Bird.svg.png","firefox","Navigateur Internet");
-        ex->addRow("Chrome", "Google_Chrome_icon_(2011).png","firefox","Navigateur Internet");
-        ex->addRow("Word", "word.png","firefox","Navigateur Internet");
-        ex->addRow("Acrobat Reader", "acroat.png","firefox","Navigateur Internet");
+        QByteArray utf8String = val.toUtf8();
+        QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
 
-        ex->addRow("VLC media player", "vlc.png","firefox","Navigateur Internet");
-        ex->addRow("Football", "soccerball.png","firefox","Navigateur Internet");
-        ex->addRow("Logithèque Ubuntu", "1200px-Ubuntu_Software_Center_icon_v3.svg.png","firefox","Navigateur Internet");
-        ex->addRow("Instagram", "1024px-Instagram_icon.png","firefox","Navigateur Internet");
+        QJsonValue terminal = d.object().value("terminal");
+        qInfo() << "terminal :: " << terminal.toString();
 
-        ex->addRow("Help", "help.png","firefox","Navigateur Internet");
-        ex->addRow("Service", "service.png","firefox","Navigateur Internet");
+        QJsonValue username = d.object().value("username");
+        qInfo() << "username :: " << username.toString();
 
+        QJsonObject workspace = d.object().value("workspace").toObject();
+        QString workspaceName = workspace.value("name").toString();
+        qInfo() << "Workspace name ::: " << workspaceName;
 
-
-
+        QJsonArray apps = workspace.value("applications").toArray();
+        qInfo() << "apps :: " << apps.count();
+        while (!apps.isEmpty()) {
+            QJsonObject application = apps.first().toObject();
+            QString name = application.value("name").toString();
+            QString icon = application.value("icon").toString();
+            QString path = application.value("path").toString();
+            QString category = application.value("category").toString();
+            qInfo() << "Name ::: " << name;
+            qInfo() << "Icon ::: " << icon;
+            if(icon == "") {
+                icon = "C:\\Users\\dev\\Documents\\téléchargement.png";
+            }
+            qInfo() << "Icon ::: " << icon;
+            qInfo() << "Path ::: " << path;
+            Application app = Application(name, icon, path, category);
+            ex->addRow(app.type(), app.size(), app.src(), app.categorie());
+            apps.removeFirst();
+        }
 
     }
 
