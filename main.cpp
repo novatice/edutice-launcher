@@ -30,9 +30,6 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
 
-    char timeRA[] = "03:00:00";
-    char* timeR = timeRA;
-
     AppModel* model= new AppModel();
 
     CategorieModel* modelCategorie = new CategorieModel();
@@ -82,11 +79,11 @@ int main(int argc, char *argv[])
         QFile file;
         // Modifier le chemin d'accès au Json
         QString jsonPath;
-        #ifdef linux
-            jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
-        #else
-            jsonPath = "C:\\Users\\dev\\Documents\\applications.json";
-        #endif
+#ifdef linux
+        jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
+#else
+        jsonPath = "C:\\Users\\dev\\Documents\\applications.json";
+#endif
 
         file.setFileName(jsonPath);
         file.open(QIODevice::ReadOnly | QIODevice::Text);
