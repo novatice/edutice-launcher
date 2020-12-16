@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>600px-The_GIMP_icon_-_gnome.svg.png</file>
-        <file>mozilla.png</file>
-        <file>photoshop.png</file>
         <file>search.png</file>
         <file>powerButton.png</file>
         <file>digital-7.ttf</file>
@@ -16,26 +13,7 @@
         <file>SourceSansPro-Black.ttf</file>
         <file>user.png</file>
         <file>windows_log_off.png</file>
-        <file>Adobe_Photoshop_CS6_icon.png</file>
-        <file>Dtafalonso-Android-Lollipop-Chrome.ico</file>
-        <file>icon-facebook-logo.png</file>
-        <file>Matlab_Logo.png</file>
         <file>pc.png</file>
-        <file>Skype-icon-new.png</file>
-        <file>discord_101785.png</file>
-        <file>visual studio icon.png</file>
-        <file>Twitter_Bird.svg.png</file>
-        <file>index.png</file>
-        <file>microsoft-word-1411849-1194338.webp</file>
-        <file>Google_Chrome_icon_(2011).png</file>
-        <file>vlc.png</file>
-        <file>acroat.png</file>
-        <file>soccerball.png</file>
-        <file>1024px-Instagram_icon.png</file>
-        <file>1200px-Ubuntu_Software_Center_icon_v3.svg.png</file>
-        <file>service.png</file>
-        <file>word.png</file>
-        <file>help.png</file>
         <file>SFCompactText-SemiBoldItalic.ttf</file>
         <file>SFCompactText-Medium.ttf</file>
         <file>SFCompactDisplay-Black.ttf</file>

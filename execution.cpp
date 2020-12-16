@@ -22,10 +22,7 @@ Execution::Execution(QObject *parent) :
     {
         qInfo() << "In Execution::launch with " << program;
 
-        #ifdef linux
-            program = program.toLower();
-        #endif
-            QStringList arguments;
+        QStringList arguments;
         if (m_process->startDetached(program, arguments)) {
             qInfo() << "Launched with success";
         }

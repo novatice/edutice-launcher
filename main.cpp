@@ -80,7 +80,14 @@ int main(int argc, char *argv[])
         QString val;
         QFile file;
         // Modifier le chemin d'accès au Json
-        file.setFileName("C:\\Users\\dev\\Documents\\applications.json");
+        QString jsonPath;
+        #ifdef linux
+            jsonPath = ".config/edutice/launcher.json";
+        #else
+            jsonPath = "C:\\Users\\dev\\Documents\\applications.json";
+        #endif
+
+        file.setFileName(jsonPath);
         file.open(QIODevice::ReadOnly | QIODevice::Text);
         val = file.readAll();
         file.close();
