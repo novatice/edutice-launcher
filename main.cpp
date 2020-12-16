@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
             }
             qInfo() << "Icon ::: " << icon;
             qInfo() << "Path ::: " << path;
-            Application app = Application(name, icon, path, category);
+            Application app = Application(name, "file:" + icon, path, category);
             ex->addRow(app.type(), app.size(), app.src(), app.categorie());
             apps.removeFirst();
         }
