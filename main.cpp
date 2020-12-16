@@ -17,6 +17,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QDebug>
+#include <QDir>
 #include "appwindow.h"
 
 int main(int argc, char *argv[])
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
         // Modifier le chemin d'accès au Json
         QString jsonPath;
         #ifdef linux
-            jsonPath = ".config/edutice/launcher.json";
+            jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
         #else
             jsonPath = "C:\\Users\\dev\\Documents\\applications.json";
         #endif
