@@ -41,17 +41,17 @@ DelegateModel {
         /**/
     }
 
-
     items.onChanged: {
         update();
         updateCategorie();
     }
+
     onLessThanChanged: update()
+
     onFilterAcceptsItemChanged: update()
 
     groups: DelegateModelGroup {
         id: visibleItems
-
         name: "visible"
         includeByDefault: false
     }

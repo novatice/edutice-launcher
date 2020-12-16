@@ -20,16 +20,16 @@ Execution::Execution(QObject *parent) :
     */
     QString Execution::launch(const QString &program)
     {
-        QString l = "";
+        qInfo() << "In Execution::launch with " << program;
 
         #ifdef linux
-            l = program.toLower();
+            program = program.toLower();
         #endif
-            m_process->startDetached(l);
-            std::cout << l.toStdString() << std::endl;
-        //emit signalExit();
-        quit();
-        //quit();
+            QStringList arguments;
+        if (m_process->startDetached(program, arguments)) {
+            qInfo() << "Launched with success";
+        }
+
         return "output";
     }
     void Execution::lockScreen()
@@ -74,7 +74,7 @@ Execution::Execution(QObject *parent) :
             #ifdef _WIN32
                 HWND hWnd = (HWND)mainWindows->winId();
 
-                ShowWindow(hWnd,SW_SHOWMINNOACTIVE);
+                ShowWindow(hWnd,SW_HIDE);
             #endif
 
             #ifdef linux

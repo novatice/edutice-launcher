@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         QString val;
         QFile file;
         // Modifier le chemin d'accès au Json
-        file.setFileName("path/to/file.json");
+        file.setFileName("C:\\Users\\dev\\Documents\\applications.json");
         file.open(QIODevice::ReadOnly | QIODevice::Text);
         val = file.readAll();
         file.close();

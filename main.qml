@@ -10,7 +10,7 @@ ApplicationWindow {
     id :mainAppliWindow
 
     visible: true
-    flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool //| Qt.WindowMinimized|
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool //| Qt.WindowStaysOnTopHint //| Qt.WindowMinimized|
     //visibility: Window.FullScreen
     /**/
     //color : "#f4f4f4"
@@ -21,30 +21,33 @@ ApplicationWindow {
     x: screenNumberId.virtualX + ((screenNumberId.width - width) / 2)
     y: screenNumberId.virtualY + ((screenNumberId.height - height) / 2)
 
-    Component.onCompleted: {
-        /*
-        var width = Qt.application.screens[0].desktopAvailableWidth;
-        var height = Qt.application.screens[0].desktopAvailableHeight;
-        var currentScreen =0;
-        for (var i = 0; i < Qt.application.screens.length ; i++)
-       {
-            console.log(width);
-            if (i !== currentScreen)
-                width = width - Qt.application.screens[i].width;
+    Timer {
+        id: timer
+    }
+
+    function delay(delayTime, cb) {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
+    }
+
+    Connections {
+        target: Qt.application
+        onStateChanged: {
+            if (Qt.application.state === Qt.ApplicationInactive) {
+                delay(100, function() {
+                    mainAppliWindow.visible = false;
+                })
+            }
+            else if (Qt.application.state === Qt.ApplicationActive) {
+                mainAppliWindow.visible = true;
+            }
         }
-        console.log(width);
-        for (var i = 0; i < Qt.application.screens.length ; i++)
-       {
-            if (i !== currentScreen)
-                height = height - Qt.application.screens[i].height;
-        }
-        mainAppliWindow.width = width;
-        mainAppliWindow.height =  Screen.height*/
 
     }
-        //console.log("mdlrp : "+ Qt.application.screens[0].desktopAvailableWidth + " "+ Qt.application.screens[0].width);
 
-    Item{
+    Item {
         id:theme
         property var actualTheme : theme2
 
@@ -144,7 +147,7 @@ ApplicationWindow {
     Execution {
             id:execution
             objectName: "execution"
-            onSignalExit: mainAppliWindow.close()
+            //onSignalExit: mainAppliWindow.close()
     }
 
     Dialog {
@@ -601,6 +604,7 @@ ApplicationWindow {
                              }
 
                             MouseArea {
+                                id: applicationMouseArea
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
 
@@ -609,7 +613,6 @@ ApplicationWindow {
                                     backg.opacity = 0.1
                                     parent.state ="pressed"
                                     if(mouse.button === Qt.LeftButton) {
-
                                         //console.log("Double Click");
                                         execution.launch(src);
                                     }
@@ -617,11 +620,11 @@ ApplicationWindow {
 
                                 hoverEnabled: true;
                                 onEntered: {
-                                   parent.state = "mouseIn"
+                                    parent.state = "mouseIn"
                                    //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
                                     backg.visible = true
                                     effect.visible = true
-                                   backg.opacity = 0.2
+                                    backg.opacity = 0.2
                                 }
                                 onExited: {
                                     parent.state ="mouseOut"
@@ -877,7 +880,7 @@ ApplicationWindow {
                     property date timeDataStart : new Date(new Date().getTime()+300000);
                     property var arcDest : 0;
                     property var milliS : (new Date()).getTime();
-                    interval: 500; running: true; repeat: true
+                    interval: 10000; running: true; repeat: true
 
                     onTriggered:{
                         timeToBeConsumed = new Date(timeToBeConsumed.getTime()-500);
@@ -887,7 +890,7 @@ ApplicationWindow {
                         {
                             animationStartCircle.start();
                             timeItem.started = true;
-                            timeTimer.interval = 500
+                            timeTimer.interval = 10000
                             return;
                         }
                         if (animationStartCircle.running)

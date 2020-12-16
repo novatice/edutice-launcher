@@ -45,9 +45,15 @@ Item {
            easing.type: Easing.InOutCubic
        }
     }
-    Behavior on animate {
-        NumberAnimation {property: "opacity"; from: 0; to: 1; duration: 300; loops: Animation.Infinite }
 
+    Behavior on animate {
+        NumberAnimation {
+            property: "opacity";
+            from: 0;
+            to: 1;
+            duration: 300;
+            loops: Animation.Infinite
+        }
     }
 
     Canvas {
