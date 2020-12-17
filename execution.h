@@ -11,7 +11,6 @@
 #include <appmodel.h>
 #include <time.h>
 #include <QGuiApplication>
-#include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQuick/QQuickItem>
 #include <QQmlContext>
@@ -22,27 +21,27 @@ class Execution : public QObject
 {
 
     Q_OBJECT
-    public:
-        explicit Execution(QObject *parent = 0);
-        Q_INVOKABLE QString launch(const QString &program);
+public:
+    explicit Execution(QObject *parent = 0);
+    Q_INVOKABLE QString launch(const QString &program);
     Q_INVOKABLE void lockScreen();
     Q_INVOKABLE void disconnectScreen();
-        Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat);
+    Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat);
     Q_INVOKABLE QString getTimeRemaining(int interval);
-        //void setTimeR(char* time);
-        QQmlContext *ctxt;
-        AppModel* model;
-        int p;
-        QWindow* mainWindows;
-        Q_INVOKABLE void quit();
-    signals:
-        void signalData(QString data);
-        void signalExit(void);
+    //void setTimeR(char* time);
+    QQmlContext *ctxt;
+    AppModel* model;
+    int p;
+    QWindow* mainWindows;
+    Q_INVOKABLE void quit();
+signals:
+    void signalData(QString data);
+    void signalExit(void);
 
 protected:
-        QProcess *m_process;
+    QProcess *m_process;
 
-        time_t timeRemaining;
+    time_t timeRemaining;
 };
 
 

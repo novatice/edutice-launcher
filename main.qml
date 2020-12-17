@@ -513,7 +513,6 @@ ApplicationWindow {
                                                     backg.opacity = 0.1
                                                     parent.state = "pressed"
                                                     if (mouse.button === Qt.LeftButton) {
-                                                        //console.log("Double Click");
                                                         execution.launch(src)
                                                     }
                                                 }

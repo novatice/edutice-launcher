@@ -37,18 +37,6 @@ QHash<int, QByteArray> AppModel::roleNames() const {
     return roles;
 }
 
-/*
-QVariant AppModel::data(const QModelIndex &index, int role) const {
-    if(!index.isValid()) {
-        return QVariant();
-    }
-    if(role == NameRole) {
-        return QVariant(backing[index.row()]);
-    }
-    return QVariant();
-}
-*/
-
 void AppModel::addApplication(const Application &application)
 {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
