@@ -18,7 +18,6 @@
 #include <QJsonValue>
 #include <QDebug>
 #include <QDir>
-#include "appwindow.h"
 
 int main(int argc, char *argv[])
 {
