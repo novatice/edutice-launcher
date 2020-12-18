@@ -27,10 +27,10 @@ void Execution::lockScreen()
     QString l = "";
     std::cout << "def" << std::endl;
 #ifdef linux
-    l = "dbus-send --type=method_call --dest=org.gnome.ScreenSaver \
-            /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock";
-        #endif
-        #ifdef _WIN32
+    // todo: replace qdbus command by "pure" Qt DBus code
+    l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+#endif
+#ifdef _WIN32
             l = "rundll32.exe user32.dll,LockWorkStation";
 #endif
     m_process->startDetached(l);
@@ -41,7 +41,8 @@ void Execution::disconnectScreen()
 {
     QString l = "";
 #ifdef linux
-    l = "gnome-session-quit --no-prompt";
+    // todo: replace qdbus command by "pure" Qt DBus code
+    l = "qdbus org.kde.ksmserver /KSMServer logout 1 0 0"; // first parameter =1 means "wait for confirmation"
 #endif
 #ifdef _WIN32
     l = "shutdown -L";
