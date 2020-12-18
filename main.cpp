@@ -22,6 +22,7 @@
 #include <signal.h>
 #endif
 
+#ifdef linux
 void catchUnixSignals(std::initializer_list<int> quitSignals) {
 
     auto handler = [](int sig) -> void {
@@ -53,6 +54,7 @@ void catchUnixSignals(std::initializer_list<int> quitSignals) {
     for (auto sig : quitSignals)
         sigaction(sig, &sa, nullptr);
 }
+#endif
 
 int main(int argc, char *argv[])
 {
