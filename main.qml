@@ -36,9 +36,9 @@ ApplicationWindow {
         target: Qt.application
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationInactive) {
-                delay(100, function () {
+               // delay(100, function () {
                     mainAppliWindow.visible = false
-                })
+                //})
             } else if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.visible = true
             }

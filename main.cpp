@@ -18,9 +18,49 @@
 #include <QJsonValue>
 #include <QDebug>
 #include <QDir>
+#ifdef linux
+#include <signal.h>
+#endif
+
+void catchUnixSignals(std::initializer_list<int> quitSignals) {
+
+    auto handler = [](int sig) -> void {
+        qDebug() << "received signal : " << sig;
+
+        if (sig == 1) {
+            const QWindowList windows = QGuiApplication::topLevelWindows();
+            for (QWindow *window : windows) {
+                qDebug() << "visible=" << window->isVisible();
+                if (window->isVisible()) {
+                    window->hide();
+                } else {
+                    window->show();
+                }
+            }
+        }
+    };
+
+    sigset_t blocking_mask;
+    sigemptyset(&blocking_mask);
+    for (auto sig : quitSignals)
+        sigaddset(&blocking_mask, sig);
+
+    struct sigaction sa;
+    sa.sa_handler = handler;
+    sa.sa_mask    = blocking_mask;
+    sa.sa_flags   = 0;
+
+    for (auto sig : quitSignals)
+        sigaction(sig, &sa, nullptr);
+}
 
 int main(int argc, char *argv[])
 {
+
+#ifdef linux
+    catchUnixSignals({SIGHUP});
+#endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
