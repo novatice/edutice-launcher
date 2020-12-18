@@ -29,7 +29,7 @@ void catchUnixSignals(std::initializer_list<int> quitSignals) {
         qDebug() << "received signal : " << sig;
 
         if (sig == 1) {
-            const QWindowList windows = QGuiApplication::topLevelWindows();
+            const QWindowList windows = QGuiApplication::allWindows();
             for (QWindow *window : windows) {
                 qDebug() << "visible=" << window->isVisible();
                 if (window->isVisible()) {
