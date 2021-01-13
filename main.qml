@@ -10,10 +10,7 @@ ApplicationWindow {
     id: mainAppliWindow
 
     visible: true
-    flags: Qt.Window | Qt.FramelessWindowHint
-           | Qt.Tool //| Qt.WindowStaysOnTopHint //| Qt.WindowMinimized|
-    //visibility: Window.FullScreen
-    //color : "#f4f4f4"
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
     screen: screenNumberId
     width: screenWidth
@@ -36,9 +33,7 @@ ApplicationWindow {
         target: Qt.application
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationInactive) {
-               // delay(100, function () {
-                    mainAppliWindow.visible = false
-                //})
+                mainAppliWindow.visible = false
             } else if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.visible = true
             }

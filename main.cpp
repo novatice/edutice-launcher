@@ -18,6 +18,7 @@
 #include <QJsonValue>
 #include <QDebug>
 #include <QDir>
+#include <QCommandLineParser>
 #ifdef linux
 #include <signal.h>
 #endif
@@ -66,6 +67,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+
+    QCommandLineParser parser;
+    QCommandLineOption hideOption(QStringList() << "hidden",  "start with window hidden");
+    parser.addOption(hideOption);
+    parser.process(app);
+
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
@@ -109,6 +116,9 @@ int main(int argc, char *argv[])
         if( QWindow* window = qobject_cast<QWindow*>( engine.rootObjects().at(0) ) )
         {
             ex->mainWindows = window;
+            if (parser.isSet(hideOption)) {
+                    window->hide();
+            }
         }
 
         ex->model = model;
