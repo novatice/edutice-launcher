@@ -39,3 +39,5 @@ HEADERS += \
     categoriemodel.h
 	
 	
+
+DISTFILES +=
