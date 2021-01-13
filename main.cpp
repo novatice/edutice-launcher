@@ -19,9 +19,9 @@
 #include <QDebug>
 #include <QDir>
 #include <QCommandLineParser>
+
 #ifdef linux
 #include <signal.h>
-#endif
 
 #ifdef linux
 void catchUnixSignals(std::initializer_list<int> quitSignals) {
@@ -55,6 +55,8 @@ void catchUnixSignals(std::initializer_list<int> quitSignals) {
     for (auto sig : quitSignals)
         sigaction(sig, &sa, nullptr);
 }
+#endif
+
 #endif
 
 int main(int argc, char *argv[])
@@ -129,11 +131,11 @@ int main(int argc, char *argv[])
         QFile file;
         // Modifier le chemin d'accès au Json
         QString jsonPath;
-#ifdef linux
-        jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
-#else
-        jsonPath = "C:\\Users\\dev\\Documents\\applications.json";
-#endif
+        #ifdef linux
+            jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
+        #else
+            jsonPath = QDir::homePath() + "/AppData/Local/Novatice/Edutice/Launcher/launcher.json";
+        #endif
 
         file.setFileName(jsonPath);
         file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -165,15 +167,20 @@ int main(int argc, char *argv[])
             qInfo() << "Name ::: " << name;
             qInfo() << "Icon ::: " << icon;
             if(icon == "") {
-                icon = "C:\\Users\\dev\\Documents\\téléchargement.png";
+                #ifdef linux
+                icon = "linux_app_icon.png";
+                #else
+                icon = "windows_app_icon.png";
+                #endif
+            } else {
+                icon = "file:" + icon;
             }
             qInfo() << "Icon ::: " << icon;
             qInfo() << "Path ::: " << path;
-            Application app = Application(name, "file:" + icon, path, category);
+            Application app = Application(name, icon, path, category);
             ex->addRow(app.type(), app.size(), app.src(), app.categorie());
             apps.removeFirst();
         }
-
     }
 
     return app.exec();
