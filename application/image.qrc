@@ -19,6 +19,6 @@
         <file>icon_espacetravial.png</file>
         <file>icon_group.png</file>
         <file>windows_app_icon.png</file>
-        <file>linux_app.icon.png</file>
+        <file>linux_app_icon.png</file>
     </qresource>
 </RCC>
