@@ -295,6 +295,7 @@ ApplicationWindow {
                         //anchors.horizontalCenter: parent.horizontalCenter
                         //anchors.verticalCenter: parent.verticalCenter
                         Layout.fillHeight: true
+                        Layout.fillWidth: true
 
                         ColumnLayout {
                             anchors.fill: parent
@@ -335,6 +336,7 @@ ApplicationWindow {
                                 width: parent.width - parent.width / 6
                                 Layout.alignment: Qt.AlignHCenter
                                 Layout.fillHeight: true
+                                Layout.fillWidth: true
                                 color: "transparent" //color : "blue"
                                 ListModel {
                                     id: appModel
@@ -468,6 +470,7 @@ ApplicationWindow {
                                                 anchors.horizontalCenter: parent.horizontalCenter
                                                 anchors.verticalCenter: parent.verticalCenter
                                                 spacing: 8
+
                                                 Item {
                                                     width: parent.parent.width / 2
                                                     height: parent.parent.width / 2
@@ -482,18 +485,28 @@ ApplicationWindow {
                                                 Item {
 
                                                     Layout.fillWidth: true
+                                                    Layout.fillHeight: true
                                                     height: 20
+                                                    width: parent.width
+
                                                     Text {
                                                         FontLoader {
                                                             id: appliFont
                                                             source: "SFCompactText-Medium.ttf"
                                                         }
                                                         text: name
+                                                        width: parent.width * 1.5
                                                         anchors.horizontalCenter: parent.horizontalCenter
                                                         font.family: appliFont.name
                                                         fontSizeMode: Text.Fit
                                                         horizontalAlignment: Text.AlignHCenter
+                                                        verticalAlignment: Text.AlignBottom
                                                         color: theme.mainTextColor
+                                                        maximumLineCount: 2
+                                                        elide: Text.ElideRight
+                                                        wrapMode: Text.WordWrap
+
+
                                                     }
                                                 }
                                             }
