@@ -6,5 +6,6 @@
         <file>ProgressCircle.qml</file>
         <file>SwipeFilterModel.qml</file>
         <file>Categories.qml</file>
+        <file>Info.qml</file>
     </qresource>
 </RCC>
