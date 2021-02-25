@@ -673,9 +673,40 @@ ApplicationWindow {
                             spacing: parent.height / 10
                             Item {
                                 width: parent.width
+                                Layout.alignment: Qt.AlignHCenter
+                                height: 35
+                                clip: true
+                                opacity: theme.mainOpacity
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.rightMargin: -border.width
+                                    anchors.topMargin: -border.width
+                                    anchors.leftMargin: -border.width
+                                    border.width: 2
+                                    color: "transparent"
+                                    border.color: theme.mainBorderColor
+                                    opacity: 0.2
+                                }
+                                Item {
+                                    width: parent.width
+                                    anchors.top: parent.top
+                                    height: 30
+
+                                    Text {
+                                        text: "Informations"
+                                        font.pointSize: 20
+                                        font.family: titleFont.name
+                                        anchors.left: parent.left
+                                        color: theme.mainTextColor
+                                    }
+                                }
+                            }
+
+                            Item {
+                                width: parent.width
                                 Layout.fillHeight: true
                                 Rectangle {
-                                    width: parent.width - 20
+                                    width: parent.width
                                     height: parent.height
                                     anchors.centerIn: parent
                                     color: "transparent"
