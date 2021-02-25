@@ -57,10 +57,10 @@ RowLayout
                     id:categories
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.alignment : Qt.AlignHCenter
+                    Layout.alignment : Qt.AlignLeft
 
                     Item {
-                        width: parent.width-100;
+                        width: parent.width;
 
                         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -87,8 +87,9 @@ RowLayout
                                     anchors.fill:parent
                                     property bool control;
                                     Text {
-                                            id :textCategorie
+                                            id: textCategorie
                                             text: name
+                                            width: parent.width
                                             //font: control.font
                                             font.pixelSize : 23
                                             font.family: font2.name

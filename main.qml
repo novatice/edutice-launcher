@@ -181,7 +181,7 @@ ApplicationWindow {
     }
 
     Item {
-        width: mainAppliWindow.width - 250
+        width: mainAppliWindow.width
         height: mainAppliWindow.height - 50
         anchors.horizontalCenter: parent.horizontalCenter
         //Component.onCompleted: console.log("topLevelItem width: " + width)
@@ -271,9 +271,11 @@ ApplicationWindow {
                 width: parent.width
                 Layout.fillHeight: true
                 Layout.preferredWidth: parent.width
+                Layout.leftMargin: 40
+                Layout.rightMargin: 40
                 RowLayout {
                     width: parent.width
-                    height: parent.height - 100
+                    height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Item {
@@ -290,19 +292,15 @@ ApplicationWindow {
                     Item {
                         id: page
                         objectName: "page"
-                        //width : parent.width -300
-                        width: parent.width * (3 / 5)
-                        //anchors.horizontalCenter: parent.horizontalCenter
-                        //anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width * (2 / 5)
                         Layout.fillHeight: true
-                        Layout.fillWidth: true
 
                         ColumnLayout {
                             anchors.fill: parent
                             spacing: 40
                             Item {
                                 id: nameApplications
-                                width: parent.width - 200
+                                width: parent.width
                                 Layout.alignment: Qt.AlignHCenter
                                 height: 35
                                 clip: true
@@ -333,11 +331,11 @@ ApplicationWindow {
                                 }
                             }
                             Rectangle {
-                                width: parent.width - parent.width / 6
+                                id: content
+                                width: parent.width
                                 Layout.alignment: Qt.AlignHCenter
                                 Layout.fillHeight: true
-                                Layout.fillWidth: true
-                                color: "transparent" //color : "blue"
+                                color: "transparent"
                                 ListModel {
                                     id: appModel
                                 }
@@ -547,8 +545,8 @@ ApplicationWindow {
                                     }
                                 }
                                 Item {
-                                    width: parent.width - 100
-                                    height: parent.width - 300
+                                    width: parent.width
+                                    height: parent.height
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     anchors.top: parent.top
 
