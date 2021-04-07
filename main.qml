@@ -671,6 +671,7 @@ ApplicationWindow {
                         ColumnLayout {
                             width: parent.width
                             spacing: parent.height / 10
+
                             Item {
                                 width: parent.width
                                 Layout.alignment: Qt.AlignHCenter
@@ -712,11 +713,11 @@ ApplicationWindow {
                                     color: "transparent"
                                     ColumnLayout {
                                         width: parent.width
-                                        Info {
+                                        /*Info {
                                             title: "Espace de travail"
                                             value: workspace
                                             icon: "icon_espacetravail.png"
-                                        }
+                                        }*/
 
                                         Info {
                                             title: "Utilisateur"
@@ -724,14 +725,14 @@ ApplicationWindow {
                                             icon: "user.png"
                                         }
 
-                                        Info {
+                                        /*Info {
                                             title: "Groupe"
                                             value: group
                                             icon: "icon_group.png"
-                                        }
+                                        }*/
 
                                         Info {
-                                            title: "Machine"
+                                            title: "Appareil"
                                             value:  machine
                                             icon: "pc.png"
                                         }

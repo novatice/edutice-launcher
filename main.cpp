@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QCommandLineParser>
+#include <QHostInfo>
 
 #ifdef linux
 #include <signal.h>
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("workspace", workspaceName);
 
     engine.rootContext()->setContextProperty("group", "");
-    engine.rootContext()->setContextProperty("machine", "");
+    engine.rootContext()->setContextProperty("machine", QHostInfo::localHostName());
 
     QJsonArray apps = workspace.value("applications").toArray();
     qInfo() << "apps :: " << apps.count();
