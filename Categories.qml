@@ -43,7 +43,7 @@ RowLayout
                         height:30
 
                         Text{
-                            text : "Categories"
+                            text : "Catégories"
                             font.pointSize: 20
                             font.family: titleFont.name
                             anchors.left : parent.left

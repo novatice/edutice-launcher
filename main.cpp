@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
 
 
-    modelCategorie->addCategorie(Categorie("1", "Default"));
+    modelCategorie->addCategorie(Categorie("1", "Défaut"));
 
     QJsonParseError err;
 
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
         qInfo() << "Icon ::: " << icon;
         qInfo() << "Path ::: " << path;
         // We use a temp category, as we didn't have them right now !
-        Application app = Application(name, icon, path, "Default");
+        Application app = Application(name, icon, path, "Défaut");
         model->addApplication(app);
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
