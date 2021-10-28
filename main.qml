@@ -9,6 +9,8 @@ import Eexecution 1.0
 ApplicationWindow {
     id: mainAppliWindow
 
+
+
     visible: true
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
@@ -17,6 +19,13 @@ ApplicationWindow {
     height: screenHeight
     x: screenNumberId.virtualX + ((screenNumberId.width - width) / 2)
     y: screenNumberId.virtualY + ((screenNumberId.height - height) / 2)
+
+
+    Image {
+        source: "accueil-interface.png"
+        height: parent.height
+        width: parent.width
+    }
 
     Timer {
         id: timer
@@ -140,36 +149,7 @@ ApplicationWindow {
         //onRejected: console.log("Cancel clicked")
     }
 
-    Item {
-        id: rectA
-        anchors.fill: parent
-
-        Rectangle {
-            anchors.fill: parent
-
-            color: theme.backgroundColor
-            gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: "white"
-                }
-                GradientStop {
-                    position: 0.5
-                    color: "#f8f8fb"
-                }
-                GradientStop {
-                    position: 0.8
-                    color: "#d1d1d4"
-                }
-                GradientStop {
-                    position: 1.0
-                    color: "#adacaf"
-                }
-            }
-        }
-    }
     DropShadow {
-        anchors.fill: rectA
         cached: true
         horizontalOffset: 0
         verticalOffset: 0
@@ -177,13 +157,44 @@ ApplicationWindow {
         samples: 32
         color: "red"
         smooth: true
-        source: rectA
     }
 
     Item {
         width: mainAppliWindow.width
         height: mainAppliWindow.height - 50
         anchors.horizontalCenter: parent.horizontalCenter
+
+
+        Item {
+            height: parent.height * (1/12)
+            width: parent.height * (1/12)
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: parent.width * (1/24)
+            anchors.topMargin: parent.width * (1/24)
+            Image {
+                id: novaticeIcon
+                source: "miniatureinfra_ep.png"
+                width: parent.width
+                height: parent.height
+            }
+        }
+
+        Item {
+            id: sessionInfo
+            anchors.right: parent.right
+            anchors.rightMargin: parent.width * (2/24)
+            height: parent.width * (1/24)
+            width: parent.width * (3/24)
+            Rectangle {
+                width: parent.width
+                height: parent.height
+                color: "transparent"
+                border.color: "grey"
+                border.width: 2
+            }
+        }
+
         //Component.onCompleted: console.log("topLevelItem width: " + width)
         ColumnLayout {
             width: parent.width
@@ -195,16 +206,17 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 height: 50
                 Layout.topMargin: 50
-                Layout.bottomMargin: 60
+                Layout.bottomMargin: 50
                 Item {
-                    width: parent.width * (1 / 4)
                     //color:"blue"
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
+                    width: parent.width
                     RowLayout {
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
+
 
                         Item {
                             Layout.preferredHeight: parent.height
@@ -230,7 +242,7 @@ ApplicationWindow {
                             }
                         }
                         Item {
-                            width: 300
+                            width: 600
                             //color:"green"
                             Layout.preferredHeight: parent.height
                             TextField {
@@ -267,21 +279,30 @@ ApplicationWindow {
             }
 
             Item {
+
                 // Layout.alignment: Qt.AlignBottom
+                id: actionsLayout
                 width: parent.width
                 Layout.fillHeight: true
                 Layout.preferredWidth: parent.width
-                Layout.leftMargin: 40
-                Layout.rightMargin: 40
+
                 RowLayout {
                     width: parent.width
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 0
 
                     Item {
-                        width: parent.width * (1 / 5)
+                        width: 0
                         height: parent.height
                         Layout.fillHeight: true
+                        Rectangle {
+                            color: "transparent"
+                            border.color: "black"
+                            border.width: 1
+                            height: parent.height
+                            width: parent.width
+                        }
                         Loader {
                             id: categoriesLoader
                             asynchronous: true
@@ -289,47 +310,162 @@ ApplicationWindow {
                             source: "Categories.qml"
                         }
                     }
+
+                    Item {
+
+                        Rectangle {
+                            color: "transparent"
+                            border.color: "black"
+                            border.width: 1
+                            height: parent.height
+                            width: parent.width
+                        }
+                        id: novacolumn
+                        objectName: "novacolumn"
+                        width: parent.width * (1/24)
+                        Layout.leftMargin: parent.width * (1/24)
+                        Layout.rightMargin: parent.width * (1/24)
+                        Layout.fillHeight: true
+                        Layout.maximumHeight: parent.height * (7/10)
+
+                        Rectangle {
+                            border.color: "grey"
+                            border.width: 2
+                            radius: 50
+                            color: "white"
+                            width: parent.width
+                            height: parent.height
+                        }
+
+                        ColumnLayout {
+                            width: parent.width
+                            height: parent.height
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: 0
+
+                            Item {
+                                id: menu
+                                Layout.preferredHeight: parent.height / 5
+                                width: parent.width
+
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "burgerMenuIcon.svg"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: notifications
+                                Layout.preferredHeight: parent.height / 5
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "notification.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: webpage
+                                Layout.preferredHeight: parent.height / 5
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "linternet-2.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: appsIcon
+                                Layout.preferredHeight: parent.height / 5
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "app2_ew.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: novatice
+                                Layout.preferredHeight: parent.height / 5
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "miniatureinfra_ex.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                        }
+
+                    }
+
+                    // APPLICATIONS
                     Item {
                         id: page
                         objectName: "page"
-                        width: parent.width * (2 / 5)
+                        width: parent.width * (8/24)
+                        Layout.leftMargin: parent.width * (1/24)
+                        Layout.rightMargin: parent.width * (1/24)
                         Layout.fillHeight: true
 
+
+                        Rectangle {
+                            border.color: "grey"
+                            border.width: 3
+                            radius: 50
+                            color: "white"
+                            width: parent.width
+                            height: parent.height
+                            gradient: Gradient {
+                                GradientStop { position: 0.0; color: "white" }
+                                GradientStop { position: 0.95; color: "white" }
+                                GradientStop { position: 0.951; color: "blue" }
+                                GradientStop { position: 1.0; color: "blue" }
+                            }
+                        }
+
                         ColumnLayout {
-                            anchors.fill: parent
+                            width: parent.width * (9/10)
+                            height: parent.height * (9/10)
+
                             spacing: 40
+                            // Conteneur titre "Applications"
                             Item {
                                 id: nameApplications
-                                width: parent.width
+                                width: parent.width * (9/10)
                                 Layout.alignment: Qt.AlignHCenter
-                                height: 35
-                                clip: true
-                                opacity: theme.mainOpacity
-                                //visible : false
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.rightMargin: -border.width
-                                    anchors.topMargin: -border.width
-                                    anchors.leftMargin: -border.width
-                                    border.width: 2
-                                    color: "transparent"
-                                    border.color: theme.mainBorderColor
-                                    opacity: 0.2
-                                }
-                                Item {
-                                    width: parent.width
-                                    anchors.top: parent.top
-                                    height: 30
+                                height: 50
 
-                                    Text {
-                                        text: "Applications"
-                                        font.pointSize: 20
-                                        font.family: titleFont.name
-                                        anchors.left: parent.left
-                                        color: theme.mainTextColor
-                                    }
+                                Text {
+                                    text: "APPLICATIONS"
+                                    font.pointSize: 20
+                                    font.family: titleFont.name
+                                    anchors.left: parent.left
+                                    color: theme.mainTextColor
+                                    horizontalAlignment: Qt.AlignHCenter
                                 }
                             }
+
+                            // Conteneur liste d'Applications
                             Rectangle {
                                 id: content
                                 width: parent.width
@@ -339,6 +475,10 @@ ApplicationWindow {
                                 ListModel {
                                     id: appModel
                                 }
+                                ListView {
+
+                                }
+
                                 SortFilterModel {
                                     id: sortFilterModel
                                     model: myModel
@@ -364,25 +504,6 @@ ApplicationWindow {
                                         return leftVal < rightVal ? -1 : 1
                                     }
 
-                                    updateCategorie: function () {
-                                        /*
-                            var item;
-                            for (var i = 0; i < items.count; ++i) {
-                                item = items.get(i).model;
-                                  var itemCategorie = item.categorie.toLowerCase();
-                                for (var j=0 ; j< listCategorie.count ; ++j)
-                                {
-                                    var categorieItem = listCategorie.itemAtIndex(j);
-
-                                    if (categorieItem.name.toLowerCase() === itemCategorie)
-                                    {
-                                        categorieItem.apps.push_back(i);
-                                    }
-                                }
-                            }
-                            /**/
-                                    }
-
                                     delegate: //maingrid.state = "down";
                                               Item {
                                         Component.onCompleted: {
@@ -392,8 +513,6 @@ ApplicationWindow {
                                         //width: parent.width/6; height:parent.width/6
                                         width: maingrid.cellWidth
                                         height: maingrid.cellHeight
-                                        //PropertyAnimation on x { from : -100 ; to: x; duration: 1000; loops: Animation.Infinite }
-                                        //PropertyAnimation on y { from : 100 ; to: y; duration: 1000; loops: Animation.Infinite }
                                         Rectangle {
                                             id: apps
                                             width: parent.width - parent.width / 5
@@ -402,50 +521,6 @@ ApplicationWindow {
                                             color: "transparent" //"blue"
                                             state: "mouseOut"
 
-                                            states: State {
-                                                name: "mouseIn"
-                                            }
-                                            State {
-                                                name: "mouseOn"
-                                            }
-                                            State {
-                                                name: "pressed"
-                                            }
-                                            transitions: [
-                                                Transition {
-                                                    from: "*"
-                                                    to: "pressed"
-                                                    NumberAnimation {
-                                                        target: backg
-                                                        properties: "scale"
-                                                        from: 1
-                                                        to: 0.8
-                                                        duration: 400
-                                                        easing.type: Easing.OutBounce
-                                                    }
-                                                },
-                                                Transition {
-                                                    from: "*"
-                                                    to: "mouseIn"
-                                                    SequentialAnimation {
-                                                        NumberAnimation {
-                                                            target: apps
-                                                            properties: "scale"
-                                                            from: 0.95
-                                                            to: 1
-                                                            duration: 400
-                                                        }
-                                                        NumberAnimation {
-                                                            target: apps
-                                                            properties: "scale"
-                                                            from: 1
-                                                            to: 0.95
-                                                            duration: 400
-                                                        }
-                                                        loops: Animation.Infinite
-                                                    }
-                                                }
-                                            ]
 
                                             Rectangle {
                                                 id: backg
@@ -537,9 +612,6 @@ ApplicationWindow {
                                                     backg.visible = false
                                                     effect.visible = false
                                                 }
-                                                onDoubleClicked: {
-
-                                                }
                                             }
                                         }
                                     }
@@ -591,12 +663,7 @@ ApplicationWindow {
                                         }
                                         GridView {
                                             id: maingrid
-                                            //width: parent.width-100
-                                            //height: parent.width-100
                                             anchors.fill: parent
-
-                                            //anchors.horizontalCenter: parent.horizontalCenter
-                                            //anchors.verticalCenter: parent.verticalCenter
                                             property bool first: true
                                             property var cellSize: width / 6
 
@@ -615,130 +682,270 @@ ApplicationWindow {
                                             opacity: 1
                                             property int viewIndex: 0
                                             model: sortFilterModel
-
-                                            //highlight: Rectangle { width: 80; height: 80; color: "lightsteelblue" }
                                             interactive: false
-                                            states: State {
-                                                name: "down"
-                                            }
-                                            State {
-                                                name: "debut"
-                                            }
-                                            add: Transition {
-                                                id: tr
-                                                enabled: true
-                                                SequentialAnimation {
-                                                    id: animationX
-
-                                                    ParallelAnimation {
-                                                        NumberAnimation {
-                                                            property: "opacity"
-                                                            from: 0
-                                                            to: 1
-                                                            duration: 2000
-                                                        }
-                                                    }
-                                                }
-                                            }
                                         }
                                     }
-
                                 }
-                                ParallelAnimation {
-                                    id: animationN
-                                    NumberAnimation {
-                                        property: "scale"
-                                        easing.type: Easing.OutBounce
-                                        from: 0
-                                        to: 1.0
-                                        duration: 400
-                                    }
-                                    NumberAnimation {
-                                        property: "opacity"
-                                        from: 0
-                                        to: 1.0
-                                        duration: 300
-                                    }
-                                }
-
-
                             }
                         }
                     }
+
                     Item {
-                        width: parent.width * (1 / 5)
+                        id: files
+                        width: parent.width * (6/24)
                         Layout.fillHeight: true
-                        ColumnLayout {
+                        anchors.left: page.right
+                        anchors.leftMargin: parent.width * (2/24)
+
+                        Rectangle {
+                            border.color: "grey"
+                            border.width: 3
+                            radius: 50
+                            color: "white"
                             width: parent.width
-                            spacing: parent.height / 10
+                            height: parent.height
+                            gradient: Gradient {
+                                GradientStop { position: 0.0; color: "white" }
+                                GradientStop { position: 0.95; color: "white" }
+                                GradientStop { position: 0.951; color: "blue" }
+                                GradientStop { position: 1.0; color: "blue" }
+                            }
+                        }
+
+
+                        ColumnLayout {
+                            anchors.fill: parent
+                            spacing: 40
+                            // Conteneur titre "FICHIERS"
                             Item {
-                                width: parent.width
+                                id: nameFiles
+                                width: parent.width * (9/10)
                                 Layout.alignment: Qt.AlignHCenter
-                                height: 35
+                                height: 100
                                 clip: true
                                 opacity: theme.mainOpacity
-                                Rectangle {
-                                    anchors.fill: parent
-                                    anchors.rightMargin: -border.width
-                                    anchors.topMargin: -border.width
-                                    anchors.leftMargin: -border.width
-                                    border.width: 2
-                                    color: "transparent"
-                                    border.color: theme.mainBorderColor
-                                    opacity: 0.2
-                                }
-                                Item {
-                                    width: parent.width
-                                    anchors.top: parent.top
-                                    height: 30
+                                //visible : false
 
-                                    Text {
-                                        text: "Informations"
-                                        font.pointSize: 20
-                                        font.family: titleFont.name
+                                Rectangle {
+                                    color: "transparent"
+                                    border.color: "black"
+                                    border.width: 1
+                                    height: parent.height
+                                    width: parent.width
+                                }
+
+                                RowLayout {
+                                    height: parent.height
+                                    Layout.fillWidth: true
+
+                                    Rectangle {
+                                        color: "steelblue"
+                                        width: 80
+                                        height: 80
                                         anchors.left: parent.left
-                                        color: theme.mainTextColor
+                                        anchors.leftMargin: 50
+                                        Image {
+                                            id: fileIcon
+                                            source: "partage-de-fichiers@2x.png"
+                                            width: 50
+                                            height: 50
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
+                                    }
+
+
+                                    Item {
+                                        width: parent.width
+                                        anchors.bottom: parent.bottom
+                                        height: 30
+
+
+                                        Text {
+                                            text: "FICHIERS"
+                                            font.pointSize: 20
+                                            font.family: titleFont.name
+                                            anchors.left: parent.left
+                                            color: theme.mainTextColor
+                                        }
                                     }
                                 }
+
                             }
 
-                            Item {
-                                width: parent.width
+                            // Simulation pour remplir le layout Fichiers
+                            Rectangle {
                                 Layout.fillHeight: true
-                                Rectangle {
-                                    width: parent.width
-                                    height: parent.height
-                                    anchors.centerIn: parent
-                                    color: "transparent"
-                                    ColumnLayout {
-                                        width: parent.width
-                                        Info {
-                                            title: "Espace de travail"
-                                            value: workspace
-                                            icon: "icon_espacetravail.png"
-                                        }
+                                anchors.top: nameFiles.bottom
+                                width: parent.width
+                                color: "transparent"
+                            }
+                        }
+                    }
 
-                                        Info {
-                                            title: "Utilisateur"
-                                            value: username
-                                            icon: "user.png"
-                                        }
+                    Item {
+                        id: sessionColumn
+                        width: parent.width * (1/24)
+                        Layout.fillHeight: true
+                        Layout.maximumHeight: parent.height * (1/2)
+                        Layout.leftMargin: parent.width * (1/24)
+                        Layout.rightMargin: parent.width * (1/24)
 
-                                        Info {
-                                            title: "Groupe"
-                                            value: group
-                                            icon: "icon_group.png"
-                                        }
+                        Rectangle {
+                            border.color: "grey"
+                            border.width: 2
+                            radius: 50
+                            color: "white"
+                            width: parent.width
+                            height: parent.height
+                        }
 
-                                        Info {
-                                            title: "Machine"
-                                            value:  machine
-                                            icon: "pc.png"
-                                        }
-                                    }
+                        ColumnLayout {
+                            width: parent.width
+                            height: parent.height
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: 0
+
+                            Item {
+                                id: avatar
+                                Layout.preferredHeight: parent.height / 3
+                                width: parent.width
+
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "burgerMenuIcon.svg"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: lock
+                                Layout.preferredHeight: parent.height / 3
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "notification.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                            }
+                            Item {
+                                id: logoff
+                                Layout.preferredHeight: parent.height / 3
+                                width: parent.width
+                                Image {
+                                    fillMode: Image.PreserveAspectFit
+                                    source: "linternet-2.png"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    opacity: 1
+                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
+                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
                                 }
                             }
                         }
+
+                    }
+
+//                    Item {
+//                        width: parent.width * (1 / 5)
+//                        height: parent.height / 2
+//                        ColumnLayout {
+//                            width: parent.width
+//                            spacing: parent.height / 10
+//                            Item {
+//                                width: parent.width
+//                                Layout.alignment: Qt.AlignHCenter
+//                                height: 35
+//                                clip: true
+//                                opacity: theme.mainOpacity
+//                                Rectangle {
+//                                    anchors.fill: parent
+//                                    anchors.rightMargin: -border.width
+//                                    anchors.topMargin: -border.width
+//                                    anchors.leftMargin: -border.width
+//                                    border.width: 2
+//                                    color: "transparent"
+//                                    border.color: theme.mainBorderColor
+//                                    opacity: 0.2
+//                                }
+//                                Item {
+//                                    width: parent.width
+//                                    anchors.top: parent.top
+//                                    height: 30
+
+//                                    Text {
+//                                        text: "Informations"
+//                                        font.pointSize: 20
+//                                        font.family: titleFont.name
+//                                        anchors.left: parent.left
+//                                        color: theme.mainTextColor
+//                                    }
+//                                }
+//                            }
+
+//                            Item {
+//                                width: parent.width
+//                                Layout.fillHeight: true
+//                                Rectangle {
+//                                    width: parent.width
+//                                    height: parent.height
+//                                    anchors.centerIn: parent
+//                                    color: "transparent"
+//                                    ColumnLayout {
+//                                        width: parent.width
+//                                        Info {
+//                                            title: "Espace de travail"
+//                                            value: workspace
+//                                            icon: "icon_espacetravail.png"
+//                                        }
+
+//                                        Info {
+//                                            title: "Utilisateur"
+//                                            value: username
+//                                            icon: "user.png"
+//                                        }
+
+//                                        Info {
+//                                            title: "Groupe"
+//                                            value: group
+//                                            icon: "icon_group.png"
+//                                        }
+
+//                                        Info {
+//                                            title: "Machine"
+//                                            value:  machine
+//                                            icon: "pc.png"
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+
+                }
+            }
+
+            Item {
+                id: footer
+                height: 50
+                width: parent.width
+
+                Item {
+                    id: launcherVersion
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+
+                    Text {
+                        id: version
+                        anchors.centerIn: parent
+                        text: qsTr("Version 2.0")
                     }
                 }
             }
