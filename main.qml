@@ -51,13 +51,13 @@ ApplicationWindow {
 
     Item {
         id: theme
-        property var actualTheme: theme2
 
-        property var mainTextColor: "black"
-        property var mainBorderColor: mainTextColor
-        property var mainLineColor: mainTextColor
-        property var backgroundColor: "white"
-        property var mainOpacity: 0
+        property string mainTitleColor: "#0442BF"
+        property string mainTextColor: "black"
+        property string mainBorderColor: mainTextColor
+        property string mainLineColor: mainTextColor
+        property string backgroundColor: "white"
+        property real mainOpacity: 0
 
         property var appliBackgroundG1
         property var appliBackgroundG2
@@ -72,30 +72,6 @@ ApplicationWindow {
 
             appliBackgroundG1 = actualTheme.appliBackgroundG1
             appliBackgroundG2 = actualTheme.appliBackgroundG2
-        }
-
-        Item {
-            id: theme1
-            property var mainTextColor: "white"
-            property var mainBorderColor: mainTextColor
-            property var mainLineColor: mainTextColor
-            property var backgroundColor: "black"
-            property var mainOpacity: 1
-
-            property var appliBackgroundG1: "#7a7a7a"
-            property var appliBackgroundG2: "#212421"
-        }
-
-        Item {
-            id: theme2
-            property var mainTextColor: "black"
-            property var mainBorderColor: mainTextColor
-            property var mainLineColor: mainTextColor
-            property var backgroundColor: "white"
-            property var mainOpacity: 0.65
-
-            property var appliBackgroundG1: "#7a7a7a"
-            property var appliBackgroundG2: "#212421"
         }
     }
 
@@ -445,10 +421,9 @@ ApplicationWindow {
                         Layout.maximumHeight: parent.height * (7/10)
 
                         Rectangle {
-                            border.color: "grey"
-                            border.width: 2
                             radius: 50
                             color: "white"
+                            opacity: 0.5
                             width: parent.width
                             height: parent.height
                         }
@@ -661,21 +636,14 @@ ApplicationWindow {
                             Layout.leftMargin: parent.parent.width * (1/24)
                             Layout.rightMargin: parent.parent.width * (1/24)
                             Layout.fillHeight: true
-
+                            visible: false
 
                             Rectangle {
-                                border.color: "grey"
-                                border.width: 3
                                 radius: 50
                                 color: "white"
+                                opacity: 0.5
                                 width: parent.width
                                 height: parent.height
-                                gradient: Gradient {
-                                    GradientStop { position: 0.0; color: "white" }
-                                    GradientStop { position: 0.95; color: "white" }
-                                    GradientStop { position: 0.951; color: "blue" }
-                                    GradientStop { position: 1.0; color: "blue" }
-                                }
                             }
 
                             ColumnLayout {
@@ -711,7 +679,7 @@ ApplicationWindow {
                                         font.pointSize: 20
                                         font.family: font1.name
                                         anchors.bottom: parent.bottom
-                                        color: "blue"
+                                        color: theme.mainTitleColor
                                     }
                                     Text {
                                         anchors.top: appTitle.bottom
@@ -761,7 +729,7 @@ ApplicationWindow {
                                                     implicitHeight: 100
                                                     opacity: 0.5
                                                     radius: width / 2
-                                                    color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
+                                                    color: scrollBar.pressed ? "#0092CC" : "grey"
                                                 }
                                             }
 
@@ -780,7 +748,7 @@ ApplicationWindow {
                                                 id: applicationDelegate
 
                                                 Item {
-                                                    height: 100
+                                                    height: 80
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -808,15 +776,31 @@ ApplicationWindow {
                                                     }
 
                                                     Item {
-                                                        id: applicationName
                                                         anchors.verticalCenter: parent.verticalCenter
+                                                        height: parent.height / 2
                                                         Layout.fillWidth: parent
                                                         Layout.leftMargin: 10
                                                         anchors.left: applicationIcon.right
+                                                        Rectangle {
+                                                            border.width: 1
+                                                            border.color: "black"
+                                                            color: "transparent"
+                                                            height: parent.height
+                                                            width: parent.width
+                                                        }
+
                                                         Text {
+                                                            id: applicationName
+                                                            font.pointSize: 12
+                                                            font.family: font1.name
                                                             text: qsTr(name)
-                                                            horizontalAlignment: Text.AlignHCenter
-                                                            fontSizeMode: Text.Fit
+                                                        }
+                                                        Text {
+                                                            anchors.bottom: parent.bottom
+                                                            text: qsTr("Description")
+                                                            font.pointSize: 8
+                                                            font.family: font1.name
+                                                            color: "grey"
                                                         }
                                                     }
 
@@ -863,20 +847,14 @@ ApplicationWindow {
                             width: parent.parent.width * (6/24)
                             Layout.fillHeight: true
                             anchors.leftMargin: parent.parent.width * (2/24)
+                            visible: false
 
                             Rectangle {
-                                border.color: "grey"
-                                border.width: 3
                                 radius: 50
                                 color: "white"
+                                opacity: 0.7
                                 width: parent.width
                                 height: parent.height
-                                gradient: Gradient {
-                                    GradientStop { position: 0.0; color: "white" }
-                                    GradientStop { position: 0.95; color: "white" }
-                                    GradientStop { position: 0.951; color: "blue" }
-                                    GradientStop { position: 1.0; color: "blue" }
-                                }
                             }
 
 
@@ -917,7 +895,7 @@ ApplicationWindow {
                                         font.pointSize: 20
                                         font.family: font1.name
                                         anchors.bottom: parent.bottom
-                                        color: "blue"
+                                        color: theme.mainTitleColor
                                     }
                                     Text {
                                         anchors.top: fileTitle.bottom
@@ -937,6 +915,7 @@ ApplicationWindow {
                             }
                         }
 
+
                     // RIGHT SIDEBAR
                     Item {
                         id: sessionColumn
@@ -948,10 +927,9 @@ ApplicationWindow {
                         Layout.rightMargin: parent.width * (1/24)
 
                         Rectangle {
-                            border.color: "grey"
-                            border.width: 2
                             radius: 50
                             color: "white"
+                            opacity: 0.7
                             width: parent.width
                             height: parent.height
                         }
@@ -1129,6 +1107,78 @@ ApplicationWindow {
                         id: version
                         anchors.centerIn: parent
                         text: qsTr("Version 2.0")
+                    }
+                }
+            }
+        }
+
+
+        // LOGOFF
+        Item {
+            id: logoffWindow
+
+            height: parent.height
+            width: parent.width * (18/24)
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * (3/24)
+
+            Rectangle {
+                height: parent.height / 3
+                width: parent.width / 2
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                radius: 25
+                gradient: Gradient {
+                    GradientStop { position: 0; color: theme.mainTitleColor }
+                    GradientStop { position: 0.2; color: theme.mainTitleColor }
+                    GradientStop { position: 0.2001; color: "white" }
+                    GradientStop { position: 1; color: "white" }
+                }
+
+                Item {
+                    id: logoffWindowTitle
+                    height: parent.height / 5
+                    width: logoffWindowTitle.childrenRect.width
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Image {
+                        id: logoffWindowTitleIcon
+                        fillMode: Image.PreserveAspectFit
+                        source: "deconnexion.png"
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 1
+                        height: 30 //parent.height - platformStyle.paddingMedium * 2
+                        width: 30 //parent.height - platformStyle.paddingMedium * 2
+                    }
+
+                    Text {
+                        anchors.left: logoffWindowTitleIcon.right
+                        anchors.leftMargin: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("Déconnexion")
+                        font.pointSize: 20
+                        color: "white"
+                    }
+                }
+
+                Item {
+                    id: logoffWindowContent
+                    height: parent.height * (4/5)
+                    width: parent.width
+                    anchors.top: logoffWindowTitle.bottom
+
+
+                    Item {
+                        width: parent.width * (7/10)
+                        height: parent.height * (7/10)
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        Text {
+                            text: qsTr("Avez-vous pensé à enregristrer votre travail ?")
+                            font.pointSize: 15
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
                     }
                 }
             }
