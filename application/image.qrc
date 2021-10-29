@@ -35,5 +35,6 @@
         <file>accueil-interface@2x.png</file>
         <file>n_tv-a-ecran-plat.png</file>
         <file>partage-de-fichiers@2x.png</file>
+        <file>informations.png</file>
     </qresource>
 </RCC>

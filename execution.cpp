@@ -31,7 +31,7 @@ void Execution::lockScreen()
     l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
 #endif
 #ifdef _WIN32
-            l = "rundll32.exe user32.dll,LockWorkStation";
+    l = "rundll32.exe user32.dll,LockWorkStation";
 #endif
     m_process->startDetached(l);
     m_process->waitForFinished(-1);

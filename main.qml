@@ -185,17 +185,157 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: parent.width * (2/24)
             height: parent.width * (1/24)
-            width: parent.width * (3/24)
-            Rectangle {
+            width: parent.width * (4/24)
+
+            RowLayout {
                 width: parent.width
                 height: parent.height
-                color: "transparent"
-                border.color: "grey"
-                border.width: 2
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 0
+
+                Item {
+                    width: parent.width / 5
+                    height: parent.height
+
+                    Rectangle {
+                        id: informationsBack
+                        color: "transparent"
+                        width: 50
+                        height: 50
+                        radius: 25
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Image {
+                            fillMode: Image.PreserveAspectFit
+                            source: "informations.png"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            opacity: 1
+                            height: 30 //parent.height - platformStyle.paddingMedium * 2
+                            width: 30 //parent.height - platformStyle.paddingMedium * 2
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onEntered: {
+                                informationsBack.color = "#518fdf"
+                                informationsText.color = "black"
+                            }
+                            onExited: {
+                                informationsBack.color = "transparent"
+                                informationsText.color = "transparent"
+                            }
+                        }
+
+                    }
+                    Text {
+                        id: informationsText
+                        font.pointSize: 10
+                        color: "transparent"
+                        text: qsTr("Informations")
+                        anchors.top: informationsBack.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                Item {
+                    width: parent.width / 5
+                    height: parent.height
+
+                    Rectangle {
+                        id: assistanceBack
+                        color: "transparent"
+                        width: 50
+                        height: 50
+                        radius: 25
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Image {
+                            fillMode: Image.PreserveAspectFit
+                            source: "assistance-telephonique-2_dz.png"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            opacity: 1
+                            height: 30 //parent.height - platformStyle.paddingMedium * 2
+                            width: 30 //parent.height - platformStyle.paddingMedium * 2
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onEntered: {
+                                assistanceBack.color = "#518fdf"
+                                assistanceText.color = "black"
+                            }
+                            onExited: {
+                                assistanceBack.color = "transparent"
+                                assistanceText.color = "transparent"
+                            }
+                        }
+
+                    }
+                    Text {
+                        id: assistanceText
+                        font.pointSize: 10
+                        color: "transparent"
+                        text: qsTr("Demande d'assistance")
+                        anchors.top: assistanceBack.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                Item {
+                    width: parent.width / 5
+                    height: parent.height
+
+                    Rectangle {
+                        id: clockBack
+                        color: "transparent"
+                        width: 50
+                        height: 50
+                        radius: 25
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Image {
+                            fillMode: Image.PreserveAspectFit
+                            source: "lhorloge-2.png"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            opacity: 1
+                            height: 30 //parent.height - platformStyle.paddingMedium * 2
+                            width: 30 //parent.height - platformStyle.paddingMedium * 2
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onEntered: {
+                                clockBack.color = "#518fdf"
+                                clockText.color = "black"
+                            }
+                            onExited: {
+                                clockBack.color = "transparent"
+                                clockText.color = "transparent"
+                            }
+                        }
+
+                    }
+                    Text {
+                        id: clockText
+                        font.pointSize: 10
+                        color: "transparent"
+                        text: qsTr("Temps restant")
+                        anchors.top: clockBack.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
             }
         }
 
-        //Component.onCompleted: console.log("topLevelItem width: " + width)
         ColumnLayout {
             width: parent.width
             height: parent.height
@@ -213,6 +353,7 @@ ApplicationWindow {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     width: parent.width
+
                     RowLayout {
                         height: parent.height
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -222,6 +363,7 @@ ApplicationWindow {
                             Layout.preferredHeight: parent.height
                             width: 50
                             //color:"red"
+
                             Image {
                                 id: iconSearchtext
                                 smooth: true
@@ -280,7 +422,6 @@ ApplicationWindow {
 
             Item {
 
-                // Layout.alignment: Qt.AlignBottom
                 id: actionsLayout
                 width: parent.width
                 Layout.fillHeight: true
@@ -290,41 +431,16 @@ ApplicationWindow {
                     width: parent.width
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 0
+                    spacing: parent.width * (1/24)
 
-                    Item {
-                        width: 0
-                        height: parent.height
-                        Layout.fillHeight: true
-                        Rectangle {
-                            color: "transparent"
-                            border.color: "black"
-                            border.width: 1
-                            height: parent.height
-                            width: parent.width
-                        }
-                        Loader {
-                            id: categoriesLoader
-                            asynchronous: true
-                            anchors.fill: parent
-                            source: "Categories.qml"
-                        }
-                    }
 
+                    // LEFT SIDEBAR
                     Item {
 
-                        Rectangle {
-                            color: "transparent"
-                            border.color: "black"
-                            border.width: 1
-                            height: parent.height
-                            width: parent.width
-                        }
                         id: novacolumn
                         objectName: "novacolumn"
                         width: parent.width * (1/24)
                         Layout.leftMargin: parent.width * (1/24)
-                        Layout.rightMargin: parent.width * (1/24)
                         Layout.fillHeight: true
                         Layout.maximumHeight: parent.height * (7/10)
 
@@ -347,7 +463,30 @@ ApplicationWindow {
                                 id: menu
                                 Layout.preferredHeight: parent.height / 5
                                 width: parent.width
-
+                                Rectangle {
+                                    id: menuBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            menuBack.color = "#518fdf"
+                                        }
+                                        onExited: {
+                                            menuBack.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
                                     source: "burgerMenuIcon.svg"
@@ -362,6 +501,30 @@ ApplicationWindow {
                                 id: notifications
                                 Layout.preferredHeight: parent.height / 5
                                 width: parent.width
+                                Rectangle {
+                                    id: notificationsBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            notificationsBack.color = "#518fdf"
+                                        }
+                                        onExited: {
+                                            notificationsBack.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
                                     source: "notification.png"
@@ -376,6 +539,30 @@ ApplicationWindow {
                                 id: webpage
                                 Layout.preferredHeight: parent.height / 5
                                 width: parent.width
+                                Rectangle {
+                                    id: webpageBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            webpageBack.color = "#518fdf"
+                                        }
+                                        onExited: {
+                                            webpageBack.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
                                     source: "linternet-2.png"
@@ -390,6 +577,30 @@ ApplicationWindow {
                                 id: appsIcon
                                 Layout.preferredHeight: parent.height / 5
                                 width: parent.width
+                                Rectangle {
+                                    id: appsIconBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            appsIconBack.color = "#518fdf"
+                                        }
+                                        onExited: {
+                                            appsIconBack.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
                                     source: "app2_ew.png"
@@ -404,6 +615,30 @@ ApplicationWindow {
                                 id: novatice
                                 Layout.preferredHeight: parent.height / 5
                                 width: parent.width
+                                Rectangle {
+                                    id: novaticeBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            novaticeBack.color = "#518fdf"
+                                        }
+                                        onExited: {
+                                            novaticeBack.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
                                     source: "miniatureinfra_ex.png"
@@ -420,372 +655,293 @@ ApplicationWindow {
 
                     // APPLICATIONS
                     Item {
-                        id: page
-                        objectName: "page"
-                        width: parent.width * (8/24)
-                        Layout.leftMargin: parent.width * (1/24)
-                        Layout.rightMargin: parent.width * (1/24)
-                        Layout.fillHeight: true
+                            id: applications
+                            objectName: "page"
+                            width: parent.parent.width * (8/24)
+                            Layout.leftMargin: parent.parent.width * (1/24)
+                            Layout.rightMargin: parent.parent.width * (1/24)
+                            Layout.fillHeight: true
 
 
-                        Rectangle {
-                            border.color: "grey"
-                            border.width: 3
-                            radius: 50
-                            color: "white"
-                            width: parent.width
-                            height: parent.height
-                            gradient: Gradient {
-                                GradientStop { position: 0.0; color: "white" }
-                                GradientStop { position: 0.95; color: "white" }
-                                GradientStop { position: 0.951; color: "blue" }
-                                GradientStop { position: 1.0; color: "blue" }
-                            }
-                        }
-
-                        ColumnLayout {
-                            width: parent.width * (9/10)
-                            height: parent.height * (9/10)
-
-                            spacing: 40
-                            // Conteneur titre "Applications"
-                            Item {
-                                id: nameApplications
-                                width: parent.width * (9/10)
-                                Layout.alignment: Qt.AlignHCenter
-                                height: 50
-
-                                Text {
-                                    text: "APPLICATIONS"
-                                    font.pointSize: 20
-                                    font.family: titleFont.name
-                                    anchors.left: parent.left
-                                    color: theme.mainTextColor
-                                    horizontalAlignment: Qt.AlignHCenter
-                                }
-                            }
-
-                            // Conteneur liste d'Applications
                             Rectangle {
-                                id: content
+                                border.color: "grey"
+                                border.width: 3
+                                radius: 50
+                                color: "white"
                                 width: parent.width
-                                Layout.alignment: Qt.AlignHCenter
-                                Layout.fillHeight: true
-                                color: "transparent"
-                                ListModel {
-                                    id: appModel
+                                height: parent.height
+                                gradient: Gradient {
+                                    GradientStop { position: 0.0; color: "white" }
+                                    GradientStop { position: 0.95; color: "white" }
+                                    GradientStop { position: 0.951; color: "blue" }
+                                    GradientStop { position: 1.0; color: "blue" }
                                 }
-                                ListView {
+                            }
 
-                                }
+                            ColumnLayout {
+                                width: parent.width * (9/10)
+                                height: parent.height * (9/10)
 
-                                SortFilterModel {
-                                    id: sortFilterModel
-                                    model: myModel
-                                    property string actualCategorie: ""
-                                    modelCategories: modelCategorie
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.verticalCenter: parent.verticalCenter
 
-                                    filterAcceptsItem: function (item) {
-                                        var itemName = item.name.toLowerCase()
-                                        var itemCategorie = item.categorie.toLowerCase()
-                                        var actualCategorie = (String)(
-                                                    sortFilterModel.actualCategorie).toLowerCase()
-                                        if (actualCategorie !== ""
-                                                && itemCategorie !== actualCategorie)
-                                            return false
-                                        var itemSearch = searchText.text.toLowerCase()
-                                        return itemName.includes(itemSearch)
-                                    }
-
-                                    lessThan: function (left, right) {
-                                        var leftVal = left.name.toLowerCase()
-                                        var rightVal = right.name.toLowerCase()
-                                        //return leftVal.localeCompare(rightVal);
-                                        return leftVal < rightVal ? -1 : 1
-                                    }
-
-                                    delegate: //maingrid.state = "down";
-                                              Item {
-                                        Component.onCompleted: {
-
-                                        }
-
-                                        //width: parent.width/6; height:parent.width/6
-                                        width: maingrid.cellWidth
-                                        height: maingrid.cellHeight
-                                        Rectangle {
-                                            id: apps
-                                            width: parent.width - parent.width / 5
-                                            height: parent.height - parent.width / 6
-                                            clip: true
-                                            color: "transparent" //"blue"
-                                            state: "mouseOut"
-
-
-                                            Rectangle {
-                                                id: backg
-                                                color: "transparent"
-                                                width: parent.width
-                                                height: parent.height
-                                                radius: 20
-
-                                                RectangularGlow {
-                                                    id: effect
-                                                    anchors.fill: parent
-                                                    glowRadius: 10
-                                                    spread: 0.2
-                                                    color: "#61c2ff"
-                                                    cornerRadius: 30
-                                                    visible: false
-                                                }
-                                            }
-                                            ColumnLayout {
-                                                anchors.horizontalCenter: parent.horizontalCenter
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                spacing: 8
-
-                                                Item {
-                                                    width: parent.parent.width / 2
-                                                    height: parent.parent.width / 2
-                                                    Image {
-                                                        id: myIcon
-                                                        asynchronous: true
-                                                        width: parent.width
-                                                        height: parent.width
-                                                        source: icon
-                                                    }
-                                                }
-                                                Item {
-
-                                                    Layout.fillWidth: true
-                                                    Layout.fillHeight: true
-                                                    height: 20
-                                                    width: parent.width
-
-                                                    Text {
-                                                        FontLoader {
-                                                            id: appliFont
-                                                            source: "SFCompactText-Medium.ttf"
-                                                        }
-                                                        text: name
-                                                        width: parent.width * 1.5
-                                                        anchors.horizontalCenter: parent.horizontalCenter
-                                                        font.family: appliFont.name
-                                                        fontSizeMode: Text.Fit
-                                                        horizontalAlignment: Text.AlignHCenter
-                                                        verticalAlignment: Text.AlignBottom
-                                                        color: theme.mainTextColor
-                                                        maximumLineCount: 2
-                                                        elide: Text.ElideRight
-                                                        wrapMode: Text.WordWrap
-
-
-                                                    }
-                                                }
-                                            }
-
-                                            MouseArea {
-                                                id: applicationMouseArea
-                                                anchors.fill: parent
-                                                cursorShape: Qt.PointingHandCursor
-
-                                                onClicked: {
-                                                    backg.color = "lightsteelblue"
-                                                    backg.opacity = 0.1
-                                                    parent.state = "pressed"
-                                                    if (mouse.button === Qt.LeftButton) {
-                                                        execution.launch(src)
-                                                    }
-                                                }
-
-                                                hoverEnabled: true
-                                                onEntered: {
-                                                    parent.state = "mouseIn"
-                                                    //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
-                                                    backg.visible = true
-                                                    effect.visible = true
-                                                    backg.opacity = 0.2
-                                                }
-                                                onExited: {
-                                                    parent.state = "mouseOut"
-                                                    //backg.color = "transparent"
-                                                    backg.visible = false
-                                                    effect.visible = false
-                                                }
-                                            }
-                                        }
+                                spacing: 40
+                                // Conteneur titre "Applications"
+                                Rectangle {
+                                    color: "lightsteelblue"
+                                    width: 80
+                                    height: 80
+                                    radius: 5
+                                    Layout.leftMargin: 50
+                                    Image {
+                                        source: "app2_ew.png"
+                                        width: 50
+                                        height: 50
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.horizontalCenter: parent.horizontalCenter
                                     }
                                 }
                                 Item {
                                     width: parent.width
-                                    height: parent.height
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.top: parent.top
-
-                                    ScrollView {
-                                        id: scrollV
-                                        anchors.fill: parent
-                                        contentHeight: (maingrid.childrenRect.height > parent.height) ? maingrid.childrenRect.height : parent.height
-
-                                        ScrollBar.vertical: ScrollBar {
-                                            id: scrollBar
-                                            parent: scrollV.parent
-                                            policy: ScrollBar.AlwaysOn
-                                            height: scrollV.availableHeight
-                                            x: scrollV.mirrored ? 0 : scrollV.width - width
-                                            y: scrollV.topPadding
-                                            active: false
-                                            snapMode: ScrollBar.SnapAlways
-                                            visible: scrollV.contentHeight
-                                                     > scrollV.height ? true : false
-                                            //stepSize: 0.5
-                                            //active: scrollV.ScrollBar.horizontal.active
-                                            contentItem: Rectangle {
-                                                implicitWidth: 6
-                                                implicitHeight: 100
-                                                opacity: 0.05
-                                                radius: width / 2
-                                                color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
-                                            }
-                                        }
-
-                                        //contentHeight: maingrid.height
-                                        //contentWidth: width
-                                        clip: true
-                                        MouseArea {
-                                            onWheel: {
-                                                if (wheel.angleDelta.y > 0) {
-                                                    scroller.decrease()
-                                                } else {
-                                                    scroller.increase()
-                                                }
-                                            }
-                                        }
-                                        GridView {
-                                            id: maingrid
-                                            anchors.fill: parent
-                                            property bool first: true
-                                            property var cellSize: width / 6
-
-                                            Component.onCompleted: {
-                                                cellSize = width / 6
-                                                for (var i = 0; cellSize < 150; i++) {
-                                                    cellSize = width / (6 - i)
-                                                }
-                                            }
-
-                                            cellWidth: cellSize
-                                            cellHeight: cellSize
-
-                                            focus: true
-                                            state: "deb"
-                                            opacity: 1
-                                            property int viewIndex: 0
-                                            model: sortFilterModel
-                                            interactive: false
-                                        }
+                                    Layout.leftMargin: 50
+                                    height: 30
+                                    Text {
+                                        id: appTitle
+                                        text: "APPLICATIONS"
+                                        font.pointSize: 20
+                                        font.family: font1.name
+                                        anchors.bottom: parent.bottom
+                                        color: "blue"
+                                    }
+                                    Text {
+                                        anchors.top: appTitle.bottom
+                                        font.pointSize: 10
+                                        font.family: font1.name
+                                        text: qsTr(modelApplication.rowCount() + " applications disponibles")
+                                        color: "grey"
                                     }
                                 }
-                            }
-                        }
-                    }
 
-                    Item {
-                        id: files
-                        width: parent.width * (6/24)
-                        Layout.fillHeight: true
-                        anchors.left: page.right
-                        anchors.leftMargin: parent.width * (2/24)
-
-                        Rectangle {
-                            border.color: "grey"
-                            border.width: 3
-                            radius: 50
-                            color: "white"
-                            width: parent.width
-                            height: parent.height
-                            gradient: Gradient {
-                                GradientStop { position: 0.0; color: "white" }
-                                GradientStop { position: 0.95; color: "white" }
-                                GradientStop { position: 0.951; color: "blue" }
-                                GradientStop { position: 1.0; color: "blue" }
-                            }
-                        }
-
-
-                        ColumnLayout {
-                            anchors.fill: parent
-                            spacing: 40
-                            // Conteneur titre "FICHIERS"
-                            Item {
-                                id: nameFiles
-                                width: parent.width * (9/10)
-                                Layout.alignment: Qt.AlignHCenter
-                                height: 100
-                                clip: true
-                                opacity: theme.mainOpacity
-                                //visible : false
-
+                                // Conteneur liste d'Applications
                                 Rectangle {
-                                    color: "transparent"
-                                    border.color: "black"
-                                    border.width: 1
-                                    height: parent.height
+                                    id: content
                                     width: parent.width
-                                }
-
-                                RowLayout {
-                                    height: parent.height
-                                    Layout.fillWidth: true
-
-                                    Rectangle {
-                                        color: "steelblue"
-                                        width: 80
-                                        height: 80
-                                        anchors.left: parent.left
-                                        anchors.leftMargin: 50
-                                        Image {
-                                            id: fileIcon
-                                            source: "partage-de-fichiers@2x.png"
-                                            width: 50
-                                            height: 50
-                                            anchors.verticalCenter: parent.verticalCenter
-                                            anchors.horizontalCenter: parent.horizontalCenter
-                                        }
+                                    Layout.alignment: Qt.AlignHCenter
+                                    Layout.fillHeight: true
+                                    color: "transparent"
+                                    ListModel {
+                                        id: appModel
                                     }
-
 
                                     Item {
                                         width: parent.width
-                                        anchors.bottom: parent.bottom
-                                        height: 30
+                                        height: parent.height
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        anchors.top: parent.top
 
+                                        ScrollView {
+                                            id: scrollV
+                                            anchors.fill: parent
+                                            contentHeight: (applicationsList.childrenRect.height > parent.height) ? applicationsList.childrenRect.height : parent.height
+                                            ScrollBar.vertical: ScrollBar {
+                                                id: scrollBar
+                                                parent: scrollV.parent
+                                                policy: ScrollBar.AlwaysOn
+                                                height: scrollV.availableHeight
+                                                x: scrollV.mirrored ? 0 : scrollV.width - width
+                                                y: scrollV.topPadding
+                                                active: false
+                                                snapMode: ScrollBar.SnapAlways
+                                                visible: scrollV.contentHeight
+                                                         > scrollV.height ? true : false
+                                                //stepSize: 0.5
+                                                //active: scrollV.ScrollBar.horizontal.active
+                                                contentItem: Rectangle {
+                                                    implicitWidth: 6
+                                                    implicitHeight: 100
+                                                    opacity: 0.5
+                                                    radius: width / 2
+                                                    color: scrollBar.pressed ? "#0092CC" : theme.mainBorderColor
+                                                }
+                                            }
 
-                                        Text {
-                                            text: "FICHIERS"
-                                            font.pointSize: 20
-                                            font.family: titleFont.name
-                                            anchors.left: parent.left
-                                            color: theme.mainTextColor
+                                            clip: true
+                                            MouseArea {
+                                                onWheel: {
+                                                    if (wheel.angleDelta.y > 0) {
+                                                        scroller.decrease()
+                                                    } else {
+                                                        scroller.increase()
+                                                    }
+                                                }
+                                            }
+
+                                            Component {
+                                                id: applicationDelegate
+
+                                                Item {
+                                                    height: 100
+                                                    width: parent.parent.width
+
+                                                    Rectangle {
+                                                        id: applicationBack
+                                                        height: parent.height
+                                                        width: parent.width
+                                                        radius: 5
+                                                        color: "lightsteelblue"
+                                                        visible: false
+                                                    }
+
+                                                    Item {
+                                                        id: applicationIcon
+                                                        height: parent.height
+                                                        width: parent.height
+
+                                                        Image {
+                                                            source: icon
+                                                            fillMode: Image.PreserveAspectFit
+                                                            width: parent.height * (2/3)
+                                                            height: parent.height * (2/3)
+                                                            anchors.verticalCenter: parent.verticalCenter
+                                                            anchors.horizontalCenter: parent.horizontalCenter
+                                                        }
+                                                    }
+
+                                                    Item {
+                                                        id: applicationName
+                                                        anchors.verticalCenter: parent.verticalCenter
+                                                        Layout.fillWidth: parent
+                                                        Layout.leftMargin: 10
+                                                        anchors.left: applicationIcon.right
+                                                        Text {
+                                                            text: qsTr(name)
+                                                            horizontalAlignment: Text.AlignHCenter
+                                                            fontSizeMode: Text.Fit
+                                                        }
+                                                    }
+
+                                                    MouseArea {
+                                                        id: applicationMouseArea
+                                                        anchors.fill: parent
+                                                        cursorShape: Qt.PointingHandCursor
+                                                        hoverEnabled: true
+
+                                                        onClicked: {
+                                                            if (mouse.button === Qt.LeftButton) {
+                                                                execution.launch(src)
+                                                            }
+                                                        }
+                                                        onEntered: {
+                                                            //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
+                                                            applicationBack.visible = true
+                                                        }
+                                                        onExited: {
+                                                            //backg.color = "transparent"
+                                                            applicationBack.visible = false
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            ListView {
+                                                id: applicationsList
+                                                anchors.fill: parent
+                                                property bool first: true
+                                                delegate: applicationDelegate
+
+                                                model: modelApplication
+                                            }
                                         }
                                     }
                                 }
-
-                            }
-
-                            // Simulation pour remplir le layout Fichiers
-                            Rectangle {
-                                Layout.fillHeight: true
-                                anchors.top: nameFiles.bottom
-                                width: parent.width
-                                color: "transparent"
                             }
                         }
-                    }
 
+                    // FICHIERS
+                    Item {
+                            id: files
+                            width: parent.parent.width * (6/24)
+                            Layout.fillHeight: true
+                            anchors.leftMargin: parent.parent.width * (2/24)
+
+                            Rectangle {
+                                border.color: "grey"
+                                border.width: 3
+                                radius: 50
+                                color: "white"
+                                width: parent.width
+                                height: parent.height
+                                gradient: Gradient {
+                                    GradientStop { position: 0.0; color: "white" }
+                                    GradientStop { position: 0.95; color: "white" }
+                                    GradientStop { position: 0.951; color: "blue" }
+                                    GradientStop { position: 1.0; color: "blue" }
+                                }
+                            }
+
+
+                            ColumnLayout {
+                                width: parent.width * (9/10)
+                                height: parent.height * (9/10)
+
+                                spacing: 40
+
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.verticalCenter: parent.verticalCenter
+
+                                // Conteneur titre "FICHIERS"
+                                Rectangle {
+                                    id: fileIcon
+                                    color: "steelblue"
+                                    width: 80
+                                    height: 80
+                                    radius: 5
+                                    Layout.leftMargin: 50
+                                    Image {
+                                        source: "partage-de-fichiers@2x.png"
+                                        width: 50
+                                        height: 50
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                    }
+                                }
+
+
+                                Item {
+                                    width: parent.width
+                                    Layout.leftMargin: 50
+                                    height: 30
+                                    Text {
+                                        id: fileTitle
+                                        text: "FICHIERS"
+                                        font.pointSize: 20
+                                        font.family: font1.name
+                                        anchors.bottom: parent.bottom
+                                        color: "blue"
+                                    }
+                                    Text {
+                                        anchors.top: fileTitle.bottom
+                                        font.pointSize: 10
+                                        font.family: font1.name
+                                        text: qsTr(" dossiers accessibles")
+                                        color: "grey"
+                                    }
+                                }
+
+                                // Simulation pour remplir le layout Fichiers
+                                Rectangle {
+                                    Layout.fillHeight: true
+                                    width: parent.width
+                                    color: "transparent"
+                                }
+                            }
+                        }
+
+                    // RIGHT SIDEBAR
                     Item {
                         id: sessionColumn
                         width: parent.width * (1/24)
+                        Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         Layout.maximumHeight: parent.height * (1/2)
                         Layout.leftMargin: parent.width * (1/24)
@@ -810,124 +966,151 @@ ApplicationWindow {
                                 id: avatar
                                 Layout.preferredHeight: parent.height / 3
                                 width: parent.width
-
+                                Rectangle {
+                                    id: avatarBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            avatarBack.color = "#518fdf"
+                                            avatarText.color = "black"
+                                        }
+                                        onExited: {
+                                            avatarBack.color = "transparent"
+                                            avatarText.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            //execution.disconnectScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
-                                    source: "burgerMenuIcon.svg"
+                                    source: "profile-user_dp.png"
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     anchors.verticalCenter: parent.verticalCenter
                                     opacity: 1
                                     height: 30 //parent.height - platformStyle.paddingMedium * 2
                                     width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                                Text {
+                                    id: avatarText
+                                    font.pointSize: 10
+                                    color: "transparent"
+                                    text: qsTr("Mon profil")
+                                    anchors.top: avatarBack.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
                             Item {
                                 id: lock
                                 Layout.preferredHeight: parent.height / 3
                                 width: parent.width
+                                Rectangle {
+                                    id: lockBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            lockBack.color = "#518fdf"
+                                            lockText.color = "black"
+                                        }
+                                        onExited: {
+                                            lockBack.color = "transparent"
+                                            lockText.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            execution.lockScreen();
+                                        }
+                                    }
+                                }
                                 Image {
                                     fillMode: Image.PreserveAspectFit
-                                    source: "notification.png"
+                                    source: "cadenas-verrouille_dn.png"
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     anchors.verticalCenter: parent.verticalCenter
                                     opacity: 1
                                     height: 30 //parent.height - platformStyle.paddingMedium * 2
                                     width: 30 //parent.height - platformStyle.paddingMedium * 2
+                                }
+                                Text {
+                                    id: lockText
+                                    font.pointSize: 10
+                                    color: "transparent"
+                                    text: qsTr("Verrouiller")
+                                    anchors.top: lockBack.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
                                 }
                             }
                             Item {
                                 id: logoff
                                 Layout.preferredHeight: parent.height / 3
                                 width: parent.width
+                                Rectangle {
+                                    id: logoffBack
+                                    color: "transparent"
+                                    width: 50
+                                    height: 50
+                                    radius: 25
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+                                        onEntered: {
+                                            logoffBack.color = "#518fdf"
+                                            logoffText.color = "black"
+                                        }
+                                        onExited: {
+                                            logoffBack.color = "transparent"
+                                            logoffText.color = "transparent"
+                                        }
+                                        onClicked:
+                                        {
+                                            execution.disconnectScreen();
+                                        }
+                                    }
+                                }
+
                                 Image {
                                     fillMode: Image.PreserveAspectFit
-                                    source: "linternet-2.png"
+                                    source: "deconnexion.png"
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     anchors.verticalCenter: parent.verticalCenter
                                     opacity: 1
                                     height: 30 //parent.height - platformStyle.paddingMedium * 2
                                     width: 30 //parent.height - platformStyle.paddingMedium * 2
                                 }
+                                Text {
+                                    id: logoffText
+                                    width: parent.width
+                                    font.pointSize: 10
+                                    color: "transparent"
+                                    text: "Se déconnecter de la session"
+                                    anchors.top: logoffBack.bottom
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    elide: Text.ElideRight
+                                }
                             }
                         }
-
                     }
-
-//                    Item {
-//                        width: parent.width * (1 / 5)
-//                        height: parent.height / 2
-//                        ColumnLayout {
-//                            width: parent.width
-//                            spacing: parent.height / 10
-//                            Item {
-//                                width: parent.width
-//                                Layout.alignment: Qt.AlignHCenter
-//                                height: 35
-//                                clip: true
-//                                opacity: theme.mainOpacity
-//                                Rectangle {
-//                                    anchors.fill: parent
-//                                    anchors.rightMargin: -border.width
-//                                    anchors.topMargin: -border.width
-//                                    anchors.leftMargin: -border.width
-//                                    border.width: 2
-//                                    color: "transparent"
-//                                    border.color: theme.mainBorderColor
-//                                    opacity: 0.2
-//                                }
-//                                Item {
-//                                    width: parent.width
-//                                    anchors.top: parent.top
-//                                    height: 30
-
-//                                    Text {
-//                                        text: "Informations"
-//                                        font.pointSize: 20
-//                                        font.family: titleFont.name
-//                                        anchors.left: parent.left
-//                                        color: theme.mainTextColor
-//                                    }
-//                                }
-//                            }
-
-//                            Item {
-//                                width: parent.width
-//                                Layout.fillHeight: true
-//                                Rectangle {
-//                                    width: parent.width
-//                                    height: parent.height
-//                                    anchors.centerIn: parent
-//                                    color: "transparent"
-//                                    ColumnLayout {
-//                                        width: parent.width
-//                                        Info {
-//                                            title: "Espace de travail"
-//                                            value: workspace
-//                                            icon: "icon_espacetravail.png"
-//                                        }
-
-//                                        Info {
-//                                            title: "Utilisateur"
-//                                            value: username
-//                                            icon: "user.png"
-//                                        }
-
-//                                        Info {
-//                                            title: "Groupe"
-//                                            value: group
-//                                            icon: "icon_group.png"
-//                                        }
-
-//                                        Info {
-//                                            title: "Machine"
-//                                            value:  machine
-//                                            icon: "pc.png"
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
 
                 }
             }

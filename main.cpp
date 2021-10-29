@@ -8,6 +8,7 @@
 #include <categoriemodel.h>
 #include <iostream>
 #include <QScreen>
+#include <QIODevice>
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 #include <QQmlProperty>
@@ -66,6 +67,10 @@ int main(int argc, char *argv[])
     catchUnixSignals({SIGHUP});
 #endif
 
+    QFile myFile("C:/Users/dev/Documents/Qtlog.txt");
+    myFile.open(QIODevice::WriteOnly);
+    QTextStream myLog(&myFile);
+    myLog << "Beginning" << endl;
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -79,12 +84,13 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
 
-    AppModel* model= new AppModel();
+    // Create a new model for Files
+
+    AppModel* modelApplication= new AppModel();
 
     CategorieModel* modelCategorie = new CategorieModel();
-    engine.rootContext()->setContextProperty("myModel",model);
+    engine.rootContext()->setContextProperty("modelApplication",modelApplication);
     engine.rootContext()->setContextProperty("modelCategorie",modelCategorie);
-
 
     QScreen* scsreen = app.primaryScreen();
 
@@ -97,9 +103,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
 
     qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
-
-
-
 
     modelCategorie->addCategorie(Categorie("1", "Default"));
 
@@ -162,7 +165,7 @@ int main(int argc, char *argv[])
         qInfo() << "Path ::: " << path;
         // We use a temp category, as we didn't have them right now !
         Application app = Application(name, icon, path, "Default");
-        model->addApplication(app);
+        modelApplication->addApplication(app);
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
     }
@@ -188,8 +191,7 @@ int main(int argc, char *argv[])
     }
 
     //ex->model = model;
-
-
+    myLog << "The end" << endl;
 
 
     return app.exec();
