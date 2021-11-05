@@ -1143,6 +1143,7 @@ ApplicationWindow {
                                         font.pointSize: 17
                                         color: theme.mainTitleColor
                                         font.family: font1.name
+                                        visible: mountedDirectoriesModel.rowCount() > 0
                                         anchors.horizontalCenter: parent.horizontalCenter
                                     }
 

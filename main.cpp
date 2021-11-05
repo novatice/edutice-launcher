@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     QString userShareHome = "";
     QString userShares = "";
 #ifdef WIN32
-    userShareHome = "C:/";
+    userShareHome = "Z:/";
     userShares = "Y:/";
 #else
     userShareHome = "/media/" + qgetenv("USER") + "/home";
