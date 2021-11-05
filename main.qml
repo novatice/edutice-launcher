@@ -58,18 +58,6 @@ ApplicationWindow {
 
         property var appliBackgroundG1
         property var appliBackgroundG2
-
-        Component.onCompleted: {
-            mainTextColor = actualTheme.mainTextColor
-            mainBorderColor = actualTheme.mainBorderColor
-            mainLineColor = actualTheme.mainLineColor
-            backgroundColor = actualTheme.backgroundColor
-
-            mainOpacity = actualTheme.mainOpacity
-
-            appliBackgroundG1 = actualTheme.appliBackgroundG1
-            appliBackgroundG2 = actualTheme.appliBackgroundG2
-        }
     }
 
     FontLoader {
@@ -78,19 +66,10 @@ ApplicationWindow {
     }
 
     FontLoader {
-        id: font1
+        id: mainFont
         source: "SFProDisplay-Semibold.ttf"
     }
 
-    FontLoader {
-        id: font2
-        source: "SFProDisplay-Ultralight.ttf"
-    }
-
-    FontLoader {
-        id: font3
-        source: "SFProText-Medium.ttf"
-    }
     MouseArea {
         anchors.fill: parent
         onClicked: forceActiveFocus()
@@ -102,41 +81,10 @@ ApplicationWindow {
         //onSignalExit: mainAppliWindow.close()
     }
 
-    Dialog {
-        id: popup
-        width: parent.width / 4
-        height: 200
-
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
-        modal: true
-        focus: true
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
-        title: "Fermeture de session"
-        Text {
-            text: "Vous vous appretez à fermer votre session. Etes vous sur ?"
-        }
-
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        onAccepted: execution.disconnectScreen()
-        //onRejected: console.log("Cancel clicked")
-    }
-
-    DropShadow {
-        cached: true
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 60
-        samples: 32
-        color: "red"
-        smooth: true
-    }
-
     Item {
         width: mainAppliWindow.width
         height: mainAppliWindow.height - 50
         anchors.horizontalCenter: parent.horizontalCenter
-
 
         Image {
             id: novaticeIcon
@@ -210,8 +158,7 @@ ApplicationWindow {
                         color: "lightyellow"
                         border.color: "black"
                         border.width: 1
-                        anchors.bottom: informationsBack.top
-                        anchors.bottomMargin: 4
+                        anchors.verticalCenter: informationsBack.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: false
                         Text {
@@ -279,8 +226,7 @@ ApplicationWindow {
                         color: "lightyellow"
                         border.color: "black"
                         border.width: 1
-                        anchors.bottom: assistanceBack.top
-                        anchors.bottomMargin: 4
+                        anchors.verticalCenter: assistanceBack.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: false
                         Text {
@@ -348,8 +294,7 @@ ApplicationWindow {
                         color: "lightyellow"
                         border.color: "black"
                         border.width: 1
-                        anchors.bottom: clockBack.top
-                        anchors.bottomMargin: 4
+                        anchors.verticalCenter: clockBack.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         visible: false
                         Text {
@@ -432,7 +377,7 @@ ApplicationWindow {
                                 font.pointSize: 30
                                 anchors.verticalCenter: parent.verticalCenter
                                 font.bold: true
-                                font.family: font3.name
+                                font.family: mainFont.name
                                 property var timerUpdate: null
                                 background: Item {
                                     opacity: 0
@@ -458,7 +403,6 @@ ApplicationWindow {
             }
 
             Item {
-
                 id: actionsLayout
                 width: parent.width
                 Layout.fillHeight: true
@@ -544,7 +488,7 @@ ApplicationWindow {
                                     color: "lightyellow"
                                     border.color: "black"
                                     border.width: 1
-                                    anchors.bottom: menuBack.top
+                                    anchors.verticalCenter: menuBack.verticalCenter
                                     anchors.bottomMargin: 4
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     visible: false
@@ -619,7 +563,7 @@ ApplicationWindow {
                                     color: "lightyellow"
                                     border.color: "black"
                                     border.width: 1
-                                    anchors.bottom: notificationsBack.top
+                                    anchors.verticalCenter: notificationsBack.verticalCenter
                                     anchors.bottomMargin: 4
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     visible: false
@@ -679,6 +623,7 @@ ApplicationWindow {
                                     }
                                 }
                                 Image {
+                                    id: webpageIcon
                                     fillMode: Image.PreserveAspectFit
                                     source: "linternet-2.png"
                                     anchors.horizontalCenter: parent.horizontalCenter
@@ -694,7 +639,7 @@ ApplicationWindow {
                                     color: "lightyellow"
                                     border.color: "black"
                                     border.width: 1
-                                    anchors.bottom: webpageBack.top
+                                    anchors.verticalCenter: webpageBack.verticalCenter
                                     anchors.bottomMargin: 4
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     visible: false
@@ -825,7 +770,7 @@ ApplicationWindow {
                                     color: "lightyellow"
                                     border.color: "black"
                                     border.width: 1
-                                    anchors.bottom: novaticeBack.top
+                                    anchors.verticalCenter: novaticeBack.verticalCenter
                                     anchors.bottomMargin: 4
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     visible: false
@@ -858,7 +803,6 @@ ApplicationWindow {
                     // APPLICATIONS
                     Item {
                             id: applications
-                            objectName: "page"
                             width: parent.parent.width * (8/24)
                             Layout.leftMargin: parent.parent.width * (1/24)
                             Layout.rightMargin: parent.parent.width * (1/24)
@@ -873,46 +817,52 @@ ApplicationWindow {
                             }
 
                             ColumnLayout {
-                                width: parent.width * (9/10)
-                                height: parent.height * (9/10)
+                                width: parent.width - 100
+                                height: parent.height - 100
 
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 spacing: 40
+
                                 // Conteneur titre "Applications"
-                                Rectangle {
-                                    color: "steelblue"
-                                    width: 80
-                                    height: 80
-                                    radius: 5
-                                    Layout.leftMargin: 50
-                                    Image {
-                                        source: "app2_ew.png"
-                                        width: 50
-                                        height: 50
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                }
                                 Item {
                                     width: parent.width
-                                    Layout.leftMargin: 50
-                                    height: 30
-                                    Text {
-                                        id: appTitle
-                                        text: "APPLICATIONS"
-                                        font.pointSize: 20
-                                        font.family: font1.name
-                                        anchors.bottom: parent.bottom
-                                        color: theme.mainTitleColor
+                                    height: 80
+                                    Rectangle {
+                                        id: applicationsColumnIcon
+                                        color: "steelblue"
+                                        width: parent.height
+                                        height: parent.height
+                                        radius: 5
+                                        Image {
+                                            source: "app2_ew.png"
+                                            width: 50
+                                            height: 50
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
                                     }
-                                    Text {
-                                        anchors.top: appTitle.bottom
-                                        font.pointSize: 10
-                                        font.family: font1.name
-                                        text: qsTr(modelApplication.rowCount() + " applications disponibles")
-                                        color: "grey"
+                                    Item {
+                                        height: childrenRect.height
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.left: applicationsColumnIcon.right
+                                        anchors.leftMargin: 20
+
+                                        Text {
+                                            id: appTitle
+                                            text: "APPLICATIONS"
+                                            font.pointSize: 20
+                                            font.family: mainFont.name
+                                            color: theme.mainTitleColor
+                                        }
+                                        Text {
+                                            anchors.top: appTitle.bottom
+                                            font.pointSize: 10
+                                            font.family: mainFont.name
+                                            text: qsTr(modelApplication.rowCount() + " applications disponibles")
+                                            color: "grey"
+                                        }
                                     }
                                 }
 
@@ -1000,31 +950,25 @@ ApplicationWindow {
 
                                                     Item {
                                                         anchors.verticalCenter: parent.verticalCenter
-                                                        height: parent.height / 2
+                                                        height: childrenRect.height
                                                         Layout.fillWidth: parent
                                                         Layout.leftMargin: 10
                                                         anchors.left: applicationIcon.right
-                                                        Rectangle {
-                                                            border.width: 1
-                                                            border.color: "black"
-                                                            color: "transparent"
-                                                            height: parent.height
-                                                            width: parent.width
-                                                        }
 
                                                         Text {
                                                             id: applicationName
                                                             font.pointSize: 12
-                                                            font.family: font1.name
+                                                            font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
-                                                        Text {
-                                                            anchors.bottom: parent.bottom
-                                                            text: qsTr("Description")
-                                                            font.pointSize: 8
-                                                            font.family: font1.name
-                                                            color: "grey"
-                                                        }
+                                                        // Coming soon ?
+//                                                        Text {
+//                                                            anchors.bottom: parent.bottom
+//                                                            text: qsTr("Description")
+//                                                            font.pointSize: 8
+//                                                            font.family: mainFont.name
+//                                                            color: "grey"
+//                                                        }
                                                     }
 
                                                     MouseArea {
@@ -1055,7 +999,6 @@ ApplicationWindow {
                                                 anchors.fill: parent
                                                 property bool first: true
                                                 delegate: applicationDelegate
-
                                                 model: modelApplication
                                             }
                                         }
@@ -1080,88 +1023,85 @@ ApplicationWindow {
                                 height: parent.height
                             }
 
-
                             ColumnLayout {
-                                width: parent.width * (9/10)
-                                height: parent.height * (9/10)
-
-                                spacing: 0
-
+                                width: parent.width - 100
+                                height: parent.height - 100
+                                spacing: 40
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 // Conteneur titre "FICHIERS"
-                                Rectangle {
-                                    id: fileIcon
-                                    color: "steelblue"
-                                    width: 80
-                                    height: 80
-                                    radius: 5
-                                    Layout.leftMargin: 50
-                                    Layout.bottomMargin: 40
-                                    Image {
-                                        source: "partage-de-fichiers@2x.png"
-                                        width: 50
-                                        height: 50
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                }
-
-
                                 Item {
+                                    height: 80
                                     width: parent.width
-                                    Layout.leftMargin: 50
-                                    Layout.bottomMargin: 40
-                                    height: 30
-                                    Text {
-                                        id: fileTitle
-                                        text: "FICHIERS"
-                                        font.pointSize: 20
-                                        font.family: font1.name
-                                        anchors.bottom: parent.bottom
-                                        color: theme.mainTitleColor
+                                    Rectangle {
+                                        id: fileIcon
+                                        color: "steelblue"
+                                        width: parent.height
+                                        height: parent.height
+                                        radius: 5
+                                        Image {
+                                            source: "partage-de-fichiers@2x.png"
+                                            width: 50
+                                            height: 50
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
                                     }
-                                    Text {
-                                        anchors.top: fileTitle.bottom
-                                        font.pointSize: 10
-                                        font.family: font1.name
-                                        text: qsTr((defaultDirectoriesModel.rowCount() + mountedDirectoriesModel.rowCount()) + " dossiers accessibles")
-                                        color: "grey"
+                                    Item {
+                                        height: childrenRect.height
+                                        anchors.left: fileIcon.right
+                                        anchors.leftMargin: 20
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        Text {
+                                            id: fileText
+                                            text: "FICHIERS"
+                                            font.pointSize: 20
+                                            font.family: mainFont.name
+                                            color: theme.mainTitleColor
+                                        }
+                                        Text {
+                                            anchors.top: fileText.bottom
+                                            font.pointSize: 10
+                                            font.family: mainFont.name
+                                            text: qsTr((defaultDirectoriesModel.rowCount() + mountedDirectoriesModel.rowCount()) + " dossiers accessibles")
+                                            color: "grey"
+                                        }
                                     }
                                 }
 
                                 // Mounted directories
                                 Rectangle {
-                                    height: mountedDirectoriesModel.rowCount() > 0 ? childrenRect.height + 40 : 0
+                                    id: mountedDirectories
+                                    height: mountedDirectoriesModel.rowCount() > 0 ? childrenRect.height : 0
                                     width: parent.width
                                     color: "transparent"
 
-                                    Text {
-                                        id: mountedDirectoriesTitle
-                                        text: qsTr("SERVEUR")
-                                        font.pointSize: 17
-                                        color: theme.mainTitleColor
-                                        font.family: font1.name
-                                        visible: mountedDirectoriesModel.rowCount() > 0
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
 
                                     Item {
                                         width: parent.width
                                         height: mountedDirectoriesList.childrenRect.height
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        anchors.topMargin: 20
-                                        anchors.top: mountedDirectoriesTitle.bottom
 
+                                        Text {
+                                            id: mountedDirectoriesTitle
+                                            text: qsTr("SERVEUR")
+                                            font.pointSize: 17
+                                            color: theme.mainTitleColor
+                                            font.family: mainFont.name
+                                            visible: mountedDirectoriesModel.rowCount() > 0
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
 
                                         ScrollView {
                                             id: mountedDirectoriesScrollView
-                                            anchors.fill: parent
+                                            anchors.top: mountedDirectoriesTitle.bottom
+                                            height: parent.height
+                                            width: parent.width
                                             contentHeight: (mountedDirectoriesList.childrenRect.height > parent.height) ? mountedDirectoriesList.childrenRect.height : parent.height
                                             ScrollBar.vertical: ScrollBar {
                                                 id: mountedDirectoriesScrollBar
-                                                parent: mountedDirectoriesScrollView.parent
                                                 policy: ScrollBar.SnapOnRelease
                                                 height: mountedDirectoriesScrollView.availableHeight
                                                 x: mountedDirectoriesScrollView.mirrored ? 0 : mountedDirectoriesScrollView.width - width
@@ -1240,14 +1180,14 @@ ApplicationWindow {
                                                         Text {
                                                             id: mountedDirectoriessName
                                                             font.pointSize: 12
-                                                            font.family: font1.name
+                                                            font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
                                                         Text {
                                                             anchors.bottom: parent.bottom
                                                             text: qsTr(description)
                                                             font.pointSize: 8
-                                                            font.family: font1.name
+                                                            font.family: mainFont.name
                                                             color: "grey"
                                                         }
                                                     }
@@ -1291,35 +1231,35 @@ ApplicationWindow {
                                 // Default directories: fills the ColumnLayout
                                 Rectangle {
                                     Layout.fillHeight: true
+                                    //height: parent.height - mountedDirectories.height - fileTitle.height - 40
+                                    Layout.alignment: Qt.AlignHCenter
                                     width: parent.width
                                     color: "transparent"
-
-
-                                    Text {
-                                        id: defaultDirectoriesTitle
-                                        text: qsTr("LOCAUX")
-                                        font.pointSize: 17
-                                        color: theme.mainTitleColor
-                                        font.family: font1.name
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-
                                     Item {
                                         width: parent.width
                                         height: parent.height
                                         anchors.horizontalCenter: parent.horizontalCenter
-                                        anchors.top: defaultDirectoriesTitle.bottom
-                                        anchors.topMargin: 20
+
+
+                                        Text {
+                                            id: defaultDirectoriesTitle
+                                            text: qsTr("LOCAUX")
+                                            font.pointSize: 17
+                                            color: theme.mainTitleColor
+                                            font.family: mainFont.name
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
 
                                         ScrollView {
                                             id: defaultFilesScrollView
-                                            anchors.fill: parent
-                                            contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.height
+                                            height: parent.height - defaultDirectoriesTitle.height
+                                            width: parent.width
+                                            anchors.top: defaultDirectoriesTitle.bottom
+                                            contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height + - defaultDirectoriesTitle.height
                                             ScrollBar.vertical: ScrollBar {
                                                 id: defaultFilesScrollBar
-                                                parent: defaultFilesScrollView.parent
                                                 policy: ScrollBar.SnapOnRelease
-                                                height: defaultFilesScrollView.availableHeight
+                                                height: defaultFilesScrollView.height
                                                 x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
                                                 y: defaultFilesScrollView.topPadding
                                                 active: false
@@ -1396,14 +1336,14 @@ ApplicationWindow {
                                                         Text {
                                                             id: defaultFilesName
                                                             font.pointSize: 12
-                                                            font.family: font1.name
+                                                            font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
                                                         Text {
                                                             anchors.bottom: parent.bottom
                                                             text: qsTr(description)
                                                             font.pointSize: 8
-                                                            font.family: font1.name
+                                                            font.family: mainFont.name
                                                             color: "grey"
                                                         }
                                                     }
@@ -1778,7 +1718,7 @@ ApplicationWindow {
                             Text {
                                 text: qsTr("Annuler")
                                 color: "grey"
-                                font.pointSize: 20
+                                font.pointSize: parent.height / 3
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
@@ -1818,7 +1758,7 @@ ApplicationWindow {
                             Text {
                                 text: qsTr("Se déconnecter")
                                 color: "white"
-                                font.pointSize: 20
+                                font.pointSize: parent.height / 3
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
