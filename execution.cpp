@@ -22,6 +22,15 @@ QString Execution::launch(const QString &program)
     return "";
 }
 
+QString Execution::open(const QString &path)
+{
+    qInfo() << "In execution open with " << path;
+
+    QDesktopServices::openUrl(path);
+
+    return "";
+}
+
 void Execution::lockScreen()
 {
     QString l = "";

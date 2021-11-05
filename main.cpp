@@ -6,6 +6,7 @@
 #include <execution.h>
 #include <appmodel.h>
 #include <categoriemodel.h>
+#include <directorymodel.h>
 #include <iostream>
 #include <QScreen>
 #include <QIODevice>
@@ -87,10 +88,58 @@ int main(int argc, char *argv[])
     // Create a new model for Files
 
     AppModel* modelApplication= new AppModel();
-
     CategorieModel* modelCategorie = new CategorieModel();
+    // The default directories (Documents, Pictures, Downloads, ...)
+    DirectoryModel* defaultDirectoriesModel = new DirectoryModel();
+    // The mounted directories from logon script
+    DirectoryModel* mountedDirectoriesModel = new DirectoryModel();
+
     engine.rootContext()->setContextProperty("modelApplication",modelApplication);
+    engine.rootContext()->setContextProperty("defaultDirectoriesModel",defaultDirectoriesModel);
+    engine.rootContext()->setContextProperty("mountedDirectoriesModel",mountedDirectoriesModel);
     engine.rootContext()->setContextProperty("modelCategorie",modelCategorie);
+
+    // Fill mountedDirectoriesModel
+    QString userShareHome = "";
+    QString userShares = "";
+#ifdef WIN32
+    userShareHome = "C:/";
+    userShares = "Y:/";
+#else
+    userShareHome = "/media/" + qgetenv("USER") + "/home";
+    userShares = "/media/" + qgetenv("USER") + "/partages";
+#endif
+    QDir dir;
+    if (dir.exists(userShareHome))
+    {
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "defaultDirectory.png", "Dossier personnel enregistré sur le serveur"));
+    }
+    if (dir.exists(userShares))
+    {
+        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "defaultDirectory.png", "Dossiers partagés enregistrés sur le serveur"));
+    }
+
+
+    // Fill defaultDirectoriesModel with some directories
+    Directory downloads = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
+                QStandardPaths::displayName(QStandardPaths::DownloadLocation),
+                "downloadsDirectory.png",
+                "Dossier contenant les fichiers téléchargés");
+    Directory documents = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
+                "documentsDirectory.png",
+                "Dossier contenant les documents de la session");
+    Directory desktop = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+                QStandardPaths::displayName(QStandardPaths::DesktopLocation),
+                "defaultDirectory.png",
+                "");
+
+    defaultDirectoriesModel->addDirectory(documents);
+    defaultDirectoriesModel->addDirectory(desktop);
+    defaultDirectoriesModel->addDirectory(downloads);
 
     QScreen* scsreen = app.primaryScreen();
 

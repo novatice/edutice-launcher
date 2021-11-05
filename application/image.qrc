@@ -15,7 +15,6 @@
         <file>SFProDisplay-Semibold.ttf</file>
         <file>SFProDisplay-Bold.ttf</file>
         <file>SFProText-Medium.ttf</file>
-        <file>image.qrc</file>
         <file>icon_espacetravail.png</file>
         <file>icon_group.png</file>
         <file>windows_app_icon.png</file>
@@ -36,5 +35,8 @@
         <file>n_tv-a-ecran-plat.png</file>
         <file>partage-de-fichiers@2x.png</file>
         <file>informations.png</file>
+        <file>downloadsDirectory.png</file>
+        <file>defaultDirectory.png</file>
+        <file>documentsDirectory.png</file>
     </qresource>
 </RCC>
