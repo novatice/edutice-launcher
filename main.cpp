@@ -6,8 +6,10 @@
 #include <execution.h>
 #include <appmodel.h>
 #include <categoriemodel.h>
+#include <directorymodel.h>
 #include <iostream>
 #include <QScreen>
+#include <QIODevice>
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 #include <QQmlProperty>
@@ -67,6 +69,10 @@ int main(int argc, char *argv[])
     catchUnixSignals({SIGHUP});
 #endif
 
+    QFile myFile("C:/Users/dev/Documents/Qtlog.txt");
+    myFile.open(QIODevice::WriteOnly);
+    QTextStream myLog(&myFile);
+    myLog << "Beginning" << endl;
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -80,12 +86,61 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
 
-    AppModel* model= new AppModel();
+    // Create a new model for Files
 
+    AppModel* modelApplication= new AppModel();
     CategorieModel* modelCategorie = new CategorieModel();
-    engine.rootContext()->setContextProperty("myModel",model);
+    // The default directories (Documents, Pictures, Downloads, ...)
+    DirectoryModel* defaultDirectoriesModel = new DirectoryModel();
+    // The mounted directories from logon script
+    DirectoryModel* mountedDirectoriesModel = new DirectoryModel();
+
+    engine.rootContext()->setContextProperty("modelApplication",modelApplication);
+    engine.rootContext()->setContextProperty("defaultDirectoriesModel",defaultDirectoriesModel);
+    engine.rootContext()->setContextProperty("mountedDirectoriesModel",mountedDirectoriesModel);
     engine.rootContext()->setContextProperty("modelCategorie",modelCategorie);
 
+    // Fill mountedDirectoriesModel
+    QString userShareHome = "";
+    QString userShares = "";
+#ifdef WIN32
+    userShareHome = "Z:/";
+    userShares = "Y:/";
+#else
+    userShareHome = "/media/" + qgetenv("USER") + "/home";
+    userShares = "/media/" + qgetenv("USER") + "/partages";
+#endif
+    QDir dir;
+    if (dir.exists(userShareHome))
+    {
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "defaultDirectory.png", "Dossier personnel enregistré sur le serveur"));
+    }
+    if (dir.exists(userShares))
+    {
+        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "defaultDirectory.png", "Dossiers partagés enregistrés sur le serveur"));
+    }
+
+
+    // Fill defaultDirectoriesModel with some directories
+    Directory downloads = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
+                QStandardPaths::displayName(QStandardPaths::DownloadLocation),
+                "downloadsDirectory.png",
+                "Dossier contenant les fichiers téléchargés");
+    Directory documents = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
+                "documentsDirectory.png",
+                "Dossier contenant les documents de la session");
+    Directory desktop = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+                QStandardPaths::displayName(QStandardPaths::DesktopLocation),
+                "defaultDirectory.png",
+                "");
+
+    defaultDirectoriesModel->addDirectory(documents);
+    defaultDirectoriesModel->addDirectory(desktop);
+    defaultDirectoriesModel->addDirectory(downloads);
 
     QScreen* scsreen = app.primaryScreen();
 
@@ -99,10 +154,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
 
-
-
-
-    modelCategorie->addCategorie(Categorie("1", "Défaut"));
+    modelCategorie->addCategorie(Categorie("1", "Default"));
 
     QJsonParseError err;
 
@@ -162,8 +214,8 @@ int main(int argc, char *argv[])
         qInfo() << "Icon ::: " << icon;
         qInfo() << "Path ::: " << path;
         // We use a temp category, as we didn't have them right now !
-        Application app = Application(name, icon, path, "Défaut");
-        model->addApplication(app);
+        Application app = Application(name, icon, path, "Default");
+        modelApplication->addApplication(app);
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
     }
@@ -189,8 +241,7 @@ int main(int argc, char *argv[])
     }
 
     //ex->model = model;
-
-
+    myLog << "The end" << endl;
 
 
     return app.exec();

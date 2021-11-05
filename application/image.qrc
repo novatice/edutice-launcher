@@ -15,10 +15,28 @@
         <file>SFProDisplay-Semibold.ttf</file>
         <file>SFProDisplay-Bold.ttf</file>
         <file>SFProText-Medium.ttf</file>
-        <file>image.qrc</file>
         <file>icon_espacetravail.png</file>
         <file>icon_group.png</file>
         <file>windows_app_icon.png</file>
         <file>linux_app_icon.png</file>
+        <file>burgerMenuIcon.svg</file>
+        <file>accueil-interface.png</file>
+        <file>app2_ew.png</file>
+        <file>assistance-telephonique-2_dz.png</file>
+        <file>cadenas-verrouille_dn.png</file>
+        <file>deconnexion.png</file>
+        <file>lhorloge-2.png</file>
+        <file>linternet-2.png</file>
+        <file>miniatureinfra_ep.png</file>
+        <file>miniatureinfra_ex.png</file>
+        <file>notification.png</file>
+        <file>profile-user_dp.png</file>
+        <file>accueil-interface@2x.png</file>
+        <file>n_tv-a-ecran-plat.png</file>
+        <file>partage-de-fichiers@2x.png</file>
+        <file>informations.png</file>
+        <file>downloadsDirectory.png</file>
+        <file>defaultDirectory.png</file>
+        <file>documentsDirectory.png</file>
     </qresource>
 </RCC>

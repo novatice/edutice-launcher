@@ -22,6 +22,15 @@ QString Execution::launch(const QString &program)
     return "";
 }
 
+QString Execution::open(const QString &path)
+{
+    qInfo() << "In execution open with " << path;
+
+    QDesktopServices::openUrl(path);
+
+    return "";
+}
+
 void Execution::lockScreen()
 {
     QString l = "";
@@ -31,7 +40,7 @@ void Execution::lockScreen()
     l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
 #endif
 #ifdef _WIN32
-            l = "rundll32.exe user32.dll,LockWorkStation";
+    l = "rundll32.exe user32.dll,LockWorkStation";
 #endif
     m_process->startDetached(l);
     m_process->waitForFinished(-1);
