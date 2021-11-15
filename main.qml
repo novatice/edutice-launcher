@@ -38,9 +38,7 @@ ApplicationWindow {
     Connections {
         target: Qt.application
         onStateChanged: {
-            if (Qt.application.state === Qt.ApplicationInactive) {
-                mainAppliWindow.visible = false
-            } else if (Qt.application.state === Qt.ApplicationActive) {
+            if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.visible = true
             }
         }
@@ -405,8 +403,7 @@ ApplicationWindow {
             Item {
                 id: actionsLayout
                 width: parent.width
-                Layout.fillHeight: true
-                Layout.preferredWidth: parent.width
+                height: parent.height - 200
 
                 RowLayout {
                     width: parent.width
@@ -806,7 +803,7 @@ ApplicationWindow {
                             width: parent.parent.width * (8/24)
                             Layout.leftMargin: parent.parent.width * (1/24)
                             Layout.rightMargin: parent.parent.width * (1/24)
-                            Layout.fillHeight: true
+                            height: parent.height
 
                             Rectangle {
                                 radius: 50
@@ -817,18 +814,18 @@ ApplicationWindow {
                             }
 
                             ColumnLayout {
-                                width: parent.width - 100
-                                height: parent.height - 100
+                                height: parent.height - parent.height / 15
+                                width: parent.width - parent.height / 15
 
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
-                                spacing: 40
+                                spacing: parent.height * (1/30)
 
                                 // Conteneur titre "Applications"
                                 Item {
                                     width: parent.width
-                                    height: 80
+                                    height: parent.height * (2/30) < 50 ? 50 : parent.height * (2/30)
                                     Rectangle {
                                         id: applicationsColumnIcon
                                         color: "steelblue"
@@ -837,8 +834,8 @@ ApplicationWindow {
                                         radius: 5
                                         Image {
                                             source: "app2_ew.png"
-                                            width: 50
-                                            height: 50
+                                            width: parent.width * (6/10)
+                                            height: parent.height * (6/10)
                                             anchors.verticalCenter: parent.verticalCenter
                                             anchors.horizontalCenter: parent.horizontalCenter
                                         }
@@ -852,13 +849,13 @@ ApplicationWindow {
                                         Text {
                                             id: appTitle
                                             text: "APPLICATIONS"
-                                            font.pointSize: 20
+                                            font.pointSize: parent.parent.height * (1/3)
                                             font.family: mainFont.name
                                             color: theme.mainTitleColor
                                         }
                                         Text {
                                             anchors.top: appTitle.bottom
-                                            font.pointSize: 10
+                                            font.pointSize: parent.parent.height * (1/6)
                                             font.family: mainFont.name
                                             text: qsTr(modelApplication.rowCount() + " applications disponibles")
                                             color: "grey"
@@ -921,7 +918,7 @@ ApplicationWindow {
                                                 id: applicationDelegate
 
                                                 Item {
-                                                    height: 80
+                                                    height: 60
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -957,7 +954,7 @@ ApplicationWindow {
 
                                                         Text {
                                                             id: applicationName
-                                                            font.pointSize: 12
+                                                            font.pointSize: parent.parent.height * (1/5)
                                                             font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
@@ -980,6 +977,7 @@ ApplicationWindow {
                                                         onClicked: {
                                                             if (mouse.button === Qt.LeftButton) {
                                                                 execution.launch(src)
+                                                                mainAppliWindow.visible = false
                                                             }
                                                         }
                                                         onEntered: {
@@ -1012,7 +1010,7 @@ ApplicationWindow {
                     Item {
                             id: files
                             width: parent.parent.width * (6/24)
-                            Layout.fillHeight: true
+                            height: parent.height
                             anchors.leftMargin: parent.parent.width * (2/24)
 
                             Rectangle {
@@ -1024,15 +1022,15 @@ ApplicationWindow {
                             }
 
                             ColumnLayout {
-                                width: parent.width - 100
-                                height: parent.height - 100
-                                spacing: 40
+                                width: parent.width - parent.height / 15
+                                height: parent.height - parent.height / 15
+                                spacing: parent.height * (1/30)
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 // Conteneur titre "FICHIERS"
                                 Item {
-                                    height: 80
+                                    height: parent.height * (2/30) < 50 ? 50 : parent.height * (2/30)
                                     width: parent.width
                                     Rectangle {
                                         id: fileIcon
@@ -1042,8 +1040,8 @@ ApplicationWindow {
                                         radius: 5
                                         Image {
                                             source: "partage-de-fichiers@2x.png"
-                                            width: 50
-                                            height: 50
+                                            width: parent.height * (6/10)
+                                            height: parent.height * (6/10)
                                             anchors.verticalCenter: parent.verticalCenter
                                             anchors.horizontalCenter: parent.horizontalCenter
                                         }
@@ -1057,13 +1055,13 @@ ApplicationWindow {
                                         Text {
                                             id: fileText
                                             text: "FICHIERS"
-                                            font.pointSize: 20
+                                            font.pointSize: parent.parent.height * (1/3)
                                             font.family: mainFont.name
                                             color: theme.mainTitleColor
                                         }
                                         Text {
                                             anchors.top: fileText.bottom
-                                            font.pointSize: 10
+                                            font.pointSize: parent.parent.height * (1/6)
                                             font.family: mainFont.name
                                             text: qsTr((defaultDirectoriesModel.rowCount() + mountedDirectoriesModel.rowCount()) + " dossiers accessibles")
                                             color: "grey"
@@ -1136,7 +1134,7 @@ ApplicationWindow {
                                                 id: mountedDirectoriesDelegate
 
                                                 Item {
-                                                    height: 80
+                                                    height: 60
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -1179,14 +1177,14 @@ ApplicationWindow {
 
                                                         Text {
                                                             id: mountedDirectoriessName
-                                                            font.pointSize: 12
+                                                            font.pointSize: parent.parent.height * (1/5)
                                                             font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
                                                         Text {
                                                             anchors.bottom: parent.bottom
                                                             text: qsTr(description)
-                                                            font.pointSize: 8
+                                                            font.pointSize: parent.parent.height * (1/7)
                                                             font.family: mainFont.name
                                                             color: "grey"
                                                         }
@@ -1201,6 +1199,7 @@ ApplicationWindow {
                                                         onClicked: {
                                                             if (mouse.button === Qt.LeftButton) {
                                                                 execution.open(path)
+                                                                mainAppliWindow.visible = false
                                                             }
                                                         }
                                                         onEntered: {
@@ -1292,7 +1291,7 @@ ApplicationWindow {
                                                 id: defaultFilesDelegate
 
                                                 Item {
-                                                    height: 80
+                                                    height: 60
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -1335,14 +1334,14 @@ ApplicationWindow {
 
                                                         Text {
                                                             id: defaultFilesName
-                                                            font.pointSize: 12
+                                                            font.pointSize: parent.parent.height * (1/5)
                                                             font.family: mainFont.name
                                                             text: qsTr(name)
                                                         }
                                                         Text {
                                                             anchors.bottom: parent.bottom
                                                             text: qsTr(description)
-                                                            font.pointSize: 8
+                                                            font.pointSize: parent.parent.height * (1/7)
                                                             font.family: mainFont.name
                                                             color: "grey"
                                                         }
@@ -1357,6 +1356,7 @@ ApplicationWindow {
                                                         onClicked: {
                                                             if (mouse.button === Qt.LeftButton) {
                                                                 execution.open(path)
+                                                                mainAppliWindow.visible = false
                                                             }
                                                         }
                                                         onEntered: {
@@ -1512,6 +1512,7 @@ ApplicationWindow {
                                         onClicked:
                                         {
                                             execution.lockScreen();
+                                            mainAppliWindow.visible = false
                                         }
                                     }
                                 }
@@ -1646,8 +1647,13 @@ ApplicationWindow {
                         source: "deconnexion.png"
                         anchors.verticalCenter: parent.verticalCenter
                         opacity: 1
-                        height: 30 //parent.height - platformStyle.paddingMedium * 2
-                        width: 30 //parent.height - platformStyle.paddingMedium * 2
+                        height: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
+                        width: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
+                    }
+                    ColorOverlay {
+                        anchors.fill: logoffWindowTitleIcon
+                        source: logoffWindowTitleIcon
+                        color: "white"
                     }
 
                     Text {
@@ -1655,7 +1661,8 @@ ApplicationWindow {
                         anchors.leftMargin: 10
                         anchors.verticalCenter: parent.verticalCenter
                         text: qsTr("Déconnexion")
-                        font.pointSize: 20
+                        font.pointSize: parent.height * (3/7)
+                        font.family: mainFont.name
                         color: "white"
                     }
                 }
@@ -1666,7 +1673,6 @@ ApplicationWindow {
                     width: parent.width
                     anchors.top: logoffWindowTitle.bottom
 
-
                     Item {
                         width: parent.width * (7/10)
                         height: parent.height * (7/10)
@@ -1674,16 +1680,17 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
 
                         Text {
-                            text: qsTr("Avez-vous pensé à enregristrer votre travail ?")
-                            font.pointSize: 15
-                            anchors.verticalCenter: parent.verticalCenter
+                            text: qsTr("Avez-vous pensé à enregistrer votre travail ?")
+                            font.pointSize: parent.height / 10
+                            anchors.top: parent.top
+                            anchors.topMargin: (parent.height * (4/5) - height) / 2
                             anchors.horizontalCenter: parent.horizontalCenter
                         }
 
                         Item {
                             id: cancelLogoff
-                            width: parent.width / 4
-                            height: parent.height / 6
+                            width: parent.width * (2/5)
+                            height: parent.height * (1/5)
                             anchors.bottom: parent.bottom
                             anchors.left: parent.left
 
@@ -1695,7 +1702,7 @@ ApplicationWindow {
                                 border.color: "grey"
                                 border.width: 1
 
-                                // These are changing when hovered
+                                // the following properties are changed when hovered
                                 color: "transparent"
 
                                 MouseArea {
@@ -1726,8 +1733,8 @@ ApplicationWindow {
 
                         Item {
                             id: confirmLogoff
-                            width: parent.width / 4
-                            height: parent.height / 6
+                            width: parent.width * (2/5)
+                            height: parent.height * (1/5)
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
 
