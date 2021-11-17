@@ -133,38 +133,23 @@ ApplicationWindow {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            //cursorShape: Qt.PointingHandCursor
+                            cursorShape: Qt.PointingHandCursor
                             hoverEnabled: true
                             onEntered: {
                                 informationsBack.color = "lightgrey"
-                                //informationsBack.color = "#518fdf"
+                                informationsBack.color = "#518fdf"
                                 informationsText.visible = true
-                                informationsTextComingSoon.visible = true
                             }
                             onExited: {
                                 informationsBack.color = "transparent"
                                 informationsText.visible = false
-                                informationsTextComingSoon.visible = false
                             }
-                        }
-
-                    }
-                    Rectangle {
-                        id: informationsTextComingSoon
-                        width: childrenRect.width + 8
-                        height: childrenRect.height + 8
-                        color: "lightyellow"
-                        border.color: "black"
-                        border.width: 1
-                        anchors.verticalCenter: informationsBack.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        visible: false
-                        Text {
-                            font.pointSize: 10
-                            color: "black"
-                            text: qsTr("Bientôt disponible")
-                            anchors.horizontalCenter : parent.horizontalCenter
-                            anchors.verticalCenter : parent.verticalCenter
+                            onClicked: {
+                                applications.visible = false
+                                files.visible = false
+                                logoffWindow.visible = false
+                                informationsWindow.visible = true
+                            }
                         }
                     }
                     Text {
@@ -600,22 +585,19 @@ ApplicationWindow {
                                     anchors.verticalCenter: parent.verticalCenter
                                     MouseArea {
                                         anchors.fill: parent
-                                        //cursorShape: Qt.PointingHandCursor
+                                        cursorShape: Qt.PointingHandCursor
                                         hoverEnabled: true
                                         onEntered: {
-                                            webpageBack.color = "lightgrey"
-                                            //webpageBack.color = "#518fdf"
+                                            webpageBack.color = "#518fdf"
                                             webpageText.visible = true
-                                            webpageTextComingSoon.visible = true
                                         }
                                         onExited: {
                                             webpageBack.color = "transparent"
                                             webpageText.visible = false
-                                            webpageTextComingSoon.visible = false
                                         }
                                         onClicked:
                                         {
-                                            //execution.disconnectScreen();
+                                            execution.open("http://");
                                         }
                                     }
                                 }
@@ -628,25 +610,6 @@ ApplicationWindow {
                                     opacity: 1
                                     height: 30 //parent.height - platformStyle.paddingMedium * 2
                                     width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: webpageTextComingSoon
-                                    width: childrenRect.width + 8
-                                    height: childrenRect.height + 8
-                                    color: "lightyellow"
-                                    border.color: "black"
-                                    border.width: 1
-                                    anchors.verticalCenter: webpageBack.verticalCenter
-                                    anchors.bottomMargin: 4
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Bientôt disponible")
-                                        anchors.horizontalCenter : parent.horizontalCenter
-                                        anchors.verticalCenter : parent.verticalCenter
-                                    }
                                 }
                                 Rectangle {
                                     id: webpageText
@@ -691,6 +654,7 @@ ApplicationWindow {
                                             applications.visible = true
                                             files.visible = true
                                             logoffWindow.visible = false
+                                            informationsWindow.visible = false
                                             //execution.disconnectScreen();
                                         }
                                     }
@@ -732,22 +696,19 @@ ApplicationWindow {
                                     anchors.verticalCenter: parent.verticalCenter
                                     MouseArea {
                                         anchors.fill: parent
-                                        //cursorShape: Qt.PointingHandCursor
+                                        cursorShape: Qt.PointingHandCursor
                                         hoverEnabled: true
                                         onEntered: {
-                                            novaticeBack.color = "lightgrey"
-                                            //novaticeBack.color = "#518fdf"
+                                            novaticeBack.color = "#518fdf"
                                             novaticeText.visible = true
-                                            novaticeTextComingSoon.visible = true
                                         }
                                         onExited: {
                                             novaticeBack.color = "transparent"
                                             novaticeText.visible = false
-                                            novaticeTextComingSoon.visible = false
                                         }
                                         onClicked:
                                         {
-                                            //execution.disconnectScreen();
+                                            execution.open("http://" + serverAddress + ":8080/edutice");
                                         }
                                     }
                                 }
@@ -759,25 +720,6 @@ ApplicationWindow {
                                     opacity: 1
                                     height: 30 //parent.height - platformStyle.paddingMedium * 2
                                     width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: novaticeTextComingSoon
-                                    width: childrenRect.width + 8
-                                    height: childrenRect.height + 8
-                                    color: "lightyellow"
-                                    border.color: "black"
-                                    border.width: 1
-                                    anchors.verticalCenter: novaticeBack.verticalCenter
-                                    anchors.bottomMargin: 4
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Bientôt disponible")
-                                        anchors.horizontalCenter : parent.horizontalCenter
-                                        anchors.verticalCenter : parent.verticalCenter
-                                    }
                                 }
                                 Rectangle {
                                     id: novaticeText
@@ -1563,7 +1505,7 @@ ApplicationWindow {
                                             applications.visible = false
                                             files.visible = false
                                             logoffWindow.visible = true
-                                            //execution.disconnectScreen();
+                                            informationsWindow.visible = false
                                         }
                                     }
                                 }
@@ -1598,14 +1540,12 @@ ApplicationWindow {
                 width: parent.width
 
                 Item {
-                    id: launcherVersion
                     anchors.bottom: parent.bottom
                     width: parent.width
 
                     Text {
-                        id: version
                         anchors.centerIn: parent
-                        text: qsTr("Version 2.0")
+                        text: qsTr("Version " + launcherVersion)
                     }
                 }
             }
@@ -1774,5 +1714,127 @@ ApplicationWindow {
                 }
             }
         }
+
+        // Informations window
+        Item {
+            id: informationsWindow
+
+            height: parent.height
+            width: parent.width * (18/24)
+            anchors.left: parent.left
+            anchors.leftMargin: parent.width * (3/24)
+            visible: false
+
+            Rectangle {
+                height: parent.height / 3
+                width: parent.width / 2
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                radius: 25
+                gradient: Gradient {
+                    GradientStop { position: 0; color: theme.mainTitleColor }
+                    GradientStop { position: 0.2; color: theme.mainTitleColor }
+                    GradientStop { position: 0.2001; color: "white" }
+                    GradientStop { position: 1; color: "white" }
+                }
+
+                Item {
+                    id: informationsWindowTitle
+                    height: parent.height / 5
+                    width: logoffWindowTitle.childrenRect.width
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Image {
+                        id: informationsWindowTitleIcon
+                        fillMode: Image.PreserveAspectFit
+                        source: "informations.png"
+                        anchors.verticalCenter: parent.verticalCenter
+                        opacity: 1
+                        height: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
+                        width: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
+                    }
+                    ColorOverlay {
+                        anchors.fill: informationsWindowTitleIcon
+                        source: informationsWindowTitleIcon
+                        color: "white"
+                    }
+
+                    Text {
+                        anchors.left: informationsWindowTitleIcon.right
+                        anchors.leftMargin: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: qsTr("Informations")
+                        font.pointSize: parent.height * (3/7)
+                        font.family: mainFont.name
+                        color: "white"
+                    }
+                }
+
+                Item {
+                    id: informationsWindowContent
+                    height: parent.height * (4/5)
+                    width: parent.width
+                    anchors.top: informationsWindowTitle.bottom
+
+                    Item {
+                        width: parent.width * (7/10)
+                        height: childrenRect.height
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        ColumnLayout {
+                            spacing: 0
+                            width: parent.width
+                            Item {
+                                width: parent.width
+                                height: parent.parent.parent.height * (1/6)
+                                Text {
+                                    anchors.right: parent.horizontalCenter
+                                    anchors.rightMargin: 10
+                                    text: qsTr("Version de l'agent")
+                                }
+                                Text {
+                                    anchors.left: parent.horizontalCenter
+                                    anchors.leftMargin: 10
+                                    color: "grey"
+                                    text: qsTr(agentVersion)
+                                }
+                            }
+                            Item {
+                                width: parent.width
+                                height: parent.parent.parent.height * (1/6)
+                                Text {
+                                    anchors.right: parent.horizontalCenter
+                                    anchors.rightMargin: 10
+                                    text: qsTr("Version de l'OS")
+                                }
+                                Text {
+                                    anchors.left: parent.horizontalCenter
+                                    anchors.leftMargin: 10
+                                    color: "grey"
+                                    text: qsTr(OSVersion)
+                                }
+                            }
+                            Item {
+                                width: parent.width
+                                height: parent.parent.parent.height * (1/6)
+                                Text {
+                                    anchors.right: parent.horizontalCenter
+                                    anchors.rightMargin: 10
+                                    text: qsTr("Version du lanceur d'applications")
+                                }
+                                Text {
+                                    anchors.left: parent.horizontalCenter
+                                    anchors.leftMargin: 10
+                                    color: "grey"
+                                    text: qsTr(launcherVersion)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

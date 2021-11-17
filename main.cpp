@@ -180,6 +180,18 @@ int main(int argc, char *argv[])
     QJsonValue terminal = d.object().value("terminal");
     qInfo() << "terminal :: " << terminal.toString();
 
+    QJsonValue agentVersion = d.object().value("agentVersion");
+    engine.rootContext()->setContextProperty("agentVersion", agentVersion);
+
+    QJsonValue OSVersion = d.object().value("OSVersion");
+    engine.rootContext()->setContextProperty("OSVersion", OSVersion);
+
+    QJsonValue launcherVersion = d.object().value("launcherVersion");
+    engine.rootContext()->setContextProperty("launcherVersion", launcherVersion);
+
+    QJsonValue serverAddress = d.object().value("serverAddress");
+    engine.rootContext()->setContextProperty("serverAddress", serverAddress);
+
     QJsonValue username = d.object().value("username");
     qInfo() << "username :: " << username.toString();
     engine.rootContext()->setContextProperty("username", username.toString());
