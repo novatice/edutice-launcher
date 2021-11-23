@@ -51,7 +51,7 @@ void Execution::disconnectScreen()
     QString l = "";
 #ifdef linux
     // todo: replace qdbus command by "pure" Qt DBus code
-    l = "qdbus org.kde.ksmserver /KSMServer logout 1 0 0"; // first parameter =1 means "wait for confirmation"
+    l = "qdbus org.kde.ksmserver /KSMServer logout 0 0 0";
 #endif
 #ifdef _WIN32
     l = "shutdown -L";
