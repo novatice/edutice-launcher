@@ -192,9 +192,14 @@ int main(int argc, char *argv[])
     QJsonValue serverAddress = d.object().value("serverAddress");
     engine.rootContext()->setContextProperty("serverAddress", serverAddress);
 
-    QJsonValue username = d.object().value("username");
-    qInfo() << "username :: " << username.toString();
-    engine.rootContext()->setContextProperty("username", username.toString());
+    engine.rootContext()->setContextProperty(
+                "username",
+            #ifdef WIN32
+                qgetenv("USERNAME")
+            #else
+                qgetenv("USER")
+            #endif
+                );
 
     QJsonObject workspace = d.object().value("workspace").toObject();
     QString workspaceName = workspace.value("name").toString();
