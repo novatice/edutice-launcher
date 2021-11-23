@@ -1,3 +1,6 @@
+VERSION=6.3.0
+DEFINES += VERSION=\"\\\"$$VERSION\\\"\"
+
 QT += quick
 CONFIG += c++11
 

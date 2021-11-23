@@ -186,8 +186,7 @@ int main(int argc, char *argv[])
     QJsonValue OSVersion = d.object().value("OSVersion");
     engine.rootContext()->setContextProperty("OSVersion", OSVersion);
 
-    QJsonValue launcherVersion = d.object().value("launcherVersion");
-    engine.rootContext()->setContextProperty("launcherVersion", launcherVersion);
+    engine.rootContext()->setContextProperty("launcherVersion", VERSION);
 
     QJsonValue serverAddress = d.object().value("serverAddress");
     engine.rootContext()->setContextProperty("serverAddress", serverAddress);
