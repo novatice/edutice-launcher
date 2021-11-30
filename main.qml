@@ -354,20 +354,21 @@ ApplicationWindow {
                             Layout.preferredHeight: parent.height
                             TextField {
                                 id: searchText
-                                placeholderText: qsTr("Rechercher...")
+                                placeholderText: qsTr("Rechercher une application...")
                                 color: theme.mainTextColor
                                 opacity: 0.3
                                 font.pointSize: 30
                                 anchors.verticalCenter: parent.verticalCenter
                                 font.bold: true
                                 font.family: mainFont.name
+                                onTextChanged: {
+                                    delegateModel.update()
+                                    console.log(searchText.text)
+                                }
+
                                 property var timerUpdate: null
                                 background: Item {
                                     opacity: 0
-                                }
-
-                                onTextChanged: {
-                                    timerText.restart()
                                 }
                                 Timer {
                                     id: timerText
@@ -856,10 +857,34 @@ ApplicationWindow {
                                                 }
                                             }
 
-                                            Component {
-                                                id: applicationDelegate
+                                            SortFilterModel {
+                                                id: delegateModel
+                                                model: modelApplication
 
-                                                Item {
+                                                lessThan: function(left, right) {
+                                                    // Left name has pattern
+                                                    var lnhp = left.name.toLowerCase().includes(searchText.text.toLowerCase());
+                                                    // Right name has pattern
+                                                    var rnhp = left.name.toLowerCase().includes(searchText.text.toLowerCase());
+
+                                                    // Left description has pattern
+                                                    //var ldhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
+                                                    // Right description has pattern
+                                                    //var rdhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
+
+                                                    if (lnhp && !rnhp)
+                                                        return -1;
+                                                    if (rnhp && !lnhp)
+                                                        return 1;
+
+                                                    return left.name < right.name ? -1 : 1;
+                                                }
+
+                                                filterAcceptsItem: function(item) {
+                                                    return item.name.toLowerCase().includes(searchText.text.toLowerCase());
+                                                }
+
+                                                delegate : Item {
                                                     height: 60
                                                     width: parent.parent.width
 
@@ -938,8 +963,7 @@ ApplicationWindow {
                                                 id: applicationsList
                                                 anchors.fill: parent
                                                 property bool first: true
-                                                delegate: applicationDelegate
-                                                model: modelApplication
+                                                model: delegateModel
                                             }
                                         }
                                     }
