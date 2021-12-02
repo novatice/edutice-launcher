@@ -68,11 +68,6 @@ int main(int argc, char *argv[])
 #ifdef linux
     catchUnixSignals({SIGHUP});
 #endif
-
-    QFile myFile("C:/Users/dev/Documents/Qtlog.txt");
-    myFile.open(QIODevice::WriteOnly);
-    QTextStream myLog(&myFile);
-    myLog << "Beginning" << endl;
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -142,15 +137,21 @@ int main(int argc, char *argv[])
     defaultDirectoriesModel->addDirectory(desktop);
     defaultDirectoriesModel->addDirectory(downloads);
 
-    QScreen* scsreen = app.primaryScreen();
+    QScreen* screen = app.primaryScreen();
 
     QPoint globalCursorPos = QCursor::pos();
     QScreen* mouseScreen = app.screenAt(globalCursorPos);
-    QSize screenSize = scsreen->availableSize();
+    QSize screenSize = screen->availableSize();
+
+    // Create a value for SideMenu width that is fixed
+    int SideMenuWidth = screenSize.width() / 24;
 
     engine.rootContext()->setContextProperty("screenWidth", screenSize.width());
     engine.rootContext()->setContextProperty("screenHeight", screenSize.height());
     engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
+
+    qInfo() << "screen width" << screenSize.width() << endl;
+    qInfo() << "side menu width" << SideMenuWidth << endl;
 
     qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
 
@@ -234,8 +235,6 @@ int main(int argc, char *argv[])
     QObject *rect = (engine.rootObjects().first())->findChild<QObject*>("execution");
     Execution* ex = (qobject_cast<Execution*>(rect));
 
-
-
     if (rect)
     {
         if( QWindow* window = qobject_cast<QWindow*>( engine.rootObjects().at(0) ) )
@@ -246,10 +245,6 @@ int main(int argc, char *argv[])
             }
         }
     }
-
-    //ex->model = model;
-    myLog << "The end" << endl;
-
 
     return app.exec();
 }

@@ -24,6 +24,10 @@ ApplicationWindow {
         width: parent.width
     }
 
+    onBeforeRendering: {
+        console.log("Screen is " + screenWidth + "x" + screenHeight)
+    }
+
     Connections {
         target: Qt.application
         onStateChanged: {
@@ -42,9 +46,6 @@ ApplicationWindow {
         property string mainLineColor: mainTextColor
         property string backgroundColor: "white"
         property real mainOpacity: 0
-
-        property var appliBackgroundG1
-        property var appliBackgroundG2
     }
 
     FontLoader {
@@ -156,13 +157,13 @@ ApplicationWindow {
             Item {
                 id: actionsLayout
                 width: parent.width
-                height: parent.height * (15/20)
+                height: sizeUnit.heightUnit * 19
 
                 RowLayout {
                     width: parent.width
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: sizeUnit.widthUnit
+                    spacing: sizeUnit.widthUnit * 2
 
 
                     // LEFT SIDEBAR
@@ -225,8 +226,6 @@ ApplicationWindow {
                     Item {
                             id: applications
                             width: sizeUnit.widthUnit * 8
-                            Layout.leftMargin: sizeUnit.widthUnit
-                            Layout.rightMargin: sizeUnit.widthUnit
                             height: parent.height
 
                             Rectangle {
@@ -238,18 +237,18 @@ ApplicationWindow {
                             }
 
                             ColumnLayout {
-                                height: parent.height - parent.height / 15
-                                width: parent.width - parent.height / 15
+                                height: parent.height - sizeUnit.heightUnit
+                                width: parent.width - sizeUnit.heightUnit
 
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
-                                spacing: parent.height * (1/30)
+                                spacing: sizeUnit.heightUnit
 
                                 // Conteneur titre "Applications"
                                 Item {
                                     width: parent.width
-                                    height: parent.height * (2/30) < 50 ? 50 : parent.height * (2/30)
+                                    height: sizeUnit.heightUnit * 1.5
                                     Rectangle {
                                         id: applicationsColumnIcon
                                         color: "steelblue"
@@ -366,7 +365,7 @@ ApplicationWindow {
                                                 }
 
                                                 delegate : Item {
-                                                    height: sizeUnit.heightUnit
+                                                    height: sizeUnit.heightUnit * 1.5
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -469,15 +468,15 @@ ApplicationWindow {
                             }
 
                             ColumnLayout {
-                                width: parent.width - parent.height / 15
-                                height: parent.height - parent.height / 15
-                                spacing: parent.height * (1/30)
+                                width: parent.width - sizeUnit.heightUnit
+                                height: parent.height - sizeUnit.heightUnit
+                                spacing: sizeUnit.heightUnit
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.verticalCenter: parent.verticalCenter
 
                                 // Conteneur titre "FICHIERS"
                                 Item {
-                                    height: parent.height * (2/30) < 50 ? 50 : parent.height * (2/30)
+                                    height: sizeUnit.heightUnit * 1.5
                                     width: parent.width
                                     Rectangle {
                                         id: fileIcon
@@ -581,7 +580,7 @@ ApplicationWindow {
                                                 id: mountedDirectoriesDelegate
 
                                                 Item {
-                                                    height: mainAppliWindow.height / 20
+                                                    height: sizeUnit.heightUnit * 1.5
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -738,7 +737,7 @@ ApplicationWindow {
                                                 id: defaultFilesDelegate
 
                                                 Item {
-                                                    height: mainAppliWindow.height / 20
+                                                    height: sizeUnit.heightUnit * 1.5
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -840,7 +839,6 @@ ApplicationWindow {
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
                         Layout.maximumHeight: parent.height * (4/10)
-                        Layout.leftMargin: sizeUnit.widthUnit
                         Layout.rightMargin: sizeUnit.widthUnit
 
                         Rectangle {
