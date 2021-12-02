@@ -29,7 +29,6 @@ public:
     Q_INVOKABLE void lockScreen();
     Q_INVOKABLE void disconnectScreen();
     Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat);
-    Q_INVOKABLE QString getTimeRemaining(int interval);
     //void setTimeR(char* time);
     QQmlContext *ctxt;
     AppModel* model;

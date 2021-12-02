@@ -7,5 +7,6 @@
         <file>SwipeFilterModel.qml</file>
         <file>Categories.qml</file>
         <file>Info.qml</file>
+        <file>SideBarIcon.qml</file>
     </qresource>
 </RCC>

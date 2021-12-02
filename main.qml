@@ -24,17 +24,6 @@ ApplicationWindow {
         width: parent.width
     }
 
-    Timer {
-        id: timer
-    }
-
-    function delay(delayTime, cb) {
-        timer.interval = delayTime
-        timer.repeat = false
-        timer.triggered.connect(cb)
-        timer.start()
-    }
-
     Connections {
         target: Qt.application
         onStateChanged: {
@@ -84,6 +73,13 @@ ApplicationWindow {
         height: mainAppliWindow.height - 50
         anchors.horizontalCenter: parent.horizontalCenter
 
+
+        Item {
+            id: sizeUnit
+            property real widthUnit: parent.width / 24
+            property real heightUnit: parent.height / 24
+        }
+
         Image {
             id: novaticeIcon
             fillMode: Image.PreserveAspectFit
@@ -92,310 +88,81 @@ ApplicationWindow {
             width: parent.height * (2/24)
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.leftMargin: parent.width * (1/24)
-            anchors.topMargin: parent.width * (1/24)
-        }
-
-        Item {
-            id: sessionInfo
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width * (2/24)
-            height: parent.width * (1/24)
-            width: parent.width * (4/24)
-
-            RowLayout {
-                width: parent.width
-                height: parent.height
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: 0
-
-                Item {
-                    width: parent.width / 5
-                    height: parent.height
-
-                    Rectangle {
-                        id: informationsBack
-                        color: "transparent"
-                        width: 50
-                        height: 50
-                        radius: 25
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        Image {
-                            fillMode: Image.PreserveAspectFit
-                            source: "informations.png"
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            opacity: 1
-                            height: 30 //parent.height - platformStyle.paddingMedium * 2
-                            width: 30 //parent.height - platformStyle.paddingMedium * 2
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onEntered: {
-                                informationsBack.color = "lightgrey"
-                                informationsBack.color = "#518fdf"
-                                informationsText.visible = true
-                            }
-                            onExited: {
-                                informationsBack.color = "transparent"
-                                informationsText.visible = false
-                            }
-                            onClicked: {
-                                applications.visible = false
-                                files.visible = false
-                                logoffWindow.visible = false
-                                informationsWindow.visible = true
-                            }
-                        }
-                    }
-                    Text {
-                        id: informationsText
-                        font.pointSize: 10
-                        visible: false
-                        text: qsTr("Informations")
-                        anchors.top: informationsBack.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-
-                Item {
-                    width: parent.width / 5
-                    height: parent.height
-
-                    Rectangle {
-                        id: assistanceBack
-                        color: "transparent"
-                        width: 50
-                        height: 50
-                        radius: 25
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        Image {
-                            fillMode: Image.PreserveAspectFit
-                            source: "assistance-telephonique-2_dz.png"
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            opacity: 1
-                            height: 30 //parent.height - platformStyle.paddingMedium * 2
-                            width: 30 //parent.height - platformStyle.paddingMedium * 2
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            //cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onEntered: {
-                                assistanceBack.color = "lightgrey"
-                                //assistanceBack.color = "#518fdf"
-                                assistanceText.visible = true
-                                assistanceTextComingSoon.visible = true
-                            }
-                            onExited: {
-                                assistanceBack.color = "transparent"
-                                assistanceText.visible = false
-                                assistanceTextComingSoon.visible = false
-                            }
-                        }
-
-                    }
-                    Rectangle {
-                        id: assistanceTextComingSoon
-                        width: childrenRect.width + 8
-                        height: childrenRect.height + 8
-                        color: "lightyellow"
-                        border.color: "black"
-                        border.width: 1
-                        anchors.verticalCenter: assistanceBack.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        visible: false
-                        Text {
-                            font.pointSize: 10
-                            color: "black"
-                            text: qsTr("Bientôt disponible")
-                            anchors.horizontalCenter : parent.horizontalCenter
-                            anchors.verticalCenter : parent.verticalCenter
-                        }
-                    }
-                    Text {
-                        id: assistanceText
-                        font.pointSize: 10
-                        color: "black"
-                        visible: false
-                        text: qsTr("Demande d'assistance")
-                        anchors.top: assistanceBack.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-
-                Item {
-                    width: parent.width / 5
-                    height: parent.height
-
-                    Rectangle {
-                        id: clockBack
-                        color: "transparent"
-                        width: 50
-                        height: 50
-                        radius: 25
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        Image {
-                            fillMode: Image.PreserveAspectFit
-                            source: "lhorloge-2.png"
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            opacity: 1
-                            height: 30 //parent.height - platformStyle.paddingMedium * 2
-                            width: 30 //parent.height - platformStyle.paddingMedium * 2
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            //cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-                            onEntered: {
-                                clockBack.color = "lightgrey"
-                                //clockBack.color = "#518fdf"
-                                clockText.visible = true
-                                clockTextComingSoon.visible = true
-                            }
-                            onExited: {
-                                clockBack.color = "transparent"
-                                clockText.visible = false
-                                clockTextComingSoon.visible = false
-                            }
-                        }
-                    }
-                    Rectangle {
-                        id: clockTextComingSoon
-                        width: childrenRect.width + 8
-                        height: childrenRect.height + 8
-                        color: "lightyellow"
-                        border.color: "black"
-                        border.width: 1
-                        anchors.verticalCenter: clockBack.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        visible: false
-                        Text {
-                            font.pointSize: 10
-                            color: "black"
-                            text: qsTr("Bientôt disponible")
-                            anchors.horizontalCenter : parent.horizontalCenter
-                            anchors.verticalCenter : parent.verticalCenter
-                        }
-                    }
-                    Text {
-                        id: clockText
-                        font.pointSize: 10
-                        color: "black"
-                        visible: false
-                        text: qsTr("Temps restant")
-                        anchors.top: clockBack.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-            }
+            anchors.leftMargin: sizeUnit.widthUnit
+            anchors.topMargin: sizeUnit.widthUnit
         }
 
         ColumnLayout {
             width: parent.width
             height: parent.height
+            spacing: sizeUnit.heightUnit
 
             Item {
                 id: search
                 width: parent.width
                 Layout.alignment: Qt.AlignHCenter
-                height: 50
-                Layout.topMargin: 50
-                Layout.bottomMargin: 50
-                Item {
-                    //color:"blue"
+                height: parent.height / 20
+                Layout.topMargin: parent.height / 20
+
+                RowLayout {
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width
 
-                    RowLayout {
-                        height: parent.height
-                        anchors.horizontalCenter: parent.horizontalCenter
+                    Item {
+                        Layout.preferredHeight: parent.height
+                        width: parent.height
+                        //color:"red"
 
-
-                        Item {
-                            Layout.preferredHeight: parent.height
-                            width: 50
-                            //color:"red"
-
-                            Image {
-                                id: iconSearchtext
-                                smooth: true
-                                fillMode: Image.PreserveAspectFit
-                                asynchronous: true
-                                source: "search.png"
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.verticalCenter: parent.verticalCenter
-                                opacity: 0.15
-                                height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                width: 30 //parent.height - platformStyle.paddingMedium * 2
-                            }
-                            ColorOverlay {
-                                anchors.fill: iconSearchtext
-                                source: iconSearchtext
-                                color: theme.mainTextColor
-                                opacity: 0.15
-                            }
+                        Image {
+                            id: iconSearchtext
+                            smooth: true
+                            fillMode: Image.PreserveAspectFit
+                            asynchronous: true
+                            source: "search.png"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            opacity: 0.15
+                            height: parent.height / 2
+                            width: parent.height / 2
                         }
-                        Item {
-                            width: 600
-                            //color:"green"
-                            Layout.preferredHeight: parent.height
-                            TextField {
-                                id: searchText
-                                placeholderText: qsTr("Rechercher une application...")
-                                color: theme.mainTextColor
-                                opacity: 0.3
-                                font.pointSize: 30
-                                anchors.verticalCenter: parent.verticalCenter
-                                font.bold: true
-                                font.family: mainFont.name
-                                onTextChanged: {
-                                    delegateModel.update()
-                                    console.log(searchText.text)
-                                }
+                        ColorOverlay {
+                            anchors.fill: iconSearchtext
+                            source: iconSearchtext
+                            color: theme.mainTextColor
+                            opacity: 0.15
+                        }
+                    }
+                    TextField {
+                        id: searchText
+                        placeholderText: qsTr("Rechercher une application...")
+                        color: theme.mainTextColor
+                        opacity: 0.3
+                        font.pointSize: parent.height / 2
+                        Layout.alignment: Qt.AlignVCenter
+                        font.bold: true
+                        font.family: mainFont.name
+                        onTextChanged: {
+                            delegateModel.update()
+                        }
 
-                                property var timerUpdate: null
-                                background: Item {
-                                    opacity: 0
-                                }
-                                Timer {
-                                    id: timerText
-                                    interval: 150
-                                    repeat: false
-                                    onTriggered: {
-                                        console.log("ede")
-                                        tr.animations = animationN
-                                        sortFilterModel.update()
-                                    }
-                                }
-                            }
+                        background: Item {
+                            opacity: 0
                         }
                     }
                 }
+
             }
 
             Item {
                 id: actionsLayout
                 width: parent.width
-                height: parent.height - 200
+                height: parent.height * (15/20)
 
                 RowLayout {
                     width: parent.width
                     height: parent.height
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: parent.width * (1/24)
+                    spacing: sizeUnit.widthUnit
 
 
                     // LEFT SIDEBAR
@@ -403,13 +170,13 @@ ApplicationWindow {
 
                         id: novacolumn
                         objectName: "novacolumn"
-                        width: parent.width * (1/24)
-                        Layout.leftMargin: parent.width * (1/24)
+                        width: sizeUnit.widthUnit
+                        Layout.leftMargin: sizeUnit.widthUnit
                         Layout.fillHeight: true
-                        Layout.maximumHeight: parent.height * (7/10)
+                        Layout.maximumHeight: parent.height * (5/10)
 
                         Rectangle {
-                            radius: 50
+                            radius: sizeUnit.widthUnit / 2
                             color: "white"
                             opacity: 0.5
                             width: parent.width
@@ -422,318 +189,32 @@ ApplicationWindow {
                             anchors.horizontalCenter: parent.horizontalCenter
                             spacing: 0
 
-                            Item {
-                                id: menu
-                                Layout.preferredHeight: parent.height / 5
-                                width: parent.width
-                                Rectangle {
-                                    id: menuBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        //cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            menuBack.color = "lightgrey"
-                                            //menuBack.color = "#518fdf"
-                                            menuText.visible = true
-                                            menuTextComingSoon.visible = true
-                                        }
-                                        onExited: {
-                                            menuBack.color = "transparent"
-                                            menuText.visible = false
-                                            menuTextComingSoon.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            //execution.disconnectScreen();
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "burgerMenuIcon.svg"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: menuTextComingSoon
-                                    width: childrenRect.width + 8
-                                    height: childrenRect.height + 8
-                                    color: "lightyellow"
-                                    border.color: "black"
-                                    border.width: 1
-                                    anchors.verticalCenter: menuBack.verticalCenter
-                                    anchors.bottomMargin: 4
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Bientôt disponible")
-                                        anchors.horizontalCenter : parent.horizontalCenter
-                                        anchors.verticalCenter : parent.verticalCenter
-                                    }
-                                }
-                                Rectangle {
-                                    id: menuText
-                                    width: childrenRect.width
-                                    height: childrenRect.height
-                                    anchors.top: menuBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Menu")
-                                    }
+
+                            SideBarIcon {
+                                label: "Navigateur"
+                                icon: "linternet-2.png"
+                                siblings: 3
+                                onAction: {
+                                    execution.open("http://");
                                 }
                             }
-                            Item {
-                                id: notifications
-                                Layout.preferredHeight: parent.height / 5
-                                width: parent.width
-                                Rectangle {
-                                    id: notificationsBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        //cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            notificationsBack.color = "lightgrey"
-                                            //notificationsBack.color = "#518fdf"
-                                            notificationsText.visible = true
-                                            notificationsTextComingSoon.visible = true
-                                        }
-                                        onExited: {
-                                            notificationsBack.color = "transparent"
-                                            notificationsText.visible = false
-                                            notificationsTextComingSoon.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            //execution.disconnectScreen();
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "notification.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: notificationsTextComingSoon
-                                    width: childrenRect.width + 8
-                                    height: childrenRect.height + 8
-                                    color: "lightyellow"
-                                    border.color: "black"
-                                    border.width: 1
-                                    anchors.verticalCenter: notificationsBack.verticalCenter
-                                    anchors.bottomMargin: 4
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Bientôt disponible")
-                                        anchors.horizontalCenter : parent.horizontalCenter
-                                        anchors.verticalCenter : parent.verticalCenter
-                                    }
-                                }
-                                Rectangle {
-                                    id: notificationsText
-                                    width: childrenRect.width
-                                    height: childrenRect.height
-                                    anchors.top: notificationsBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Notifications")
-                                    }
+                            SideBarIcon {
+                                label: "Applications"
+                                icon: "app2_ew.png"
+                                siblings: 3
+                                onAction: {
+                                    applications.visible = true
+                                    files.visible = true
+                                    logoffWindow.visible = false
+                                    informationsWindow.visible = false
                                 }
                             }
-                            Item {
-                                id: webpage
-                                Layout.preferredHeight: parent.height / 5
-                                width: parent.width
-                                Rectangle {
-                                    id: webpageBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            webpageBack.color = "#518fdf"
-                                            webpageText.visible = true
-                                        }
-                                        onExited: {
-                                            webpageBack.color = "transparent"
-                                            webpageText.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            execution.open("http://");
-                                        }
-                                    }
-                                }
-                                Image {
-                                    id: webpageIcon
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "linternet-2.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: webpageText
-                                    width: childrenRect.width
-                                    height: childrenRect.height
-                                    anchors.top: webpageBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Navigateur")
-                                    }
-                                }
-                            }
-                            Item {
-                                id: novaAppsIcon
-                                Layout.preferredHeight: parent.height / 5
-                                width: parent.width
-                                Rectangle {
-                                    id: novaAppsIconBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            novaAppsIconBack.color = "#518fdf"
-                                            novaAppsIconText.visible = true
-                                        }
-                                        onExited: {
-                                            novaAppsIconBack.color = "transparent"
-                                            novaAppsIconText.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            applications.visible = true
-                                            files.visible = true
-                                            logoffWindow.visible = false
-                                            informationsWindow.visible = false
-                                            //execution.disconnectScreen();
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "app2_ew.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: novaAppsIconText
-                                    width: childrenRect.width
-                                    height: childrenRect.height
-                                    anchors.top: novaAppsIconBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Applications")
-                                    }
-                                }
-                            }
-                            Item {
-                                id: novatice
-                                Layout.preferredHeight: parent.height / 5
-                                width: parent.width
-                                Rectangle {
-                                    id: novaticeBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            novaticeBack.color = "#518fdf"
-                                            novaticeText.visible = true
-                                        }
-                                        onExited: {
-                                            novaticeBack.color = "transparent"
-                                            novaticeText.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            execution.open("http://" + serverAddress + ":8080/edutice");
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "miniatureinfra_ex.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: novaticeText
-                                    width: childrenRect.width
-                                    height: childrenRect.height
-                                    anchors.top: novaticeBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        color: "black"
-                                        text: qsTr("Portail edutice")
-                                    }
+                            SideBarIcon {
+                                label: "Portail Edutice"
+                                icon: "miniatureinfra_ex.png"
+                                siblings: 3
+                                onAction: {
+                                    execution.open("http://" + serverAddress + ":8080/edutice");
                                 }
                             }
                         }
@@ -743,13 +224,13 @@ ApplicationWindow {
                     // APPLICATIONS
                     Item {
                             id: applications
-                            width: parent.parent.width * (8/24)
-                            Layout.leftMargin: parent.parent.width * (1/24)
-                            Layout.rightMargin: parent.parent.width * (1/24)
+                            width: sizeUnit.widthUnit * 8
+                            Layout.leftMargin: sizeUnit.widthUnit
+                            Layout.rightMargin: sizeUnit.widthUnit
                             height: parent.height
 
                             Rectangle {
-                                radius: 50
+                                radius: sizeUnit.widthUnit / 2
                                 color: "white"
                                 opacity: 0.5
                                 width: parent.width
@@ -885,7 +366,7 @@ ApplicationWindow {
                                                 }
 
                                                 delegate : Item {
-                                                    height: 60
+                                                    height: sizeUnit.heightUnit
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -975,12 +456,12 @@ ApplicationWindow {
                     // FICHIERS
                     Item {
                             id: files
-                            width: parent.parent.width * (6/24)
+                            width: sizeUnit.widthUnit * 6
                             height: parent.height
-                            anchors.leftMargin: parent.parent.width * (2/24)
+                            anchors.leftMargin: sizeUnit.widthUnit * 2
 
                             Rectangle {
-                                radius: 50
+                                radius: sizeUnit.widthUnit / 2
                                 color: "white"
                                 opacity: 0.7
                                 width: parent.width
@@ -1100,7 +581,7 @@ ApplicationWindow {
                                                 id: mountedDirectoriesDelegate
 
                                                 Item {
-                                                    height: 60
+                                                    height: mainAppliWindow.height / 20
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -1257,7 +738,7 @@ ApplicationWindow {
                                                 id: defaultFilesDelegate
 
                                                 Item {
-                                                    height: 60
+                                                    height: mainAppliWindow.height / 20
                                                     width: parent.parent.width
 
                                                     Rectangle {
@@ -1347,10 +828,7 @@ ApplicationWindow {
                                             }
                                         }
                                     }
-
                                 }
-
-
                             }
                         }
 
@@ -1358,15 +836,15 @@ ApplicationWindow {
                     // RIGHT SIDEBAR
                     Item {
                         id: sessionColumn
-                        width: parent.width * (1/24)
+                        width: sizeUnit.widthUnit
                         Layout.alignment: Qt.AlignRight
                         Layout.fillHeight: true
-                        Layout.maximumHeight: parent.height * (1/2)
-                        Layout.leftMargin: parent.width * (1/24)
-                        Layout.rightMargin: parent.width * (1/24)
+                        Layout.maximumHeight: parent.height * (4/10)
+                        Layout.leftMargin: sizeUnit.widthUnit
+                        Layout.rightMargin: sizeUnit.widthUnit
 
                         Rectangle {
-                            radius: 50
+                            radius: sizeUnit.widthUnit / 2
                             color: "white"
                             opacity: 0.7
                             width: parent.width
@@ -1379,177 +857,26 @@ ApplicationWindow {
                             anchors.horizontalCenter: parent.horizontalCenter
                             spacing: 0
 
-                            Item {
-                                id: avatar
-                                Layout.preferredHeight: parent.height / 3
-                                width: parent.width
-                                Rectangle {
-                                    id: avatarBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-
-                                    MouseArea {
-                                        id: avatarMouse
-                                        anchors.fill: parent
-                                        //cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            avatarBack.color = "lightgrey"
-                                            //avatarBack.color = "#518fdf"
-                                            avatarText.visible = true
-                                            avatarTextComingSoon.visible = true
-                                        }
-                                        onExited: {
-                                            avatarBack.color = "transparent"
-                                            avatarText.visible = false
-                                            avatarTextComingSoon.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            //execution.disconnectScreen();
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "profile-user_dp.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Rectangle {
-                                    id: avatarTextComingSoon
-                                    width: childrenRect.width + 8
-                                    height: childrenRect.height + 8
-                                    color: "lightyellow"
-                                    border.color: "black"
-                                    border.width: 1
-                                    anchors.bottom: avatarBack.top
-                                    anchors.bottomMargin: 4
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    visible: false
-                                    Text {
-                                        font.pointSize: 10
-                                        text: qsTr("Bientôt disponible")
-                                        anchors.horizontalCenter : parent.horizontalCenter
-                                        anchors.verticalCenter : parent.verticalCenter
-                                    }
-                                }
-                                Text {
-                                    id: avatarText
-                                    font.pointSize: 10
-                                    visible: false
-                                    text: qsTr("Mon profil")
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.top: avatarBack.bottom
+                            SideBarIcon {
+                                label: "Informations"
+                                icon: "informations.png"
+                                siblings: 2
+                                onAction: {
+                                    applications.visible = false
+                                    files.visible = false
+                                    logoffWindow.visible = false
+                                    informationsWindow.visible = true
                                 }
                             }
-
-                            Item {
-                                id: lock
-                                Layout.preferredHeight: parent.height / 3
-                                width: parent.width
-                                Rectangle {
-                                    id: lockBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            lockBack.color = "#518fdf"
-                                            lockText.color = "black"
-                                        }
-                                        onExited: {
-                                            lockBack.color = "transparent"
-                                            lockText.color = "transparent"
-                                        }
-                                        onClicked:
-                                        {
-                                            execution.lockScreen();
-                                            mainAppliWindow.visible = false
-                                        }
-                                    }
-                                }
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "cadenas-verrouille_dn.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Text {
-                                    id: lockText
-                                    font.pointSize: 10
-                                    color: "transparent"
-                                    text: qsTr("Verrouiller")
-                                    anchors.top: lockBack.bottom
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                            Item {
-                                id: logoff
-                                Layout.preferredHeight: parent.height / 3
-                                width: parent.width
-                                Rectangle {
-                                    id: logoffBack
-                                    color: "transparent"
-                                    width: 50
-                                    height: 50
-                                    radius: 25
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-                                        hoverEnabled: true
-                                        onEntered: {
-                                            logoffBack.color = "#518fdf"
-                                            logoffText.visible = true
-                                        }
-                                        onExited: {
-                                            logoffBack.color = "transparent"
-                                            logoffText.visible = false
-                                        }
-                                        onClicked:
-                                        {
-                                            applications.visible = false
-                                            files.visible = false
-                                            logoffWindow.visible = true
-                                            informationsWindow.visible = false
-                                        }
-                                    }
-                                }
-
-                                Image {
-                                    fillMode: Image.PreserveAspectFit
-                                    source: "deconnexion.png"
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    opacity: 1
-                                    height: 30 //parent.height - platformStyle.paddingMedium * 2
-                                    width: 30 //parent.height - platformStyle.paddingMedium * 2
-                                }
-                                Text {
-                                    id: logoffText
-                                    font.pointSize: 10
-                                    visible: false
-                                    text: qsTr("Se déconnecter")
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.top: logoffBack.bottom
+                            SideBarIcon {
+                                label: "Se déconnecter"
+                                icon: "deconnexion.png"
+                                siblings: 2
+                                onAction: {
+                                    applications.visible = false
+                                    files.visible = false
+                                    logoffWindow.visible = true
+                                    informationsWindow.visible = false
                                 }
                             }
                         }
@@ -1560,21 +887,16 @@ ApplicationWindow {
 
             Item {
                 id: footer
-                height: 50
                 width: parent.width
+                Layout.alignment: Qt.AlignHCenter
+                height: parent.height / 20
 
-                Item {
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: qsTr("Version " + launcherVersion)
-                    }
+                Text {
+                    anchors.centerIn: parent
+                    text: qsTr("Version " + launcherVersion)
                 }
             }
         }
-
 
         // LOGOFF
         Item {
@@ -1809,50 +1131,26 @@ ApplicationWindow {
                         ColumnLayout {
                             spacing: 0
                             width: parent.width
-                            Item {
-                                width: parent.width
-                                height: parent.parent.parent.height * (1/6)
-                                Text {
-                                    anchors.right: parent.horizontalCenter
-                                    anchors.rightMargin: 10
-                                    text: qsTr("Version de l'agent")
-                                }
-                                Text {
-                                    anchors.left: parent.horizontalCenter
-                                    anchors.leftMargin: 10
-                                    color: "grey"
-                                    text: qsTr(agentVersion)
-                                }
+
+                            Info {
+                                label: "Poste"
+                                value: qsTr(machine)
                             }
-                            Item {
-                                width: parent.width
-                                height: parent.parent.parent.height * (1/6)
-                                Text {
-                                    anchors.right: parent.horizontalCenter
-                                    anchors.rightMargin: 10
-                                    text: qsTr("Version de l'OS")
-                                }
-                                Text {
-                                    anchors.left: parent.horizontalCenter
-                                    anchors.leftMargin: 10
-                                    color: "grey"
-                                    text: qsTr(OSVersion)
-                                }
+                            Info {
+                                label: "Espace de travail"
+                                value: qsTr(workspace)
                             }
-                            Item {
-                                width: parent.width
-                                height: parent.parent.parent.height * (1/6)
-                                Text {
-                                    anchors.right: parent.horizontalCenter
-                                    anchors.rightMargin: 10
-                                    text: qsTr("Version du lanceur d'applications")
-                                }
-                                Text {
-                                    anchors.left: parent.horizontalCenter
-                                    anchors.leftMargin: 10
-                                    color: "grey"
-                                    text: qsTr(launcherVersion)
-                                }
+                            Info {
+                                label: "Version de l'agent"
+                                value: qsTr(agentVersion)
+                            }
+                            Info {
+                                label: "Version de l'OS"
+                                value: qsTr(OSVersion)
+                            }
+                            Info {
+                                label: "Version du lanceur d'applications"
+                                value: qsTr(launcherVersion)
                             }
                         }
                     }

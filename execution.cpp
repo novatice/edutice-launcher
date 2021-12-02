@@ -24,8 +24,6 @@ QString Execution::launch(const QString &program)
 
 QString Execution::open(const QString &path)
 {
-    qInfo() << "In execution open with " << path;
-
     QDesktopServices::openUrl(path);
 
     return "";
@@ -60,11 +58,6 @@ void Execution::disconnectScreen()
     m_process->waitForFinished(-1);
 }
 
-QString Execution::getTimeRemaining(int interval)
-{
-    //return QString::fromUtf8("%d,%d,%d",timeRemaining.tm_hour,timeRemaining.tm_min,timeRemaining.tm_sec);
-    return "null";
-}
 void Execution :: addRow(QString name, QString img,QString src,QString cat)
 {
     (model)->addApplication(Application(name, img, src, cat));

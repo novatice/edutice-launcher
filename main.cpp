@@ -172,19 +172,16 @@ int main(int argc, char *argv[])
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     val = file.readAll();
     file.close();
-    qInfo() << "val :: " << val;
+
 
     QByteArray utf8String = val.toUtf8();
     QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
 
-    QJsonValue terminal = d.object().value("terminal");
-    qInfo() << "terminal :: " << terminal.toString();
-
     QJsonValue agentVersion = d.object().value("agentVersion");
-    engine.rootContext()->setContextProperty("agentVersion", agentVersion);
+    engine.rootContext()->setContextProperty("agentVersion",  agentVersion.isUndefined() ? "Non renseigné" : agentVersion);
 
     QJsonValue OSVersion = d.object().value("OSVersion");
-    engine.rootContext()->setContextProperty("OSVersion", OSVersion);
+    engine.rootContext()->setContextProperty("OSVersion", OSVersion.isUndefined() ? "Non renseigné" : OSVersion);
 
     engine.rootContext()->setContextProperty("launcherVersion", VERSION);
 
@@ -202,22 +199,18 @@ int main(int argc, char *argv[])
 
     QJsonObject workspace = d.object().value("workspace").toObject();
     QString workspaceName = workspace.value("name").toString();
-    qInfo() << "Workspace name ::: " << workspaceName;
     engine.rootContext()->setContextProperty("workspace", workspaceName);
 
     engine.rootContext()->setContextProperty("group", "");
     engine.rootContext()->setContextProperty("machine", QHostInfo::localHostName());
 
     QJsonArray apps = workspace.value("applications").toArray();
-    qInfo() << "apps :: " << apps.count();
     while (!apps.isEmpty()) {
         QJsonObject application = apps.first().toObject();
         QString name = application.value("name").toString();
         QString icon = application.value("icon").toString();
         QString path = application.value("path").toString();
         QString category = application.value("category").toString();
-        qInfo() << "Name ::: " << name;
-        qInfo() << "Icon ::: " << icon;
         if(icon == "") {
             #ifdef linux
             icon = "linux_app_icon.png";
@@ -227,8 +220,6 @@ int main(int argc, char *argv[])
         } else {
             icon = "file:" + icon;
         }
-        qInfo() << "Icon ::: " << icon;
-        qInfo() << "Path ::: " << path;
         // We use a temp category, as we didn't have them right now !
         Application app = Application(name, icon, path, "Default");
         modelApplication->addApplication(app);
