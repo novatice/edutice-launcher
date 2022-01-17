@@ -108,11 +108,11 @@ int main(int argc, char *argv[])
     QDir dir;
     if (dir.exists(userShareHome))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "defaultDirectory.png", "Dossier personnel enregistré sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "directories.png", "Dossier personnel enregistré sur le serveur"));
     }
     if (dir.exists(userShares))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "defaultDirectory.png", "Dossiers partagés enregistrés sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "directories.png", "Dossiers partagés enregistrés sur le serveur"));
     }
 
 
@@ -120,17 +120,17 @@ int main(int argc, char *argv[])
     Directory downloads = Directory(
                 QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
                 QStandardPaths::displayName(QStandardPaths::DownloadLocation),
-                "downloadsDirectory.png",
+                "directories.png",
                 "Dossier contenant les fichiers téléchargés");
     Directory documents = Directory(
                 QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
                 QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
-                "documentsDirectory.png",
+                "directories.png",
                 "Dossier contenant les documents de la session");
     Directory desktop = Directory(
                 QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
                 QStandardPaths::displayName(QStandardPaths::DesktopLocation),
-                "defaultDirectory.png",
+                "directories.png",
                 "");
 
     defaultDirectoriesModel->addDirectory(documents);
@@ -143,15 +143,9 @@ int main(int argc, char *argv[])
     QScreen* mouseScreen = app.screenAt(globalCursorPos);
     QSize screenSize = screen->availableSize();
 
-    // Create a value for SideMenu width that is fixed
-    int SideMenuWidth = screenSize.width() / 24;
-
     engine.rootContext()->setContextProperty("screenWidth", screenSize.width());
     engine.rootContext()->setContextProperty("screenHeight", screenSize.height());
     engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
-
-    qInfo() << "screen width" << screenSize.width() << endl;
-    qInfo() << "side menu width" << SideMenuWidth << endl;
 
     qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
 

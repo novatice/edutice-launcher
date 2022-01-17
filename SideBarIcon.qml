@@ -25,8 +25,6 @@ Item {
 
     property string label
     property string icon
-    // Number of siblings INCLUDING THIS
-    property int siblings
 
     signal action();
     // Override this function to make your Item useful !
@@ -34,13 +32,12 @@ Item {
     }
 
     width: parent.width
-    height: parent.height / siblings
+    height: parent.width
 
     Rectangle {
         color: "transparent"
-        width: parent.width / 2
-        height: parent.width / 2
-        radius: parent.width / 4
+        width: parent.width
+        height: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
@@ -50,8 +47,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             opacity: 1
-            height: parent.height * (3/5)
-            width: parent.height * (3/5)
+            height: parent.height / 2
+            width: parent.height / 2
         }
         MouseArea {
             anchors.fill: parent
@@ -60,7 +57,7 @@ Item {
             onEntered: {
                 // Should be a reference to the Text element below
                 nextSibling(parent.parent, parent).visible = true
-                parent.color = "#518fdf"
+                parent.color = "#222222"
             }
             onExited: {
                 // Should be a reference to the Text element below

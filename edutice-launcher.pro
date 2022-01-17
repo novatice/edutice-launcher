@@ -81,7 +81,6 @@ DISTFILES += \
     application/partage-de-fichiers@2x.png \
     application/pc.png \
     application/powerButton (copie).png \
-    application/powerButton.jpg \
     application/powerButton.png \
     application/profile-user_dp.png \
     application/search.png \

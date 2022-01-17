@@ -1,13 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>search.png</file>
-        <file>powerButton.png</file>
         <file>digital-7.ttf</file>
-        <file>lockButton.png</file>
-        <file>lockButtonWhite.png</file>
-        <file>user.png</file>
-        <file>windows_log_off.png</file>
-        <file>pc.png</file>
         <file>SFCompactText-SemiBoldItalic.ttf</file>
         <file>SFCompactText-Medium.ttf</file>
         <file>SFCompactDisplay-Black.ttf</file>
@@ -15,28 +8,19 @@
         <file>SFProDisplay-Semibold.ttf</file>
         <file>SFProDisplay-Bold.ttf</file>
         <file>SFProText-Medium.ttf</file>
-        <file>icon_espacetravail.png</file>
-        <file>icon_group.png</file>
-        <file>windows_app_icon.png</file>
+        <file>accessibility.png</file>
+        <file>applications.png</file>
+        <file>connected.png</file>
+        <file>directories.png</file>
+        <file>duplicate.png</file>
+        <file>lock.png</file>
+        <file>logout.png</file>
+        <file>novatice.png</file>
+        <file>poll.png</file>
+        <file>profile.png</file>
+        <file>shutdown.png</file>
         <file>linux_app_icon.png</file>
-        <file>burgerMenuIcon.svg</file>
-        <file>accueil-interface.png</file>
-        <file>app2_ew.png</file>
-        <file>assistance-telephonique-2_dz.png</file>
-        <file>cadenas-verrouille_dn.png</file>
-        <file>deconnexion.png</file>
-        <file>lhorloge-2.png</file>
-        <file>linternet-2.png</file>
-        <file>miniatureinfra_ep.png</file>
-        <file>miniatureinfra_ex.png</file>
-        <file>notification.png</file>
-        <file>profile-user_dp.png</file>
-        <file>accueil-interface@2x.png</file>
-        <file>n_tv-a-ecran-plat.png</file>
-        <file>partage-de-fichiers@2x.png</file>
-        <file>informations.png</file>
-        <file>downloadsDirectory.png</file>
-        <file>defaultDirectory.png</file>
-        <file>documentsDirectory.png</file>
+        <file>windows_app_icon.png</file>
+        <file>search.png</file>
     </qresource>
 </RCC>
