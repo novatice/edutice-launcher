@@ -84,16 +84,24 @@ int main(int argc, char *argv[])
     // Create a new model for Files
 
     AppModel* modelApplication= new AppModel();
+
+    AppModel* favoritesApplications = new AppModel();
+
     CategorieModel* modelCategorie = new CategorieModel();
     // The default directories (Documents, Pictures, Downloads, ...)
     DirectoryModel* defaultDirectoriesModel = new DirectoryModel();
     // The mounted directories from logon script
     DirectoryModel* mountedDirectoriesModel = new DirectoryModel();
 
-    engine.rootContext()->setContextProperty("modelApplication",modelApplication);
-    engine.rootContext()->setContextProperty("defaultDirectoriesModel",defaultDirectoriesModel);
-    engine.rootContext()->setContextProperty("mountedDirectoriesModel",mountedDirectoriesModel);
-    engine.rootContext()->setContextProperty("modelCategorie",modelCategorie);
+    DirectoryModel* linksModel = new DirectoryModel();
+
+
+    engine.rootContext()->setContextProperty("modelApplication", modelApplication);
+    engine.rootContext()->setContextProperty("favoritesModel", favoritesApplications);
+    engine.rootContext()->setContextProperty("defaultDirectoriesModel", defaultDirectoriesModel);
+    engine.rootContext()->setContextProperty("mountedDirectoriesModel", mountedDirectoriesModel);
+    engine.rootContext()->setContextProperty("linksModel", linksModel);
+    engine.rootContext()->setContextProperty("modelCategorie", modelCategorie);
 
     // Fill mountedDirectoriesModel
     QString userShareHome = "";
@@ -217,9 +225,21 @@ int main(int argc, char *argv[])
         }
         // We use a temp category, as we didn't have them right now !
         Application app = Application(name, icon, path, "Default");
+        if (application.value("favorite").toBool())
+            favoritesApplications->addApplication(app);
         modelApplication->addApplication(app);
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
+    }
+    QJsonArray links = workspace.value("links").toArray();
+    while (!links.isEmpty()) {
+        QJsonObject link = links.first().toObject();
+        QString name = link.value("name").toString();
+        QString icon = link.value("icon").toString();
+        QString path = link.value("path").toString();
+        Directory dir = Directory(path, name, icon, "");
+        //linksModel->addDirectory(dir);
+        links.removeFirst();
     }
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

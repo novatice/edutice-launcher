@@ -8,5 +8,6 @@
         <file>Categories.qml</file>
         <file>Info.qml</file>
         <file>SideBarIcon.qml</file>
+        <file>ZoomableIcon.qml</file>
     </qresource>
 </RCC>

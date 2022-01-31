@@ -63,7 +63,6 @@ ApplicationWindow {
         height: mainAppliWindow.height
         anchors.horizontalCenter: parent.horizontalCenter
 
-
         Item {
             id: sizeUnit
             property real widthUnit: parent.width / 20
@@ -77,7 +76,6 @@ ApplicationWindow {
 
             // SideBar
             Item {
-
                 id: sideBar
                 width: 50
                 Layout.fillHeight: true
@@ -148,7 +146,7 @@ ApplicationWindow {
                         label: "Arrêter"
                         icon: "shutdown.png"
                         onAction: {
-                            // To be define
+
                         }
                     }
                 }
@@ -162,13 +160,13 @@ ApplicationWindow {
 
                 Rectangle {
                     color: "#111111"
-                    opacity: 0.95
+                    opacity: 0.70
                     width: parent.width
                     height: parent.height
                 }
 
                 ColumnLayout {
-                    width: parent.width
+                    width: parent.width * (9/10)
                     height: parent.height
                     spacing: 0
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -187,14 +185,13 @@ ApplicationWindow {
                         }
                     }
 
-
                     Item {
                         width: parent.width
                         height: parent.height * (4/7)
 
                         ColumnLayout {
-                            width: parent.width * (9/10)
-                            height: childrenRect.height
+                            width: parent.width
+                            height: 122
                             spacing: 0
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
@@ -203,7 +200,6 @@ ApplicationWindow {
                                 id: applicationsButton
                                 width: parent.width
                                 height: 50
-                                anchors.leftMargin: 50
                                 Rectangle {
                                     id: applicationsMenuBack
                                     width: parent.width
@@ -218,6 +214,8 @@ ApplicationWindow {
                                     font.pointSize: parent.height * (1/4)
                                     font.family: mainFont.name
                                     anchors.verticalCenter: parent.verticalCenter
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: 20
                                 }
                                 MouseArea {
                                     anchors.fill: parent
@@ -236,46 +234,10 @@ ApplicationWindow {
                                 }
                             }
                             Rectangle {
+                                height: 2
                                 width: parent.width
-                                height: 40
-                                color: "transparent"
-                                Rectangle {
-                                    height: 2
-                                    width: parent.width
-                                    color: "grey"
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                            }
-                            Item {
-                                id: utilsButton
-                                width: parent.width
-                                height: 50
-                                Rectangle {
-                                    id: utilsMenuBack
-                                    width: parent.width
-                                    height: parent.height
-                                    color: "#066198"
-                                    radius: height / 2
-                                    visible: false
-                                }
-                                Text {
-                                    text: qsTr("Utilitaires")
-                                    color: "white"
-                                    font.pointSize: parent.height * (1/4)
-                                    font.family: mainFont.name
-                                    anchors.verticalCenter: parent.verticalCenter
-                                }
-                                MouseArea {
-                                    anchors.fill: parent
-                                    cursorShape: Qt.PointingHandCursor
-                                    hoverEnabled: true
-                                    onEntered: {
-                                        utilsMenuBack.visible = true
-                                    }
-                                    onExited: {
-                                        utilsMenuBack.visible = false
-                                    }
-                                }
+                                color: "grey"
+                                Layout.alignment: Qt.AlignVCenter
                             }
                             Item {
                                 id: filesButton
@@ -295,7 +257,8 @@ ApplicationWindow {
                                     font.pointSize: parent.height * (1/4)
                                     font.family: mainFont.name
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: 50
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: 20
                                 }
                                 MouseArea {
                                     anchors.fill: parent
@@ -318,103 +281,56 @@ ApplicationWindow {
 
                     Item {
                         width: parent.width
-                        height: parent.height * (3/7)
+                        height: parent.height * (2/7)
 
-                        Rectangle {
-                            height: parent.height
-                            width: parent.width
-                            color: "grey"
-                        }
                         ColumnLayout {
-                            width: parent.width * (9/10)
+                            width: parent.width
                             height: parent.height * (2/7)
-                            spacing: 0
+                            spacing: 10
                             anchors.horizontalCenter: parent.horizontalCenter
 
                             Rectangle {
+                                visible: linksModel.rowCount() !== 0
                                 height: 2
                                 width: parent.width
                                 color: "grey"
                             }
-                            Item {
-                                height: 20
-                                width: parent.width
-
-                                Text {
-                                    text: qsTr("Ressources pédagogiques")
-                                }
+                            Text {
+                                visible: linksModel.rowCount() !== 0
+                                text: qsTr("Ressources en ligne")
+                                color: "white"
+                                font.pointSize: parent.height * (1/4)
+                                font.family: mainFont.name
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.leftMargin: 20
                             }
-                            RowLayout {
-                                width: parent.width
-                                height: parent.width / 4
+                            Item {
+                                height: linksModel.rowCount() === 0 ? 0 : parent.width * (1/5)
+                                width: linksModel.rowCount() * height
+                                Layout.alignment: Qt.AlignHCenter
 
-                                Item {
-                                    width: parent.height
-                                    height: parent.height
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Rectangle {
-                                        width: parent.height / 2
-                                        height: parent.height / 2
-                                        radius: 2
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        hoverEnabled: true
 
+                                DelegateModel {
+                                    id: linksModelDelegate
+                                    model: linksModel
+                                    delegate: ZoomableIcon {
+                                        Layout.alignment: Qt.AlignVCenter
+                                        width: parent.height
+                                        height: parent.height
+                                        backgroundColor: "white"
+                                        textColor: "white"
+                                        iconSrc: qsTr(icon)
+                                        label: qsTr(name)
+                                        onAction: {
+                                            execution.open(path)
+                                            mainAppliWindow.hide()
+                                        }
                                     }
                                 }
-                                Item {
-                                    width: parent.height
-                                    height: parent.height
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Rectangle {
-                                        width: parent.height / 2
-                                        height: parent.height / 2
-                                        radius: 2
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        hoverEnabled: true
-
-                                    }
-                                }
-                                Item {
-                                    width: parent.height
-                                    height: parent.height
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Rectangle {
-                                        width: parent.height / 2
-                                        height: parent.height / 2
-                                        radius: 2
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        hoverEnabled: true
-
-                                    }
-                                }
-                                Item {
-                                    width: parent.height
-                                    height: parent.height
-                                    Layout.alignment: Qt.AlignVCenter
-                                    Rectangle {
-                                        width: parent.height / 2
-                                        height: parent.height / 2
-                                        radius: 2
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                    }
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        hoverEnabled: true
-
-                                    }
+                                ListView {
+                                    model: linksModelDelegate
+                                    anchors.fill : parent
+                                    orientation: ListView.Horizontal
                                 }
                             }
                         }
@@ -630,22 +546,11 @@ ApplicationWindow {
                                 height: parent.height
                                 anchors.horizontalCenter: parent.horizontalCenter
 
-
-                                Text {
-                                    id: defaultDirectoriesTitle
-                                    text: qsTr("LOCAUX")
-                                    font.pointSize: 17
-                                    color: "blue"
-                                    font.family: mainFont.name
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-
                                 ScrollView {
                                     id: defaultFilesScrollView
-                                    height: parent.height - defaultDirectoriesTitle.height
+                                    height: parent.height
                                     width: parent.width
-                                    anchors.top: defaultDirectoriesTitle.bottom
-                                    contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height + - defaultDirectoriesTitle.height
+                                    contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
                                     ScrollBar.vertical: ScrollBar {
                                         id: defaultFilesScrollBar
                                         policy: ScrollBar.SnapOnRelease
@@ -728,7 +633,7 @@ ApplicationWindow {
                                                     font.pointSize: parent.parent.height * (1/5)
                                                     font.family: mainFont.name
                                                     text: qsTr(name)
-                                                    color: "blue"
+                                                    color: "black"
                                                 }
                                                 Text {
                                                     anchors.bottom: parent.bottom
@@ -841,60 +746,40 @@ ApplicationWindow {
                         }
 
                         Text {
+                            visible: favoritesModel.rowCount() !== 0
                             text: qsTr("Applications recommandées")
                             font.pointSize: 15
                             font.family: mainFont.name
                             color: theme.mainTitleColor
                         }
 
-                        RowLayout {
-                            height: parent.width * (1/6)
-                            width: parent.width
-                            spacing: parent.width * (1/24)
-                            Item {
-                                height: parent.height
-                                width: parent.height
-                                Rectangle {
-                                    width: parent.width
+                        Item {
+                            height: favoritesModel.rowCount() === 0 ? 0 : parent.width * (1/5)
+                            width: favoritesModel.rowCount() * height
+                            Layout.alignment: Qt.AlignHCenter
+
+
+                            DelegateModel {
+                                id: favoritesApplications
+                                model: favoritesModel
+                                delegate: ZoomableIcon {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    width: parent.height
                                     height: parent.height
-                                    color: "grey"
+                                    backgroundColor: "lightblue"
+                                    textColor: "black"
+                                    iconSrc: qsTr(icon)
+                                    label: qsTr(name)
+                                    onAction: {
+                                        execution.launch(src)
+                                        mainAppliWindow.close()
+                                    }
                                 }
                             }
-                            Item {
-                                height: parent.height
-                                width: parent.height
-                                Rectangle {
-                                    width: parent.width
-                                    height: parent.height
-                                    color: "grey"
-                                }
-                            }
-                            Item {
-                                height: parent.height
-                                width: parent.height
-                                Rectangle {
-                                    width: parent.width
-                                    height: parent.height
-                                    color: "grey"
-                                }
-                            }
-                            Item {
-                                height: parent.height
-                                width: parent.height
-                                Rectangle {
-                                    width: parent.width
-                                    height: parent.height
-                                    color: "grey"
-                                }
-                            }
-                            Item {
-                                height: parent.height
-                                width: parent.height
-                                Rectangle {
-                                    width: parent.width
-                                    height: parent.height
-                                    color: "grey"
-                                }
+                            ListView {
+                                model: favoritesApplications
+                                anchors.fill : parent
+                                orientation: ListView.Horizontal
                             }
                         }
 

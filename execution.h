@@ -2,14 +2,14 @@
 #define EXECUTION_H
 
 #ifdef _WIN32
-#include <windows.h>
+//#include "windows.h"
 #endif
 
 
 #include <QObject>
 #include <QProcess>
 #include <appmodel.h>
-#include <time.h>
+//#include <time.h>
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQuick/QQuickItem>
