@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     AppModel* modelApplication= new AppModel();
 
-    AppModel* favoritesApplications = new AppModel();
+    AppModel* recommendedApplications = new AppModel();
 
     CategorieModel* modelCategorie = new CategorieModel();
     // The default directories (Documents, Pictures, Downloads, ...)
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
 
     engine.rootContext()->setContextProperty("modelApplication", modelApplication);
-    engine.rootContext()->setContextProperty("favoritesModel", favoritesApplications);
+    engine.rootContext()->setContextProperty("favoritesModel", recommendedApplications);
     engine.rootContext()->setContextProperty("defaultDirectoriesModel", defaultDirectoriesModel);
     engine.rootContext()->setContextProperty("mountedDirectoriesModel", mountedDirectoriesModel);
     engine.rootContext()->setContextProperty("linksModel", linksModel);
@@ -107,7 +107,9 @@ int main(int argc, char *argv[])
     QString userShareHome = "";
     QString userShares = "";
 #ifdef WIN32
+    // Z
     userShareHome = "Z:/";
+    // Y
     userShares = "Y:/";
 #else
     userShareHome = "/media/" + qgetenv("USER") + "/home";
@@ -116,11 +118,11 @@ int main(int argc, char *argv[])
     QDir dir;
     if (dir.exists(userShareHome))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "directories.png", "Dossier personnel enregistré sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "documents.png", "Dossier personnel enregistré sur le serveur"));
     }
     if (dir.exists(userShares))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "directories.png", "Dossiers partagés enregistrés sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShares, "Dossiers partagés", "documents.png", "Dossiers partagés enregistrés sur le serveur"));
     }
 
 
@@ -128,21 +130,21 @@ int main(int argc, char *argv[])
     Directory downloads = Directory(
                 QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
                 QStandardPaths::displayName(QStandardPaths::DownloadLocation),
-                "directories.png",
+                "downloads.png",
                 "Dossier contenant les fichiers téléchargés");
     Directory documents = Directory(
                 QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
                 QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
-                "directories.png",
+                "documents.png",
                 "Dossier contenant les documents de la session");
-    Directory desktop = Directory(
-                QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
-                QStandardPaths::displayName(QStandardPaths::DesktopLocation),
-                "directories.png",
-                "");
+    Directory pictures = Directory(
+                QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+                "pictures.png",
+                "Dossier contenant les images de la session");
 
     defaultDirectoriesModel->addDirectory(documents);
-    defaultDirectoriesModel->addDirectory(desktop);
+    defaultDirectoriesModel->addDirectory(pictures);
     defaultDirectoriesModel->addDirectory(downloads);
 
     QScreen* screen = app.primaryScreen();
@@ -225,22 +227,26 @@ int main(int argc, char *argv[])
         }
         // We use a temp category, as we didn't have them right now !
         Application app = Application(name, icon, path, "Default");
-        if (application.value("favorite").toBool())
-            favoritesApplications->addApplication(app);
+        if (application.value("recommended").toBool())
+            recommendedApplications->addApplication(app);
         modelApplication->addApplication(app);
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
     }
-    QJsonArray links = workspace.value("links").toArray();
-    while (!links.isEmpty()) {
-        QJsonObject link = links.first().toObject();
-        QString name = link.value("name").toString();
-        QString icon = link.value("icon").toString();
-        QString path = link.value("path").toString();
-        Directory dir = Directory(path, name, icon, "");
-        //linksModel->addDirectory(dir);
-        links.removeFirst();
+    QJsonValue links = workspace.value("links");
+    if (links != NULL) {
+        QJsonArray linksArray = links.toArray();
+        while (!linksArray.isEmpty()) {
+            QJsonObject link = linksArray.first().toObject();
+            QString name = link.value("name").toString();
+            QString icon = link.value("icon").toString();
+            QString path = link.value("url").toString();
+            Directory dir = Directory(path, name, icon, "");
+            linksModel->addDirectory(dir);
+            linksArray.removeFirst();
+        }
     }
+
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

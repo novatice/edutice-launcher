@@ -27,16 +27,16 @@ Item {
                 name : "HOVERED"
                 PropertyChanges {
                     target: backgroundExample
-                    width: parent.width * (4/5)
-                    height: parent.height * (4/5)
+                    width: parent.width
+                    height: parent.height
                 }
             },
             State {
                 name : "EXITED"
                 PropertyChanges {
                     target: backgroundExample
-                    width: parent.height * (2/3)
-                    height: parent.height * (2/3)
+                    width: parent.height * (4/5)
+                    height: parent.height * (4/5)
                 }
             }
         ]
@@ -119,16 +119,16 @@ Item {
                 name : "HOVERED"
                 PropertyChanges {
                     target: frenchIcon
-                    width: parent.width * (4/10)
-                    height: parent.height * (4/10)
+                    width: parent.width * (3/4)
+                    height: parent.height * (3/4)
                 }
             },
             State {
                 name : "EXITED"
                 PropertyChanges {
                     target: frenchIcon
-                    height: parent.height * (1/3)
-                    width: parent.height * (1/3)
+                    height: parent.height * (3/5)
+                    width: parent.height * (3/5)
                 }
             }
         ]

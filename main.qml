@@ -12,8 +12,8 @@ ApplicationWindow {
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
     screen: screenNumberId
-    width: screenWidth / 2
-    height: screenHeight * (3/5)
+    width: screenWidth / 2 < 700 ? 700 : screenWidth / 2
+    height: screenHeight * (3/5) < 500 ? 500 : screenHeight * (3/5)
     x: 0
     y: screenHeight - height
 
@@ -77,8 +77,9 @@ ApplicationWindow {
             // SideBar
             Item {
                 id: sideBar
-                width: 50
+                width: 48
                 Layout.fillHeight: true
+                z: 1
 
                 Rectangle {
                     color: "black"
@@ -90,30 +91,45 @@ ApplicationWindow {
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
-                    spacing: 10
+                    spacing: 0
 
                     SideBarIcon {
-                        label: "Navigateur"
+                        label: "Mon Profil"
                         icon: "profile.png"
                         onAction: {
-                            execution.open("http://");
+                            https://edutice6-dev.novatice.com/edutice/#classe-virtuelle
+                            execution.open("http://" + serverAddress + ":8080/edutice/#mon-compte");
+                        }
+                    }
+                    SideBarIcon {
+                        label: "Mes documents"
+                        icon: "directories.png"
+                        onAction: {
+                            // Open files content
+                            applicationsContainer.visible = false
+                            filesContainer.visible = true
+                        }
+                    }
+                    SideBarIcon {
+                        label: "Sondage"
+                        icon: "poll.png"
+                        onAction: {
+                            execution.open("http://" + serverAddress + ":8080/edutice");
+                        }
+                    }
+                    SideBarIcon {
+                        label: "Ma classe virtuelle"
+                        icon: "virtualclass.png"
+                        onAction: {
+                            execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
                         }
                     }
                     SideBarIcon {
                         label: "Applications"
-                        icon: "poll.png"
+                        icon: "applications.png"
                         onAction: {
-                            applications.visible = true
-                            files.visible = true
-                            logoffWindow.visible = false
-                            informationsWindow.visible = false
-                        }
-                    }
-                    SideBarIcon {
-                        label: "Portail Edutice"
-                        icon: "novatice.png"
-                        onAction: {
-                            execution.open("http://" + serverAddress + ":8080/edutice");
+                            filesContainer.visible = false
+                            applicationsContainer.visible = true
                         }
                     }
                     Rectangle {
@@ -126,20 +142,14 @@ ApplicationWindow {
                         label: "Verrouiller"
                         icon: "lock.png"
                         onAction: {
-                            applications.visible = false
-                            files.visible = false
-                            logoffWindow.visible = false
-                            informationsWindow.visible = true
+                            execution.lockScreen()
                         }
                     }
                     SideBarIcon {
                         label: "Se déconnecter"
                         icon: "logout.png"
                         onAction: {
-                            applications.visible = false
-                            files.visible = false
-                            logoffWindow.visible = true
-                            informationsWindow.visible = false
+                            execution.disconnectScreen()
                         }
                     }
                     SideBarIcon {
@@ -155,12 +165,11 @@ ApplicationWindow {
             // Menu
             Item {
                 id: menu
-                width: (parent.width - 50) * (4/10)
+                width: (parent.width - sideBar.width) * (4/10)
                 height: parent.height
 
                 Rectangle {
-                    color: "#111111"
-                    opacity: 0.70
+                    color: "#222222"
                     width: parent.width
                     height: parent.height
                 }
@@ -178,8 +187,8 @@ ApplicationWindow {
                         Image {
                             fillMode: Image.PreserveAspectFit
                             source: "novatice.png"
-                            height: parent.height / 3
-                            width: parent.height / 3
+                            height: parent.height * (2/5)
+                            width: parent.height * (2/5)
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -206,7 +215,7 @@ ApplicationWindow {
                                     height: parent.height
                                     color: "#066198"
                                     radius: height / 2
-                                    visible: false
+                                    visible: true
                                 }
                                 Text {
                                     text: qsTr("Applications")
@@ -222,13 +231,15 @@ ApplicationWindow {
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
                                     onEntered: {
-                                        applicationsMenuBack.visible = true
+                                        applicationsMenuBack.color = applicationsMenuBack.color == "#066198" ? "#066198" : "#444444"
                                     }
                                     onExited: {
-                                        applicationsMenuBack.visible = false
+                                        applicationsMenuBack.color = applicationsMenuBack.color == "#066198" ? "#066198" : "transparent"
                                     }
                                     onClicked: {
                                         filesContainer.visible = false
+                                        filesMenuBack.color = "transparent"
+                                        applicationsMenuBack.color = "#066198"
                                         applicationsContainer.visible = true
                                     }
                                 }
@@ -247,9 +258,8 @@ ApplicationWindow {
                                     id: filesMenuBack
                                     width: parent.width
                                     height: parent.height
-                                    color: "#066198"
+                                    color: "transparent"
                                     radius: height / 2
-                                    visible: false
                                 }
                                 Text {
                                     text: qsTr("Mes documents")
@@ -265,13 +275,15 @@ ApplicationWindow {
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
                                     onEntered: {
-                                        filesMenuBack.visible = true
+                                        filesMenuBack.color = filesMenuBack.color == "#066198" ? "#066198" : "#444444"
                                     }
                                     onExited: {
-                                        filesMenuBack.visible = false
+                                        filesMenuBack.color = filesMenuBack.color == "#066198" ? "#066198" : "transparent"
                                     }
                                     onClicked: {
                                         applicationsContainer.visible = false
+                                        applicationsMenuBack.color = "transparent"
+                                        filesMenuBack.color = "#066198"
                                         filesContainer.visible = true
                                     }
                                 }
@@ -341,7 +353,7 @@ ApplicationWindow {
             // Content
             Item {
                     id: content
-                    width: (parent.width - 50) * (6/10)
+                    width: (parent.width - sideBar.width) * (6/10)
                     height: parent.height
 
                     Rectangle {
@@ -362,7 +374,7 @@ ApplicationWindow {
 
                         Text {
                             text: qsTr("Mes documents")
-                            font.pointSize: 15
+                            font.pointSize: 20
                             font.family: mainFont.name
                             color: theme.mainTitleColor
                             Layout.alignment: Qt.AlignHCenter
@@ -370,10 +382,11 @@ ApplicationWindow {
 
 
                         Text {
-                            text: qsTr("Mes dossiers personnels")
+                            text: qsTr("Mes dossiers partagés")
                             font.pointSize: 15
                             font.family: mainFont.name
                             color: theme.mainTitleColor
+                            visible: mountedDirectoriesModel.rowCount() > 0
                         }
 
                         // Mounted directories
@@ -389,19 +402,9 @@ ApplicationWindow {
                                 height: mountedDirectoriesList.childrenRect.height
                                 anchors.horizontalCenter: parent.horizontalCenter
 
-                                Text {
-                                    id: mountedDirectoriesTitle
-                                    text: qsTr("SERVEUR")
-                                    font.pointSize: 17
-                                    color: "white"
-                                    font.family: mainFont.name
-                                    visible: mountedDirectoriesModel.rowCount() > 0
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
 
                                 ScrollView {
                                     id: mountedDirectoriesScrollView
-                                    anchors.top: mountedDirectoriesTitle.bottom
                                     height: parent.height
                                     width: parent.width
                                     contentHeight: (mountedDirectoriesList.childrenRect.height > parent.height) ? mountedDirectoriesList.childrenRect.height : parent.height
@@ -441,7 +444,7 @@ ApplicationWindow {
                                         id: mountedDirectoriesDelegate
 
                                         Item {
-                                            height: sizeUnit.heightUnit * 1.5
+                                            height: sizeUnit.heightUnit * 2
                                             width: parent.parent.width
 
                                             Rectangle {
@@ -449,7 +452,7 @@ ApplicationWindow {
                                                 height: parent.height
                                                 width: parent.width
                                                 radius: 5
-                                                color: "#333333"
+                                                color: "lightsteelblue"
                                                 visible: false
                                             }
 
@@ -534,148 +537,153 @@ ApplicationWindow {
 
                         }
 
+                        Text {
+                            text: qsTr("Mes dossiers personnels")
+                            font.pointSize: 15
+                            font.family: mainFont.name
+                            color: theme.mainTitleColor
+                        }
                         // Default directories: fills the ColumnLayout
-                        Rectangle {
-                            Layout.fillHeight: true
-                            //height: parent.height - mountedDirectories.height - fileTitle.height - 40
-                            Layout.alignment: Qt.AlignHCenter
+                        Item {
                             width: parent.width
-                            color: "transparent"
-                            Item {
-                                width: parent.width
+                            height: parent.height
+                            Layout.alignment: Qt.AlignHCenter
+
+                            ScrollView {
+                                id: defaultFilesScrollView
                                 height: parent.height
-                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width
+                                contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
+                                ScrollBar.vertical: ScrollBar {
+                                    id: defaultFilesScrollBar
+                                    policy: ScrollBar.SnapOnRelease
+                                    height: defaultFilesScrollView.height
+                                    x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
+                                    y: defaultFilesScrollView.topPadding
+                                    active: false
+                                    snapMode: ScrollBar.SnapAlways
+                                    visible: false
+                                    //stepSize: 0.5
+                                    //active: scrollV.ScrollBar.horizontal.active
+                                    contentItem: Rectangle {
+                                        implicitWidth: 6
+                                        implicitHeight: 100
+                                        opacity: 0.5
+                                        radius: width / 2
+                                        color: defaultFilesScrollBar.pressed ? "#0092CC" : "grey"
+                                    }
+                                }
 
-                                ScrollView {
-                                    id: defaultFilesScrollView
-                                    height: parent.height
-                                    width: parent.width
-                                    contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
-                                    ScrollBar.vertical: ScrollBar {
-                                        id: defaultFilesScrollBar
-                                        policy: ScrollBar.SnapOnRelease
-                                        height: defaultFilesScrollView.height
-                                        x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
-                                        y: defaultFilesScrollView.topPadding
-                                        active: false
-                                        snapMode: ScrollBar.SnapAlways
-                                        visible: defaultFilesScrollView.contentHeight
-                                                 > defaultFilesScrollView.height ? true : false
-                                        //stepSize: 0.5
-                                        //active: scrollV.ScrollBar.horizontal.active
-                                        contentItem: Rectangle {
-                                            implicitWidth: 6
-                                            implicitHeight: 100
-                                            opacity: 0.5
-                                            radius: width / 2
-                                            color: defaultFilesScrollBar.pressed ? "#0092CC" : "grey"
+                                clip: true
+                                MouseArea {
+                                    onEntered: {
+                                        defaultFilesScrollBar.visible = defaultFilesScrollView.contentHeight
+                                                > defaultFilesScrollView.height
+                                    }
+                                    onExited: {
+                                        defaultFilesScrollBar.visible = false
+                                    }
+                                    onWheel: {
+                                        if (wheel.angleDelta.y > 0) {
+                                            scroller.decrease()
+                                        } else {
+                                            scroller.increase()
                                         }
                                     }
+                                }
 
-                                    clip: true
-                                    MouseArea {
-                                        onWheel: {
-                                            if (wheel.angleDelta.y > 0) {
-                                                scroller.decrease()
-                                            } else {
-                                                scroller.increase()
-                                            }
+                                Component {
+                                    id: defaultFilesDelegate
+
+                                    Item {
+                                        height: sizeUnit.heightUnit * 2
+                                        width: parent.parent.width
+
+                                        Rectangle {
+                                            id: defaultFilesBack
+                                            height: parent.height
+                                            width: parent.width
+                                            radius: 5
+                                            color: "lightsteelblue"
+                                            visible: false
                                         }
-                                    }
-
-                                    Component {
-                                        id: defaultFilesDelegate
 
                                         Item {
-                                            height: sizeUnit.heightUnit * 1.5
-                                            width: parent.parent.width
+                                            id: defaultFilesIcon
+                                            height: parent.height
+                                            width: parent.height
 
+                                            Image {
+                                                source: icon
+                                                fillMode: Image.PreserveAspectFit
+                                                width: parent.height * (2/3)
+                                                height: parent.height * (2/3)
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                            }
+                                        }
+
+                                        Item {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            height: parent.height / 2
+                                            Layout.fillWidth: parent
+                                            Layout.leftMargin: 10
+                                            anchors.left: defaultFilesIcon.right
                                             Rectangle {
-                                                id: defaultFilesBack
+                                                border.width: 1
+                                                border.color: "black"
+                                                color: "transparent"
                                                 height: parent.height
                                                 width: parent.width
-                                                radius: 5
-                                                color: "steelblue"
-                                                visible: false
                                             }
 
-                                            Item {
-                                                id: defaultFilesIcon
-                                                height: parent.height
-                                                width: parent.height
+                                            Text {
+                                                id: defaultFilesName
+                                                font.pointSize: parent.parent.height * (1/5)
+                                                font.family: mainFont.name
+                                                text: qsTr(name)
+                                                color: "black"
+                                            }
+                                            Text {
+                                                anchors.bottom: parent.bottom
+                                                text: qsTr(description)
+                                                font.pointSize: parent.parent.height * (1/7)
+                                                font.family: mainFont.name
+                                                color: "grey"
+                                            }
+                                        }
 
-                                                Image {
-                                                    source: icon
-                                                    fillMode: Image.PreserveAspectFit
-                                                    width: parent.height * (2/3)
-                                                    height: parent.height * (2/3)
-                                                    anchors.verticalCenter: parent.verticalCenter
-                                                    anchors.horizontalCenter: parent.horizontalCenter
+                                        MouseArea {
+                                            id: defaultFilesMouseArea
+                                            anchors.fill: parent
+                                            cursorShape: Qt.PointingHandCursor
+                                            hoverEnabled: true
+
+                                            onClicked: {
+                                                if (mouse.button === Qt.LeftButton) {
+                                                    execution.open(path)
+                                                    mainAppliWindow.visible = false
                                                 }
                                             }
-
-                                            Item {
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                height: parent.height / 2
-                                                Layout.fillWidth: parent
-                                                Layout.leftMargin: 10
-                                                anchors.left: defaultFilesIcon.right
-                                                Rectangle {
-                                                    border.width: 1
-                                                    border.color: "black"
-                                                    color: "transparent"
-                                                    height: parent.height
-                                                    width: parent.width
-                                                }
-
-                                                Text {
-                                                    id: defaultFilesName
-                                                    font.pointSize: parent.parent.height * (1/5)
-                                                    font.family: mainFont.name
-                                                    text: qsTr(name)
-                                                    color: "black"
-                                                }
-                                                Text {
-                                                    anchors.bottom: parent.bottom
-                                                    text: qsTr(description)
-                                                    font.pointSize: parent.parent.height * (1/7)
-                                                    font.family: mainFont.name
-                                                    color: "grey"
-                                                }
+                                            onEntered: {
+                                                //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
+                                                defaultFilesBack.visible = true
                                             }
-
-                                            MouseArea {
-                                                id: defaultFilesMouseArea
-                                                anchors.fill: parent
-                                                cursorShape: Qt.PointingHandCursor
-                                                hoverEnabled: true
-
-                                                onClicked: {
-                                                    if (mouse.button === Qt.LeftButton) {
-                                                        execution.open(path)
-                                                        mainAppliWindow.visible = false
-                                                    }
-                                                }
-                                                onEntered: {
-                                                    //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
-                                                    defaultFilesBack.visible = true
-                                                }
-                                                onExited: {
-                                                    //backg.color = "transparent"
-                                                    defaultFilesBack.visible = false
-                                                }
+                                            onExited: {
+                                                //backg.color = "transparent"
+                                                defaultFilesBack.visible = false
                                             }
                                         }
                                     }
+                                }
 
-                                    ListView {
-                                        id: defaultFilesList
-                                        anchors.fill: parent
-                                        property bool first: true
-                                        delegate: defaultFilesDelegate
+                                ListView {
+                                    id: defaultFilesList
+                                    anchors.fill: parent
+                                    property bool first: true
+                                    delegate: defaultFilesDelegate
 
-                                        model: defaultDirectoriesModel
-                                    }
+                                    model: defaultDirectoriesModel
                                 }
                             }
                         }
@@ -711,25 +719,23 @@ ApplicationWindow {
                                         smooth: true
                                         fillMode: Image.PreserveAspectFit
                                         asynchronous: true
-                                        source: "search.png"
+                                        source: "magnifying-glass-solid.svg"
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         anchors.verticalCenter: parent.verticalCenter
-                                        opacity: 0.30
                                         height: parent.height / 2
                                         width: parent.height / 2
                                     }
                                     ColorOverlay {
                                         anchors.fill: iconSearchtext
                                         source: iconSearchtext
-                                        color: theme.mainTextColor
-                                        opacity: 0.50
+                                        color: "#888888"
                                     }
                                 }
                                 TextField {
                                     width: parent.width
                                     id: searchText
-                                    placeholderText: qsTr("Rechercher application")
-                                    color: theme.mainTextColor
+                                    placeholderText: qsTr("Rechercher")
+                                    color: "black"
                                     font.pointSize: parent.height / 3
                                     Layout.alignment: Qt.AlignVCenter
                                     font.bold: true
@@ -737,7 +743,6 @@ ApplicationWindow {
                                     onTextChanged: {
                                         delegateModel.update()
                                     }
-
                                     background: Item {
                                         opacity: 0
                                     }
@@ -746,6 +751,7 @@ ApplicationWindow {
                         }
 
                         Text {
+                            // Try to find a better way of displaying it if there are no recommended apps
                             visible: favoritesModel.rowCount() !== 0
                             text: qsTr("Applications recommandées")
                             font.pointSize: 15
@@ -757,7 +763,6 @@ ApplicationWindow {
                             height: favoritesModel.rowCount() === 0 ? 0 : parent.width * (1/5)
                             width: favoritesModel.rowCount() * height
                             Layout.alignment: Qt.AlignHCenter
-
 
                             DelegateModel {
                                 id: favoritesApplications
@@ -815,8 +820,7 @@ ApplicationWindow {
                                         y: scrollV.topPadding
                                         active: false
                                         snapMode: ScrollBar.SnapAlways
-                                        visible: scrollV.contentHeight
-                                                 > scrollV.height ? true : false
+                                        visible: scrollV.contentHeight > scrollV.height
                                         //stepSize: 0.5
                                         //active: scrollV.ScrollBar.horizontal.active
                                         contentItem: Rectangle {
@@ -854,6 +858,7 @@ ApplicationWindow {
                                             // Right description has pattern
                                             //var rdhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
 
+                                            // This is useless for now but will be used when we'll display applications description
                                             if (lnhp && !rnhp)
                                                 return -1;
                                             if (rnhp && !lnhp)
@@ -867,7 +872,7 @@ ApplicationWindow {
                                         }
 
                                         delegate : Item {
-                                            height: sizeUnit.heightUnit * 1.5
+                                            height: sizeUnit.heightUnit * 2
                                             width: parent.parent.width
 
                                             Rectangle {

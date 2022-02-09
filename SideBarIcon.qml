@@ -47,8 +47,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             opacity: 1
-            height: parent.height / 2
-            width: parent.height / 2
+            height: parent.height * (2/5)
+            width: parent.height * (2/5)
         }
         MouseArea {
             anchors.fill: parent
@@ -57,7 +57,7 @@ Item {
             onEntered: {
                 // Should be a reference to the Text element below
                 nextSibling(parent.parent, parent).visible = true
-                parent.color = "#222222"
+                parent.color = "#444444"
             }
             onExited: {
                 // Should be a reference to the Text element below
@@ -67,11 +67,20 @@ Item {
             onClicked: parent.parent.action()
         }
     }
-    Text {
-        font.pointSize: 10
+    Rectangle {
+        anchors.left: prevSibling(parent, this).right
+        anchors.verticalCenter: prevSibling(parent, this).verticalCenter
+        width: childrenRect.width + 50
+        height: parent.height
+        color: "#444444"
         visible: false
-        text: qsTr(label)
-        anchors.top: prevSibling(parent, this).bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            font.pointSize: 10
+            color: "white"
+            text: qsTr(label)
+        }
     }
 }
