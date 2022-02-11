@@ -105,14 +105,19 @@ ApplicationWindow {
                         label: "Mes documents"
                         icon: "directories.png"
                         onAction: {
-                            // Open files content
-                            applicationsContainer.visible = false
-                            filesContainer.visible = true
+                            execution.open("http://");
                         }
                     }
                     SideBarIcon {
                         label: "Sondage"
                         icon: "poll.png"
+                        onAction: {
+                            execution.open("http://" + serverAddress + ":8080/edutice");
+                        }
+                    }
+                    SideBarIcon {
+                        label: "Ma classe virtuelle"
+                        icon: "novatice.png"
                         onAction: {
                             execution.open("http://" + serverAddress + ":8080/edutice");
                         }
@@ -534,7 +539,6 @@ ApplicationWindow {
                                     }
                                 }
                             }
-
                         }
 
                         Text {
