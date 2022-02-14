@@ -106,6 +106,10 @@ ApplicationWindow {
                         label: "Mes documents"
                         icon: "directories.png"
                         onAction: {
+                            applicationsContainer.visible = false
+                            applicationsMenuBack.color = "transparent"
+                            filesMenuBack.color = "#066198"
+                            filesContainer.visible = true
                         }
                     }
                     SideBarIcon {
@@ -129,6 +133,8 @@ ApplicationWindow {
                         icon: "applications.png"
                         onAction: {
                             filesContainer.visible = false
+                            filesMenuBack.color = "transparent"
+                            applicationsMenuBack.color = "#066198"
                             applicationsContainer.visible = true
                         }
                     }
