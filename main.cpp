@@ -234,7 +234,8 @@ int main(int argc, char *argv[])
         apps.removeFirst();
     }
     QJsonValue links = workspace.value("links");
-    if (links != NULL) {
+
+    if (links.isUndefined()) {
         QJsonArray linksArray = links.toArray();
         while (!linksArray.isEmpty()) {
             QJsonObject link = linksArray.first().toObject();
@@ -246,6 +247,7 @@ int main(int argc, char *argv[])
             linksArray.removeFirst();
         }
     }
+
 
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

@@ -61,8 +61,6 @@ void Execution::disconnectScreen()
 void Execution :: addRow(QString name, QString img,QString src,QString cat)
 {
     (model)->addApplication(Application(name, img, src, cat));
-
-
 }
 
 void Execution::quit()

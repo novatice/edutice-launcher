@@ -99,27 +99,21 @@ ApplicationWindow {
                         onAction: {
                             https://edutice6-dev.novatice.com/edutice/#classe-virtuelle
                             execution.open("http://" + serverAddress + ":8080/edutice/#mon-compte");
+                            execution.close();
                         }
                     }
                     SideBarIcon {
                         label: "Mes documents"
                         icon: "directories.png"
                         onAction: {
-                            execution.open("http://");
                         }
                     }
                     SideBarIcon {
                         label: "Sondage"
                         icon: "poll.png"
                         onAction: {
-                            execution.open("http://" + serverAddress + ":8080/edutice");
-                        }
-                    }
-                    SideBarIcon {
-                        label: "Ma classe virtuelle"
-                        icon: "novatice.png"
-                        onAction: {
-                            execution.open("http://" + serverAddress + ":8080/edutice");
+                            execution.open("http://" + serverAddress + ":8080/edutice/edutice-oversight/my-polls/my-polls.jsp");
+                            execution.close();
                         }
                     }
                     SideBarIcon {
@@ -127,6 +121,7 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         onAction: {
                             execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
+                            execution.close();
                         }
                     }
                     SideBarIcon {
@@ -161,7 +156,6 @@ ApplicationWindow {
                         label: "Arrêter"
                         icon: "shutdown.png"
                         onAction: {
-
                         }
                     }
                 }
