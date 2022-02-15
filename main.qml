@@ -17,11 +17,27 @@ ApplicationWindow {
     x: 0
     y: screenHeight - height
 
+    Timer {
+        id: timer
+    }
+    function delay(delayTime, cb) {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
+    }
+
     Connections {
         target: Qt.application
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.visible = true
+            }
+            else
+            {
+                delay(100, function() {
+                    mainAppliWindow.hide()
+                })
             }
         }
     }
@@ -45,11 +61,6 @@ ApplicationWindow {
     FontLoader {
         id: mainFont
         source: "SFProDisplay-Semibold.ttf"
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onClicked: forceActiveFocus()
     }
 
     Execution {
@@ -99,7 +110,7 @@ ApplicationWindow {
                         onAction: {
                             https://edutice6-dev.novatice.com/edutice/#classe-virtuelle
                             execution.open("http://" + serverAddress + ":8080/edutice/#mon-compte");
-                            execution.close();
+                            mainAppliWindow.hide();
                         }
                     }
                     SideBarIcon {
@@ -117,7 +128,7 @@ ApplicationWindow {
                         icon: "poll.png"
                         onAction: {
                             execution.open("http://" + serverAddress + ":8080/edutice/edutice-oversight/my-polls/my-polls.jsp");
-                            execution.close();
+                            mainAppliWindow.hide();
                         }
                     }
                     SideBarIcon {
@@ -125,7 +136,7 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         onAction: {
                             execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
-                            execution.close();
+                            mainAppliWindow.hide();
                         }
                     }
                     SideBarIcon {
