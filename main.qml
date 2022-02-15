@@ -16,6 +16,11 @@ ApplicationWindow {
     height: screenHeight * (3/5) < 500 ? 500 : screenHeight * (3/5)
     x: 0
     y: screenHeight - height
+    onVisibleChanged: {
+        if (visible){
+            requestActivate();
+        }
+    }
 
     Timer {
         id: timer
@@ -31,7 +36,7 @@ ApplicationWindow {
         target: Qt.application
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationActive) {
-                mainAppliWindow.visible = true
+                mainAppliWindow.raise();
             }
             else
             {
