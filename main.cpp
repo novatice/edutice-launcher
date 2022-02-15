@@ -233,9 +233,9 @@ int main(int argc, char *argv[])
         //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
     }
-    QJsonValue links = workspace.value("links");
 
-    if (links.isUndefined()) {
+    QJsonValue links = workspace.value("links");
+    if (!links.isUndefined()) {
         QJsonArray linksArray = links.toArray();
         while (!linksArray.isEmpty()) {
             QJsonObject link = linksArray.first().toObject();
