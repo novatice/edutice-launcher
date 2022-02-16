@@ -163,6 +163,7 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Verrouiller"
                         icon: "lock.png"
+                        visible: lock_screen_enable
                         onAction: {
                             execution.lockScreen()
                         }
@@ -178,6 +179,7 @@ ApplicationWindow {
                         label: "Arrêter"
                         icon: "shutdown.png"
                         onAction: {
+                            execution.shutdown();
                         }
                     }
                 }

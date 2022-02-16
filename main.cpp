@@ -209,6 +209,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("group", "");
     engine.rootContext()->setContextProperty("machine", QHostInfo::localHostName());
 
+    QJsonValue lock_screen_enable = workspace.value("lock_screen_enable").toBool();
+    engine.rootContext()->setContextProperty("lock_screen_enable", lock_screen_enable);
+
     QJsonArray apps = workspace.value("applications").toArray();
     while (!apps.isEmpty()) {
         QJsonObject application = apps.first().toObject();

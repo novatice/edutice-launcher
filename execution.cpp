@@ -76,3 +76,16 @@ void Execution::quit()
 #endif
 }
 
+void Execution::shutdown()
+{
+    QString l = "";
+#ifdef linux
+    // todo: replace qdbus command by "pure" Qt DBus code
+    l = "qdbus org.kde.ksmserver /KSMServer logout 0 2 2";
+#endif
+#ifdef _WIN32
+    l = "shutdown -S -T 0";
+#endif
+    m_process->startDetached(l);
+}
+

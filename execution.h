@@ -35,6 +35,7 @@ public:
     int p;
     QWindow* mainWindows;
     Q_INVOKABLE void quit();
+    Q_INVOKABLE void shutdown();
 signals:
     void signalData(QString data);
     void signalExit(void);
