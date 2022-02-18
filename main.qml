@@ -140,8 +140,13 @@ ApplicationWindow {
                         label: "Ma classe virtuelle"
                         icon: "virtualclass.png"
                         onAction: {
-                            execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
-                            mainAppliWindow.hide();
+                            if (user_is_teacher){
+                                execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
+                                mainAppliWindow.hide();
+                            } else {
+                                execution.open("http://" + serverAddress + ":8080/edutice/");
+                                mainAppliWindow.hide();
+                            }
                         }
                     }
                     SideBarIcon {

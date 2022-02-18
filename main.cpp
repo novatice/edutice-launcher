@@ -209,9 +209,17 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("group", "");
     engine.rootContext()->setContextProperty("machine", QHostInfo::localHostName());
 
-    QJsonValue lock_screen_enable = workspace.value("lock_screen_enable").toBool();
-    engine.rootContext()->setContextProperty("lock_screen_enable", lock_screen_enable);
+    QJsonValue lock_screen_enable = workspace.value("lock_screen_enable");
+    if (lock_screen_enable.isUndefined()){
+        lock_screen_enable = true;
+    }
+    engine.rootContext()->setContextProperty("lock_screen_enable", lock_screen_enable.toBool());
 
+    QJsonValue user_is_teacher = workspace.value("user_is_teacher");
+    if (user_is_teacher.isUndefined()){
+        user_is_teacher = true;
+    }
+    engine.rootContext()->setContextProperty("user_is_teacher", user_is_teacher.toBool());
     QJsonArray apps = workspace.value("applications").toArray();
     while (!apps.isEmpty()) {
         QJsonObject application = apps.first().toObject();
