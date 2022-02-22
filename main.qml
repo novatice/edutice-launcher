@@ -114,7 +114,7 @@ ApplicationWindow {
                         icon: "profile.png"
                         onAction: {
                             https://edutice6-dev.novatice.com/edutice/#classe-virtuelle
-                            execution.open("http://" + serverAddress + ":8080/edutice/#mon-compte");
+                            execution.open("http://" + serverAddress + "/edutice/#mon-compte");
                             mainAppliWindow.hide();
                         }
                     }
@@ -132,7 +132,7 @@ ApplicationWindow {
                         label: "Sondage"
                         icon: "poll.png"
                         onAction: {
-                            execution.open("http://" + serverAddress + ":8080/edutice/edutice-oversight/my-polls/my-polls.jsp");
+                            execution.open("http://" + serverAddress + "/edutice/edutice-oversight/my-polls/my-polls.jsp");
                             mainAppliWindow.hide();
                         }
                     }
@@ -141,10 +141,10 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         onAction: {
                             if (user_is_teacher){
-                                execution.open("http://" + serverAddress + ":8080/edutice/#classe-virtuelle");
+                                execution.open("http://" + serverAddress + "/edutice/#classe-virtuelle");
                                 mainAppliWindow.hide();
                             } else {
-                                execution.open("http://" + serverAddress + ":8080/edutice/");
+                                execution.open("http://" + serverAddress + "/edutice/");
                                 mainAppliWindow.hide();
                             }
                         }
