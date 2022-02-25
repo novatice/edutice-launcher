@@ -1,4 +1,4 @@
-VERSION=6.3.0
+VERSION=6.5.0
 DEFINES += VERSION=\"\\\"$$VERSION\\\"\"
 
 QT += quick

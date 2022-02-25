@@ -37,6 +37,8 @@ ApplicationWindow {
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.raise();
+                // Forces UI to be active on Windows, freezes after first use otherwise.
+                mainAppliWindow.visible = true
             }
             else
             {
