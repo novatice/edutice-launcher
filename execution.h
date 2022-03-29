@@ -28,7 +28,7 @@ public:
     Q_INVOKABLE QString open(const QString &path);
     Q_INVOKABLE void lockScreen();
     Q_INVOKABLE void disconnectScreen();
-    Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat);
+    Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat, bool installed);
     //void setTimeR(char* time);
     QQmlContext *ctxt;
     AppModel* model;

@@ -1,13 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>digital-7.ttf</file>
-        <file>SFCompactText-SemiBoldItalic.ttf</file>
-        <file>SFCompactText-Medium.ttf</file>
-        <file>SFCompactDisplay-Black.ttf</file>
-        <file>SFProDisplay-Ultralight.ttf</file>
-        <file>SFProDisplay-Semibold.ttf</file>
-        <file>SFProDisplay-Bold.ttf</file>
-        <file>SFProText-Medium.ttf</file>
         <file>accessibility.png</file>
         <file>applications.png</file>
         <file>connected.png</file>
@@ -28,5 +20,10 @@
         <file>virtualclass.png</file>
         <file>magnifying-glass-solid.svg</file>
         <file>password.svg</file>
+        <file>not_installed_app.svg</file>
+        <file>no_icon_app.svg</file>
+        <file>AvenirNextLTPro.ttf</file>
+        <file>AvenirNextLTProBold.ttf</file>
+        <file>AvenirNextLTProIt.ttf</file>
     </qresource>
 </RCC>

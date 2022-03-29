@@ -224,24 +224,30 @@ int main(int argc, char *argv[])
     while (!apps.isEmpty()) {
         QJsonObject application = apps.first().toObject();
         QString name = application.value("name").toString();
-        QString icon = application.value("icon").toString();
+        QString icon = "not_installed_app.svg";
         QString path = application.value("path").toString();
         QString category = application.value("category").toString();
-        if(icon == "") {
-            #ifdef linux
-            icon = "linux_app_icon.png";
-            #else
-            icon = "windows_app_icon.png";
-            #endif
-        } else {
-            icon = "file:" + icon;
+        bool installed = false;
+        if (path != "")
+        {
+            installed = true;
+            if (application.value("icon").isUndefined())
+            {
+                icon = "applications.png";
+            }
+            else
+            {
+                icon = "file:" + application.value("icon").toString();
+            }
         }
-        // We use a temp category, as we didn't have them right now !
-        Application app = Application(name, icon, path, "Default");
+        else
+        {
+            name += " [Non installée]";
+        }
+        Application app = Application(name, icon, path, "Default", installed);
         if (application.value("recommended").toBool())
             recommendedApplications->addApplication(app);
         modelApplication->addApplication(app);
-        //ex->addRow(app.type(), app.size(), app.src(), app.categorie());
         apps.removeFirst();
     }
 

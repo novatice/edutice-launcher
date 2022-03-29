@@ -9,11 +9,12 @@
 class Application
 {
     public:
-        Application(const QString &type, const QString &size, const QString &src, const QString &categorie);
+        Application(const QString &type, const QString &size, const QString &src, const QString &categorie, const bool installed);
         QString type() const;
         QString size() const;
         QString src() const;
         QString categorie() const;
+        bool installed() const;
 
         void setType(QString q) {
             m_type = q;
@@ -24,6 +25,7 @@ class Application
         QString m_size;
         QString m_src;
         QString m_categorie;
+        bool m_installed;
 };
 
 class AppModel : public QAbstractListModel
@@ -34,7 +36,8 @@ class AppModel : public QAbstractListModel
             name = Qt::UserRole + 1,
             icon,
             src,
-            categorie
+            categorie,
+            installed
         };
 
         explicit AppModel(QObject *parent = 0);

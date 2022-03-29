@@ -61,13 +61,18 @@ ApplicationWindow {
     }
 
     FontLoader {
-        id: titleFont
-        source: "SFCompactText-SemiBoldItalic.ttf"
+        id: normalFont
+        source: "AvenirNextLTPro.ttf"
     }
 
     FontLoader {
-        id: mainFont
-        source: "SFProDisplay-Semibold.ttf"
+        id: boldFont
+        source: "AvenirNextLTProBold.ttf"
+    }
+
+    FontLoader {
+        id: italicFont
+        source: "AvenirNextLTProIt.ttf"
     }
 
     Execution {
@@ -251,7 +256,7 @@ ApplicationWindow {
                                     text: qsTr("Applications")
                                     color: "white"
                                     font.pointSize: parent.height * (1/4)
-                                    font.family: mainFont.name
+                                    font.family: normalFont.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                     anchors.leftMargin: 20
@@ -295,7 +300,7 @@ ApplicationWindow {
                                     text: qsTr("Mes documents")
                                     color: "white"
                                     font.pointSize: parent.height * (1/4)
-                                    font.family: mainFont.name
+                                    font.family: normalFont.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                     anchors.leftMargin: 20
@@ -342,7 +347,7 @@ ApplicationWindow {
                                 text: qsTr("Ressources en ligne")
                                 color: "white"
                                 font.pointSize: parent.height * (1/4)
-                                font.family: mainFont.name
+                                font.family: italicFont.name
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.leftMargin: 20
                             }
@@ -405,7 +410,7 @@ ApplicationWindow {
                         Text {
                             text: qsTr("Mes documents")
                             font.pointSize: 20
-                            font.family: mainFont.name
+                            font.family: boldFont.name
                             color: theme.mainTitleColor
                             Layout.alignment: Qt.AlignHCenter
                         }
@@ -414,7 +419,7 @@ ApplicationWindow {
                         Text {
                             text: qsTr("Mes dossiers partagés")
                             font.pointSize: 15
-                            font.family: mainFont.name
+                            font.family: boldFont.name
                             color: theme.mainTitleColor
                             visible: mountedDirectoriesModel.rowCount() > 0
                         }
@@ -494,6 +499,7 @@ ApplicationWindow {
                                                 Image {
                                                     source: icon
                                                     fillMode: Image.PreserveAspectFit
+                                                    //fillMode: Image.PreserveAspectFit
                                                     width: parent.height * (2/3)
                                                     height: parent.height * (2/3)
                                                     anchors.verticalCenter: parent.verticalCenter
@@ -503,30 +509,16 @@ ApplicationWindow {
 
                                             Item {
                                                 anchors.verticalCenter: parent.verticalCenter
-                                                height: parent.height / 2
+                                                height: childrenRect.height
                                                 Layout.fillWidth: parent
                                                 Layout.leftMargin: 10
                                                 anchors.left: mountedDirectoriesIcon.right
-                                                Rectangle {
-                                                    border.width: 1
-                                                    border.color: "black"
-                                                    color: "transparent"
-                                                    height: parent.height
-                                                    width: parent.width
-                                                }
 
                                                 Text {
                                                     id: mountedDirectoriessName
                                                     font.pointSize: parent.parent.height * (1/5)
-                                                    font.family: mainFont.name
+                                                    font.family: normalFont.name
                                                     text: qsTr(name)
-                                                }
-                                                Text {
-                                                    anchors.bottom: parent.bottom
-                                                    text: qsTr(description)
-                                                    font.pointSize: parent.parent.height * (1/7)
-                                                    font.family: mainFont.name
-                                                    color: "grey"
                                                 }
                                             }
 
@@ -569,7 +561,7 @@ ApplicationWindow {
                         Text {
                             text: qsTr("Mes dossiers personnels")
                             font.pointSize: 15
-                            font.family: mainFont.name
+                            font.family: boldFont.name
                             color: theme.mainTitleColor
                         }
                         // Default directories: fills the ColumnLayout
@@ -654,31 +646,17 @@ ApplicationWindow {
 
                                         Item {
                                             anchors.verticalCenter: parent.verticalCenter
-                                            height: parent.height / 2
+                                            height: childrenRect.height
                                             Layout.fillWidth: parent
                                             Layout.leftMargin: 10
                                             anchors.left: defaultFilesIcon.right
-                                            Rectangle {
-                                                border.width: 1
-                                                border.color: "black"
-                                                color: "transparent"
-                                                height: parent.height
-                                                width: parent.width
-                                            }
 
                                             Text {
                                                 id: defaultFilesName
                                                 font.pointSize: parent.parent.height * (1/5)
-                                                font.family: mainFont.name
+                                                font.family: normalFont.name
                                                 text: qsTr(name)
                                                 color: "black"
-                                            }
-                                            Text {
-                                                anchors.bottom: parent.bottom
-                                                text: qsTr(description)
-                                                font.pointSize: parent.parent.height * (1/7)
-                                                font.family: mainFont.name
-                                                color: "grey"
                                             }
                                         }
 
@@ -768,7 +746,7 @@ ApplicationWindow {
                                     font.pointSize: parent.height / 3
                                     Layout.alignment: Qt.AlignVCenter
                                     font.bold: true
-                                    font.family: mainFont.name
+                                    font.family: boldFont.name
                                     onTextChanged: {
                                         delegateModel.update()
                                     }
@@ -784,7 +762,7 @@ ApplicationWindow {
                             visible: favoritesModel.rowCount() !== 0
                             text: qsTr("Applications recommandées")
                             font.pointSize: 15
-                            font.family: mainFont.name
+                            font.family: boldFont.name
                             color: theme.mainTitleColor
                         }
 
@@ -820,7 +798,7 @@ ApplicationWindow {
                         Text {
                             text: qsTr("Toutes les applications (" + modelApplication.rowCount() + ")")
                             font.pointSize: 15
-                            font.family: mainFont.name
+                            font.family: boldFont.name
                             color: theme.mainTitleColor
                         }
                         // Conteneur liste d'Applications
@@ -938,7 +916,8 @@ ApplicationWindow {
                                                 Text {
                                                     id: applicationName
                                                     font.pointSize: parent.parent.height * (1/5)
-                                                    font.family: mainFont.name
+                                                    font.family: installed ? normalFont.name : italicFont.name
+                                                    color: installed ? "black" : "grey"
                                                     text: qsTr(name)
                                                 }
                                             }
@@ -946,20 +925,22 @@ ApplicationWindow {
                                             MouseArea {
                                                 id: applicationMouseArea
                                                 anchors.fill: parent
-                                                cursorShape: Qt.PointingHandCursor
-                                                hoverEnabled: true
+                                                cursorShape: installed ? Qt.PointingHandCursor : Qt.ArrowCursor
+                                                hoverEnabled: installed
 
                                                 onClicked: {
-                                                    if (mouse.button === Qt.LeftButton) {
+                                                    if (mouse.button === Qt.LeftButton && installed) {
                                                         execution.launch(src)
                                                         mainAppliWindow.visible = false
                                                     }
                                                 }
                                                 onEntered: {
-                                                    applicationBack.visible = true
+                                                    if(installed)
+                                                        applicationBack.visible = true
                                                 }
                                                 onExited: {
-                                                    applicationBack.visible = false
+                                                    if (installed)
+                                                        applicationBack.visible = false
                                                 }
                                             }
                                         }
@@ -977,353 +958,6 @@ ApplicationWindow {
                         }
                     }
                 }
-
         }
-
-
-
-
-//        ColumnLayout {
-//            width: parent.width
-//            height: parent.height
-//            spacing: sizeUnit.heightUnit
-
-//            Item {
-//                id: search
-//                width: parent.width
-//                Layout.alignment: Qt.AlignHCenter
-//                height: parent.height / 20
-//                Layout.topMargin: parent.height / 20
-
-//                RowLayout {
-//                    height: parent.height
-//                    anchors.horizontalCenter: parent.horizontalCenter
-
-//                    Item {
-//                        Layout.preferredHeight: parent.height
-//                        width: parent.height
-//                        //color:"red"
-
-//                        Image {
-//                            id: iconSearchtext
-//                            smooth: true
-//                            fillMode: Image.PreserveAspectFit
-//                            asynchronous: true
-//                            source: "search.png"
-//                            anchors.horizontalCenter: parent.horizontalCenter
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            opacity: 0.15
-//                            height: parent.height / 2
-//                            width: parent.height / 2
-//                        }
-//                        ColorOverlay {
-//                            anchors.fill: iconSearchtext
-//                            source: iconSearchtext
-//                            color: theme.mainTextColor
-//                            opacity: 0.15
-//                        }
-//                    }
-//                    TextField {
-//                        id: searchText
-//                        placeholderText: qsTr("Rechercher une application...")
-//                        color: theme.mainTextColor
-//                        opacity: 0.3
-//                        font.pointSize: parent.height / 2
-//                        Layout.alignment: Qt.AlignVCenter
-//                        font.bold: true
-//                        font.family: mainFont.name
-//                        onTextChanged: {
-//                            delegateModel.update()
-//                        }
-
-//                        background: Item {
-//                            opacity: 0
-//                        }
-//                    }
-//                }
-
-//            }
-
-//            Item {
-//                id: actionsLayout
-//                width: parent.width
-//                height: sizeUnit.heightUnit * 19
-
-
-//            }
-
-//            Item {
-//                id: footer
-//                width: parent.width
-//                Layout.alignment: Qt.AlignHCenter
-//                height: parent.height / 20
-
-//                Text {
-//                    anchors.centerIn: parent
-//                    text: qsTr("Version " + launcherVersion)
-//                }
-//            }
-//        }
-
-        // LOGOFF
-//        Item {
-//            id: logoffWindow
-
-//            height: parent.height
-//            width: parent.width * (18/24)
-//            anchors.left: parent.left
-//            anchors.leftMargin: parent.width * (3/24)
-//            visible: false
-
-//            Rectangle {
-//                height: parent.height / 3
-//                width: parent.width / 2
-//                anchors.verticalCenter: parent.verticalCenter
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                radius: 25
-//                gradient: Gradient {
-//                    GradientStop { position: 0; color: theme.mainTitleColor }
-//                    GradientStop { position: 0.2; color: theme.mainTitleColor }
-//                    GradientStop { position: 0.2001; color: "white" }
-//                    GradientStop { position: 1; color: "white" }
-//                }
-
-//                Item {
-//                    id: logoffWindowTitle
-//                    height: parent.height / 5
-//                    width: logoffWindowTitle.childrenRect.width
-//                    anchors.horizontalCenter: parent.horizontalCenter
-
-//                    Image {
-//                        id: logoffWindowTitleIcon
-//                        fillMode: Image.PreserveAspectFit
-//                        source: "deconnexion.png"
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        opacity: 1
-//                        height: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
-//                        width: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
-//                    }
-//                    ColorOverlay {
-//                        anchors.fill: logoffWindowTitleIcon
-//                        source: logoffWindowTitleIcon
-//                        color: "white"
-//                    }
-
-//                    Text {
-//                        anchors.left: logoffWindowTitleIcon.right
-//                        anchors.leftMargin: 10
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        text: qsTr("Déconnexion")
-//                        font.pointSize: parent.height * (3/7)
-//                        font.family: mainFont.name
-//                        color: "white"
-//                    }
-//                }
-
-//                Item {
-//                    id: logoffWindowContent
-//                    height: parent.height * (4/5)
-//                    width: parent.width
-//                    anchors.top: logoffWindowTitle.bottom
-
-//                    Item {
-//                        width: parent.width * (7/10)
-//                        height: parent.height * (7/10)
-//                        anchors.horizontalCenter: parent.horizontalCenter
-//                        anchors.verticalCenter: parent.verticalCenter
-
-//                        Text {
-//                            text: qsTr("Avez-vous pensé à enregistrer votre travail ?")
-//                            font.pointSize: parent.height / 10
-//                            anchors.top: parent.top
-//                            anchors.topMargin: (parent.height * (4/5) - height) / 2
-//                            anchors.horizontalCenter: parent.horizontalCenter
-//                        }
-
-//                        Item {
-//                            id: cancelLogoff
-//                            width: parent.width * (2/5)
-//                            height: parent.height * (1/5)
-//                            anchors.bottom: parent.bottom
-//                            anchors.left: parent.left
-
-//                            Rectangle {
-//                                id: cancelLogoffButton
-//                                radius: height / 2
-//                                width: parent.width
-//                                height: parent.height
-//                                border.color: "grey"
-//                                border.width: 1
-
-//                                // the following properties are changed when hovered
-//                                color: "transparent"
-
-//                                MouseArea {
-//                                    anchors.fill: parent
-//                                    cursorShape: Qt.PointingHandCursor
-//                                    hoverEnabled: true
-//                                    onEntered: {
-//                                        cancelLogoffButton.color = "lightgrey"
-//                                    }
-//                                    onExited: {
-//                                        cancelLogoffButton.color = "transparent"
-//                                    }
-//                                    onClicked: {
-//                                        logoffWindow.visible = false
-//                                        applications.visible = true
-//                                        files.visible = true
-//                                    }
-//                                }
-//                            }
-//                            Text {
-//                                text: qsTr("Annuler")
-//                                color: "grey"
-//                                font.pointSize: parent.height / 3
-//                                anchors.verticalCenter: parent.verticalCenter
-//                                anchors.horizontalCenter: parent.horizontalCenter
-//                            }
-//                        }
-
-//                        Item {
-//                            id: confirmLogoff
-//                            width: parent.width * (2/5)
-//                            height: parent.height * (1/5)
-//                            anchors.bottom: parent.bottom
-//                            anchors.right: parent.right
-
-//                            Rectangle {
-//                                id: confirmLogoffButton
-//                                radius: height / 2
-//                                width: parent.width
-//                                height: parent.height
-
-//                                // These are changing when hovered
-//                                color: theme.mainTitleColor
-
-//                                MouseArea {
-//                                    anchors.fill: parent
-//                                    cursorShape: Qt.PointingHandCursor
-//                                    hoverEnabled: true
-//                                    onEntered: {
-//                                        confirmLogoffButton.color = "#002a80"
-//                                    }
-//                                    onExited: {
-//                                        confirmLogoffButton.color = theme.mainTitleColor
-//                                    }
-//                                    onClicked: {
-//                                        execution.disconnectScreen()
-//                                    }
-//                                }
-//                            }
-//                            Text {
-//                                text: qsTr("Se déconnecter")
-//                                color: "white"
-//                                font.pointSize: parent.height / 3
-//                                anchors.verticalCenter: parent.verticalCenter
-//                                anchors.horizontalCenter: parent.horizontalCenter
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-        // Informations window
-//        Item {
-//            id: informationsWindow
-
-//            height: parent.height
-//            width: parent.width * (18/24)
-//            anchors.left: parent.left
-//            anchors.leftMargin: parent.width * (3/24)
-//            visible: false
-
-//            Rectangle {
-//                height: parent.height / 3
-//                width: parent.width / 2
-//                anchors.verticalCenter: parent.verticalCenter
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                radius: 25
-//                gradient: Gradient {
-//                    GradientStop { position: 0; color: theme.mainTitleColor }
-//                    GradientStop { position: 0.2; color: theme.mainTitleColor }
-//                    GradientStop { position: 0.2001; color: "white" }
-//                    GradientStop { position: 1; color: "white" }
-//                }
-
-//                Item {
-//                    id: informationsWindowTitle
-//                    height: parent.height / 5
-//                    width: logoffWindowTitle.childrenRect.width
-//                    anchors.horizontalCenter: parent.horizontalCenter
-
-//                    Image {
-//                        id: informationsWindowTitleIcon
-//                        fillMode: Image.PreserveAspectFit
-//                        source: "informations.png"
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        opacity: 1
-//                        height: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
-//                        width: parent.height * (1/2) //parent.height - platformStyle.paddingMedium * 2
-//                    }
-//                    ColorOverlay {
-//                        anchors.fill: informationsWindowTitleIcon
-//                        source: informationsWindowTitleIcon
-//                        color: "white"
-//                    }
-
-//                    Text {
-//                        anchors.left: informationsWindowTitleIcon.right
-//                        anchors.leftMargin: 10
-//                        anchors.verticalCenter: parent.verticalCenter
-//                        text: qsTr("Informations")
-//                        font.pointSize: parent.height * (3/7)
-//                        font.family: mainFont.name
-//                        color: "white"
-//                    }
-//                }
-
-//                Item {
-//                    id: informationsWindowContent
-//                    height: parent.height * (4/5)
-//                    width: parent.width
-//                    anchors.top: informationsWindowTitle.bottom
-
-//                    Item {
-//                        width: parent.width * (7/10)
-//                        height: childrenRect.height
-//                        anchors.horizontalCenter: parent.horizontalCenter
-//                        anchors.verticalCenter: parent.verticalCenter
-
-//                        ColumnLayout {
-//                            spacing: 0
-//                            width: parent.width
-
-//                            Info {
-//                                label: "Poste"
-//                                value: qsTr(machine)
-//                            }
-//                            Info {
-//                                label: "Espace de travail"
-//                                value: qsTr(workspace)
-//                            }
-//                            Info {
-//                                label: "Version de l'agent"
-//                                value: qsTr(agentVersion)
-//                            }
-//                            Info {
-//                                label: "Version de l'OS"
-//                                value: qsTr(OSVersion)
-//                            }
-//                            Info {
-//                                label: "Version du lanceur d'applications"
-//                                value: qsTr(launcherVersion)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
     }
 }

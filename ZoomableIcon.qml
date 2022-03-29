@@ -74,7 +74,10 @@ Item {
     Text {
         id: frenchCaption
         anchors.top: parent.bottom
+        anchors.topMargin: 5
         anchors.horizontalCenter: parent.horizontalCenter
+        font.pointSize: parent.height / 8
+        font.family: normalFont.name
         state: "EXITED"
         text: label
         states : [

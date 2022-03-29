@@ -78,6 +78,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 20
+            font.family: normalFont.name
             font.pointSize: 10
             color: "white"
             text: qsTr(label)

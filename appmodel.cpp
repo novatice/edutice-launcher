@@ -1,7 +1,7 @@
 #include "appmodel.h"
 
-Application::Application(const QString &type, const QString &size, const QString &src, const QString &categorie)
-    : m_type(type), m_size(size),m_src(src), m_categorie(categorie)
+Application::Application(const QString &type, const QString &size, const QString &src, const QString &categorie, const bool installed)
+    : m_type(type), m_size(size),m_src(src), m_categorie(categorie), m_installed(installed)
 {
 }
 
@@ -23,6 +23,10 @@ QString Application::categorie() const
 {
     return m_categorie;
 }
+bool Application::installed() const
+{
+    return m_installed;
+}
 AppModel::AppModel(QObject *parent) : QAbstractListModel(parent)
 {
 
@@ -34,6 +38,7 @@ QHash<int, QByteArray> AppModel::roleNames() const {
     roles[icon] = "icon";
     roles[src] = "src";
     roles[categorie] = "categorie";
+    roles[installed] = "installed";
     return roles;
 }
 
@@ -63,6 +68,8 @@ QVariant AppModel::data(const QModelIndex & index, int role) const {
         return application.src();
     else if (role == categorie)
         return application.categorie();
+    else if (role == installed)
+        return application.installed();
     return QVariant();
 }
 

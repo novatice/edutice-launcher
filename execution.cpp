@@ -58,9 +58,9 @@ void Execution::disconnectScreen()
     m_process->waitForFinished(-1);
 }
 
-void Execution :: addRow(QString name, QString img,QString src,QString cat)
+void Execution :: addRow(QString name, QString img,QString src,QString cat, bool installed)
 {
-    (model)->addApplication(Application(name, img, src, cat));
+    (model)->addApplication(Application(name, img, src, cat, installed));
 }
 
 void Execution::quit()
