@@ -27,5 +27,6 @@
         <file>pictures.png</file>
         <file>virtualclass.png</file>
         <file>magnifying-glass-solid.svg</file>
+        <file>password.svg</file>
     </qresource>
 </RCC>
