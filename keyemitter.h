@@ -10,10 +10,6 @@ class KeyEmitter : public QObject
     Q_OBJECT
 public:
     KeyEmitter(QObject* parent=nullptr) : QObject(parent) {}
-    Q_INVOKABLE void keyPressed(QObject* tf, Qt::Key k) {
-        QKeyEvent keyPressEvent = QKeyEvent(QEvent::Type::KeyPress, k, Qt::MetaModifier, QKeySequence(k).toString());
-        QCoreApplication::sendEvent(tf, &keyPressEvent);
-    }
 
     Q_INVOKABLE void openScreenDisplaySettings() {
         INPUT inputs[4] = {};
@@ -33,15 +29,7 @@ public:
         inputs[3].ki.wVk = VK_LWIN;
         inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
 
-        UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-        if (uSent != ARRAYSIZE(inputs))
-        {
-            qInfo("Error");
-        }
-        else
-        {
-            qInfo("Success");
-        }
+        SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
     }
 };
 #endif // KEYEMITTER_H

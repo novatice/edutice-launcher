@@ -3,10 +3,8 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>SortFilterModel.qml</file>
-        <file>ProgressCircle.qml</file>
         <file>SwipeFilterModel.qml</file>
         <file>Categories.qml</file>
-        <file>Info.qml</file>
         <file>SideBarIcon.qml</file>
         <file>ZoomableIcon.qml</file>
     </qresource>
