@@ -56,3 +56,6 @@ compile_commands.json
 # Qt compilation outputs
 [dD]ebug/*
 [rR]elease/*
+
+# Visual Studio files
+*vcxproj*
