@@ -113,6 +113,21 @@ ApplicationWindow {
                 ColumnLayout {
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+                    spacing: 0
+
+                    SideBarIcon {
+                        label: "Ecrans multiples"
+                        icon: "duplicate.png"
+                        onAction: {
+                            keyEmitter.openScreenDisplaySettings()
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    width: parent.width
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
                     spacing: 0
 

@@ -7,6 +7,7 @@
 #include <appmodel.h>
 #include <categoriemodel.h>
 #include <directorymodel.h>
+#include <keyemitter.h>
 #include <iostream>
 #include <QScreen>
 #include <QIODevice>
@@ -270,6 +271,9 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
+
+    KeyEmitter keyEmitter;
+    engine.rootContext()->setContextProperty("keyEmitter", &keyEmitter);
 
     QObject *rect = (engine.rootObjects().first())->findChild<QObject*>("execution");
     Execution* ex = (qobject_cast<Execution*>(rect));
