@@ -1,7 +1,9 @@
 #ifndef KEYEMITTER_H
 #define KEYEMITTER_H
+#ifdef WIN32
 #include "windows.h"
 #include "WinUser.h"
+#endif
 #include <QObject>
 #include <QCoreApplication>
 #include <QKeyEvent>
