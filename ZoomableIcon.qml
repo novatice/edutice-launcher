@@ -5,6 +5,7 @@ Item {
     property string label
     property string backgroundColor
     property string textColor
+    property bool active
 
     signal action();
     // Override this function to make your Item useful !
@@ -58,7 +59,7 @@ Item {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
+        cursorShape: active ? Qt.PointingHandCursor : Qt.ArrowCursor
         onEntered: {
             frenchCaption.state = "HOVERED"
             backgroundExample.state = "HOVERED"
@@ -69,7 +70,10 @@ Item {
             backgroundExample.state = "EXITED"
             frenchIcon.state = "EXITED"
         }
-        onClicked: parent.action()
+        onClicked: {
+            if (active)
+                parent.action()
+        }
     }
     Text {
         id: frenchCaption
@@ -77,7 +81,7 @@ Item {
         anchors.topMargin: 5
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: parent.height / 8
-        font.family: normalFont.name
+        font.family: active ? normalFont.name : italicFont.name
         state: "EXITED"
         text: label
         states : [

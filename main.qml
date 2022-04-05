@@ -793,10 +793,11 @@ ApplicationWindow {
                                     Layout.alignment: Qt.AlignVCenter
                                     width: parent.height
                                     height: parent.height
-                                    backgroundColor: "lightblue"
-                                    textColor: "black"
+                                    backgroundColor: installed ? "lightblue" : "lightslategrey"
+                                    textColor: installed ? "black" : "grey"
                                     iconSrc: qsTr(icon)
                                     label: qsTr(name)
+                                    active: installed
                                     onAction: {
                                         execution.launch(src)
                                         mainAppliWindow.close()
