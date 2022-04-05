@@ -1,22 +1,23 @@
 #ifndef EXECUTION_H
 #define EXECUTION_H
 
-#ifdef _WIN32
-//#include "windows.h"
+#ifdef WIN32
+#include "windows.h"
+#include "WinUser.h"
 #endif
 
-
+#include <qmetatype.h>
 #include <QObject>
 #include <QProcess>
-#include <appmodel.h>
-//#include <time.h>
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQuick/QQuickItem>
 #include <QQmlContext>
 #include <QProcess>
-#include <iostream>
 #include <QDesktopServices>
+
+#include <appmodel.h>
+#include <iostream>
 
 class Execution : public QObject
 {
@@ -29,7 +30,8 @@ public:
     Q_INVOKABLE void lockScreen();
     Q_INVOKABLE void disconnectScreen();
     Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat, bool installed);
-    //void setTimeR(char* time);
+    Q_INVOKABLE void openScreenDisplaySettings();
+
     QQmlContext *ctxt;
     AppModel* model;
     int p;

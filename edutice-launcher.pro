@@ -41,5 +41,4 @@ HEADERS += \
     execution.h \
     filter.h \
     appmodel.h \
-    categoriemodel.h \
-    keyemitter.h
+    categoriemodel.h

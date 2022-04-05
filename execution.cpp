@@ -63,6 +63,34 @@ void Execution :: addRow(QString name, QString img,QString src,QString cat, bool
     (model)->addApplication(Application(name, img, src, cat, installed));
 }
 
+void Execution::openScreenDisplaySettings() {
+#ifdef WIN32
+        INPUT inputs[4] = {};
+        ZeroMemory(inputs, sizeof(inputs));
+
+        inputs[0].type = INPUT_KEYBOARD;
+        inputs[0].ki.wVk = VK_LWIN;
+
+        inputs[1].type = INPUT_KEYBOARD;
+        inputs[1].ki.wVk = 0x50;
+
+        inputs[2].type = INPUT_KEYBOARD;
+        inputs[2].ki.wVk = 0x50;
+        inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        inputs[3].type = INPUT_KEYBOARD;
+        inputs[3].ki.wVk = VK_LWIN;
+        inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+        SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+
+#endif
+#ifdef linux
+    QString l = "xdotool key Super_L+p";
+    m_process->startDetached(l);
+#endif
+}
+
 void Execution::quit()
 {
 #ifdef _WIN32

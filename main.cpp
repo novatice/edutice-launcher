@@ -3,11 +3,9 @@
 #include <QtQuick/QQuickView>
 #include <QtQuick/QQuickItem>
 #include <QQmlContext>
-#include <execution.h>
 #include <appmodel.h>
 #include <categoriemodel.h>
 #include <directorymodel.h>
-#include <keyemitter.h>
 #include <iostream>
 #include <QScreen>
 #include <QIODevice>
@@ -23,6 +21,8 @@
 #include <QDir>
 #include <QCommandLineParser>
 #include <QHostInfo>
+//#include <keyemitter.h>
+#include <execution.h>
 
 #ifdef linux
 #include <signal.h>
@@ -272,8 +272,8 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    KeyEmitter keyEmitter;
-    engine.rootContext()->setContextProperty("keyEmitter", &keyEmitter);
+//    KeyEmitter keyEmitter;
+//    engine.rootContext()->setContextProperty("keyEmitter", &keyEmitter);
 
     QObject *rect = (engine.rootObjects().first())->findChild<QObject*>("execution");
     Execution* ex = (qobject_cast<Execution*>(rect));

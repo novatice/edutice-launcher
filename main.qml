@@ -120,7 +120,7 @@ ApplicationWindow {
                         label: "Ecrans multiples"
                         icon: "duplicate.png"
                         onAction: {
-                            keyEmitter.openScreenDisplaySettings()
+                            execution.openScreenDisplaySettings()
                         }
                     }
                 }
