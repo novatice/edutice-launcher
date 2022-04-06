@@ -383,6 +383,7 @@ ApplicationWindow {
                                         textColor: "white"
                                         iconSrc: qsTr(icon)
                                         label: qsTr(name)
+                                        active: true
                                         onAction: {
                                             execution.open(path)
                                             mainAppliWindow.hide()
