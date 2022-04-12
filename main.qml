@@ -78,7 +78,6 @@ ApplicationWindow {
     Execution {
         id: execution
         objectName: "execution"
-        //onSignalExit: mainAppliWindow.close()
     }
 
     Item {
@@ -801,7 +800,7 @@ ApplicationWindow {
                                     active: installed
                                     onAction: {
                                         execution.launch(src)
-                                        mainAppliWindow.close()
+                                        mainAppliWindow.hide()
                                     }
                                 }
                             }
