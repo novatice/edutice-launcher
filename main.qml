@@ -150,14 +150,10 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Ma classe virtuelle"
                         icon: "virtualclass.png"
+                        visible: user_is_teacher
                         onAction: {
-                            if (user_is_teacher){
-                                execution.open("http://" + serverAddress + "/edutice/#classe-virtuelle");
-                                mainAppliWindow.hide();
-                            } else {
-                                execution.open("http://" + serverAddress + "/edutice/");
-                                mainAppliWindow.hide();
-                            }
+                            execution.open("http://" + serverAddress + "/edutice/#classe-virtuelle");
+                            mainAppliWindow.hide();
                         }
                     }
                     SideBarIcon {
