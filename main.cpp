@@ -216,6 +216,12 @@ int main(int argc, char *argv[])
     }
     engine.rootContext()->setContextProperty("lock_screen_enable", lock_screen_enable.toBool());
 
+    QJsonValue missing_default_browser = workspace.value("missing_default_browser");
+    if (missing_default_browser.isUndefined()){
+        missing_default_browser = false;
+    }
+    engine.rootContext()->setContextProperty("missing_default_browser", missing_default_browser.toBool());
+
     QJsonValue user_is_teacher = workspace.value("user_is_teacher");
     if (user_is_teacher.isUndefined()){
         user_is_teacher = true;

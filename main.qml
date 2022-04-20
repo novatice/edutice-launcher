@@ -339,6 +339,8 @@ ApplicationWindow {
                     Item {
                         width: parent.width
                         height: parent.height * (2/7)
+                        visible: !missing_default_browser
+
 
                         ColumnLayout {
                             width: parent.width
@@ -390,6 +392,35 @@ ApplicationWindow {
                                     anchors.fill : parent
                                     orientation: ListView.Horizontal
                                 }
+                            }
+                        }
+                    }
+
+                    Item {
+                        width: parent.width
+                        height: parent.height * (2/7)
+                        visible: missing_default_browser
+
+                        ColumnLayout {
+                            width: parent.width
+                            height: parent.height * (2/7)
+                            spacing: 10
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            Rectangle {
+                                visible: missing_default_browser
+                                height: 2
+                                width: parent.width
+                                color: "grey"
+                            }
+                            Text {
+                                visible: missing_default_browser
+                                text: qsTr("Navigateur par défaut non autorisé \nContactez un administrateur")
+                                color: "orange"
+                                font.pointSize: parent.height * (1/4)
+                                font.family: italicFont.name
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.leftMargin: 20
                             }
                         }
                     }
