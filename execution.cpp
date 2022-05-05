@@ -22,13 +22,19 @@ QString Execution::launch(const QString &program)
     return "";
 }
 
-QString Execution::open(const QString &path)
+QString Execution::openFolder(const QString &path)
 {
-    QDesktopServices::openUrl(path);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 
     return "";
 }
 
+QString Execution::open(const QString &path)
+{
+    QDesktopServices::openUrl(path);
+    return "";
+
+}
 void Execution::lockScreen()
 {
     QString l = "";

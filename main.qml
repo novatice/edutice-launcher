@@ -710,7 +710,7 @@ ApplicationWindow {
 
                                             onClicked: {
                                                 if (mouse.button === Qt.LeftButton) {
-                                                    execution.open(path)
+                                                    execution.openFolder(path)
                                                     mainAppliWindow.visible = false
                                                 }
                                             }

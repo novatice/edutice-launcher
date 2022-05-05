@@ -27,6 +27,7 @@ public:
     explicit Execution(QObject *parent = 0);
     Q_INVOKABLE QString launch(const QString &program);
     Q_INVOKABLE QString open(const QString &path);
+    Q_INVOKABLE QString openFolder(const QString &path);
     Q_INVOKABLE void lockScreen();
     Q_INVOKABLE void disconnectScreen();
     Q_INVOKABLE void addRow(QString name, QString img,QString src,QString cat, bool installed);

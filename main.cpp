@@ -144,9 +144,20 @@ int main(int argc, char *argv[])
                 "pictures.png",
                 "Dossier contenant les images de la session");
 
+    QString temp = QString(QDir::homePath() + "/Ressources temporaires");
+    QString name = "Resources Temporaires";
+
+    Directory TemporaryResources = Directory(
+                temp,
+                name,
+                "dossier temporaire.png",
+                "Resources Temporaires de la session"
+                );
+
     defaultDirectoriesModel->addDirectory(documents);
     defaultDirectoriesModel->addDirectory(pictures);
     defaultDirectoriesModel->addDirectory(downloads);
+    defaultDirectoriesModel->addDirectory(TemporaryResources);
 
     QScreen* screen = app.primaryScreen();
 
