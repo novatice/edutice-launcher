@@ -143,7 +143,7 @@ ApplicationWindow {
                         visible: user_is_teacher
                         icon: "password.svg"
                         onAction: {
-                            execution.open("http://" + serverAddress + "/edutice-oversight/reset-password/reset-password.jsp");
+                            execution.open("http://" + serverAddress + "/edutice#mot-de-passe-eleves");
                             mainAppliWindow.hide();
                         }
                     }
