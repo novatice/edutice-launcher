@@ -1,5 +1,5 @@
 #include "execution.h"
-
+#include <QDir>
 
 Execution::Execution(QObject *parent) :
     QObject(parent),
@@ -10,14 +10,25 @@ Execution::Execution(QObject *parent) :
     p=3;
 }
 
-QString Execution::launch(const QString &program)
-{
+
+QString Execution::launch(const QString &program){
     qInfo() << "In Execution::launch with " << program;
 
-    QStringList arguments;
-    if (m_process->startDetached(program, arguments)) {
-        qInfo() << "Launched with success";
+    // There are some applications(BiblioManuels) that do not launch with the path of the json file. We move to the desired folder. Then, we define the currentpath.
+    QFileInfo info(program);
+
+    if ((info.exists())) {
+
+        QString path = info.absolutePath();
+        QString fileName = info.fileName();
+
+        QDir::setCurrent(path);
+
+        if(m_process->startDetached(fileName)){
+           qInfo() << "Launched with success";
+        }
     }
+
 
     return "";
 }
