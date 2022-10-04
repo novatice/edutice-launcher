@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     QDir dir;
     if (dir.exists(userShareHome))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "documents.png", "Dossier personnel enregistré sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnels", "documents.png", "Dossier personnel enregistré sur le serveur"));
     }
     if (dir.exists(userShares))
     {
@@ -190,10 +190,8 @@ int main(int argc, char *argv[])
     val = file.readAll();
     file.close();
 
-
     QByteArray utf8String = val.toUtf8();
     QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
-
     QJsonValue agentVersion = d.object().value("agentVersion");
     engine.rootContext()->setContextProperty("agentVersion",  agentVersion.isUndefined() ? "Non renseigné" : agentVersion);
 
