@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     QDir dir;
     if (dir.exists(userShareHome))
     {
-        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnels", "documents.png", "Dossier personnel enregistré sur le serveur"));
+        mountedDirectoriesModel->addDirectory(Directory(userShareHome, "Dossier personnel", "documents.png", "Dossier personnel enregistré sur le serveur"));
     }
     if (dir.exists(userShares))
     {

@@ -24,8 +24,6 @@ QString Execution::launch(const QString &program){
 
         QDir::setCurrent(path + "/");
 
-        qDebug() << path;
-        qDebug() << fileName;
 
         if(m_process->startDetached(fileName)){
            qInfo() << "Launched with success";
