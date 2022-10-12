@@ -12,10 +12,10 @@ ApplicationWindow {
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
     screen: screenNumberId
-    width: screenWidth / 2 < 700 ? 700 : screenWidth / 2
-    height: screenHeight * (3/5) < 500 ? 500 : screenHeight * (3/5)
+    width:  750
+    height: 600
     x: 0
-    y: screenHeight - height
+    y: Screen.desktopAvailableHeight - height
     onVisibleChanged: {
         if (visible){
             requestActivate();
