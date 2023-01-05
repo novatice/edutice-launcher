@@ -13,7 +13,7 @@ ApplicationWindow {
     color: "transparent"
     screen: screenNumberId
     width:  750
-    height: 600
+    height: 560
     x: 0
     y: Screen.desktopAvailableHeight - height
     onVisibleChanged: {
@@ -200,6 +200,8 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Arrêter"
                         icon: "shutdown.png"
+                        visible: false
+                        opacity: 0.1
                         onAction: {
                             execution.shutdown();
                         }
