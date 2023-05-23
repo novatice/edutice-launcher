@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import AvenirFonts 1.0
 
 Item {
     property string iconSrc
@@ -7,25 +8,24 @@ Item {
     property string textColor
     property bool active
 
-    signal action();
+    signal action
     // Override this function to make your Item useful !
-    function onAction() {
-    }
+    function onAction() {}
 
     width: parent.height
     height: parent.height
     Rectangle {
         id: backgroundExample
-        width: parent.height * (2/3)
-        height: parent.height * (2/3)
+        width: parent.height * (2 / 3)
+        height: parent.height * (2 / 3)
         color: backgroundColor
         state: "EXITED"
         radius: width / 10
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        states : [
+        states: [
             State {
-                name : "HOVERED"
+                name: "HOVERED"
                 PropertyChanges {
                     target: backgroundExample
                     width: parent.width
@@ -33,11 +33,11 @@ Item {
                 }
             },
             State {
-                name : "EXITED"
+                name: "EXITED"
                 PropertyChanges {
                     target: backgroundExample
-                    width: parent.height * (4/5)
-                    height: parent.height * (4/5)
+                    width: parent.height * (4 / 5)
+                    height: parent.height * (4 / 5)
                 }
             }
         ]
@@ -45,14 +45,30 @@ Item {
             Transition {
                 from: "EXITED"
                 to: "HOVERED"
-                NumberAnimation { target: backgroundExample; property: "width"; duration: 150}
-                NumberAnimation { target: backgroundExample; property: "height"; duration: 150}
+                NumberAnimation {
+                    target: backgroundExample
+                    property: "width"
+                    duration: 150
+                }
+                NumberAnimation {
+                    target: backgroundExample
+                    property: "height"
+                    duration: 150
+                }
             },
             Transition {
                 from: "HOVERED"
                 to: "EXITED"
-                NumberAnimation { target: backgroundExample; property: "width"; duration: 150}
-                NumberAnimation { target: backgroundExample; property: "height"; duration: 150}
+                NumberAnimation {
+                    target: backgroundExample
+                    property: "width"
+                    duration: 150
+                }
+                NumberAnimation {
+                    target: backgroundExample
+                    property: "height"
+                    duration: 150
+                }
             }
         ]
     }
@@ -81,19 +97,19 @@ Item {
         anchors.topMargin: 5
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: parent.height / 8
-        font.family: active ? normalFont.name : italicFont.name
+        font.family: active ? AvenirFonts.regular.name : AvenirFonts.italic.name
         state: "EXITED"
         text: label
-        states : [
+        states: [
             State {
-                name : "HOVERED"
+                name: "HOVERED"
                 PropertyChanges {
                     target: frenchCaption
                     color: textColor
                 }
             },
             State {
-                name : "EXITED"
+                name: "EXITED"
                 PropertyChanges {
                     target: frenchCaption
                     color: "transparent"
@@ -104,12 +120,18 @@ Item {
             Transition {
                 from: "EXITED"
                 to: "HOVERED"
-                ColorAnimation { target: frenchCaption; duration: 150}
+                ColorAnimation {
+                    target: frenchCaption
+                    duration: 150
+                }
             },
             Transition {
                 from: "HOVERED"
                 to: "EXITED"
-                ColorAnimation { target: frenchCaption; duration: 150}
+                ColorAnimation {
+                    target: frenchCaption
+                    duration: 150
+                }
             }
         ]
     }
@@ -121,21 +143,21 @@ Item {
         state: "EXITED"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        states : [
+        states: [
             State {
-                name : "HOVERED"
+                name: "HOVERED"
                 PropertyChanges {
                     target: frenchIcon
-                    width: parent.width * (3/4)
-                    height: parent.height * (3/4)
+                    width: parent.width * (3 / 4)
+                    height: parent.height * (3 / 4)
                 }
             },
             State {
-                name : "EXITED"
+                name: "EXITED"
                 PropertyChanges {
                     target: frenchIcon
-                    height: parent.height * (3/5)
-                    width: parent.height * (3/5)
+                    height: parent.height * (3 / 5)
+                    width: parent.height * (3 / 5)
                 }
             }
         ]
@@ -143,14 +165,30 @@ Item {
             Transition {
                 from: "EXITED"
                 to: "HOVERED"
-                NumberAnimation { target: frenchIcon; property: "width"; duration: 150}
-                NumberAnimation { target: frenchIcon; property: "height"; duration: 150}
+                NumberAnimation {
+                    target: frenchIcon
+                    property: "width"
+                    duration: 150
+                }
+                NumberAnimation {
+                    target: frenchIcon
+                    property: "height"
+                    duration: 150
+                }
             },
             Transition {
                 from: "HOVERED"
                 to: "EXITED"
-                NumberAnimation { target: frenchIcon; property: "width"; duration: 150}
-                NumberAnimation { target: frenchIcon; property: "height"; duration: 150}
+                NumberAnimation {
+                    target: frenchIcon
+                    property: "width"
+                    duration: 150
+                }
+                NumberAnimation {
+                    target: frenchIcon
+                    property: "height"
+                    duration: 150
+                }
             }
         ]
     }

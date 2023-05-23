@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     QQmlApplicationEngine engine;
-
+    engine.addImportPath("qrc:/");
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
 
     // Create a new model for Files
@@ -202,6 +202,12 @@ int main(int argc, char *argv[])
 
     QJsonValue serverAddress = d.object().value("serverAddress");
     engine.rootContext()->setContextProperty("serverAddress", serverAddress);
+
+    QJsonValue assistance = d.object().value("assistance");
+    if(assistance.isUndefined()){
+        assistance = false;
+    }
+    engine.rootContext()->setContextProperty("assistance",assistance.toBool());
 
     engine.rootContext()->setContextProperty(
                 "username",

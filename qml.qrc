@@ -7,5 +7,13 @@
         <file>Categories.qml</file>
         <file>SideBarIcon.qml</file>
         <file>ZoomableIcon.qml</file>
+        <file>AssistanceDialog.qml</file>
+        <file>AssistanceDialogButton.qml</file>
+        <file>fonts/avenir_next_lt_pro_bold.otf</file>
+        <file>fonts/avenir_next_lt_pro_it.otf</file>
+        <file>fonts/avenir_next_lt_pro_regular.otf</file>
+        <file>AvenirFonts/AvenirFonts.qml</file>
+        <file>AvenirFonts/qmldir</file>
+        <file>AvenirFonts/AvenirFont.qml</file>
     </qresource>
 </RCC>

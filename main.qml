@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import QtQml.Models 2.3
 import QtGraphicalEffects 1.12
 import Eexecution 1.0
+import AvenirFonts 1.0
 
 ApplicationWindow {
     id: mainAppliWindow
@@ -12,13 +13,13 @@ ApplicationWindow {
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
     screen: screenNumberId
-    width:  750
+    width: 750
     height: 560
     x: 0
     y: Screen.desktopAvailableHeight - height
     onVisibleChanged: {
-        if (visible){
-            requestActivate();
+        if (visible) {
+            requestActivate()
         }
     }
 
@@ -26,23 +27,21 @@ ApplicationWindow {
         id: timer
     }
     function delay(delayTime, cb) {
-        timer.interval = delayTime;
-        timer.repeat = false;
-        timer.triggered.connect(cb);
-        timer.start();
+        timer.interval = delayTime
+        timer.repeat = false
+        timer.triggered.connect(cb)
+        timer.start()
     }
 
     Connections {
         target: Qt.application
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationActive) {
-                mainAppliWindow.raise();
-                // Forces UI to be active on Windows, freezes after first use otherwise.
+                mainAppliWindow.raise()
+                //Forces UI to be active on Windows, freezes after first use otherwise.
                 mainAppliWindow.visible = true
-            }
-            else
-            {
-                delay(100, function() {
+            } else {
+                delay(100, function () {
                     mainAppliWindow.hide()
                 })
             }
@@ -60,24 +59,22 @@ ApplicationWindow {
         property real mainOpacity: 0
     }
 
-    FontLoader {
-        id: normalFont
-        source: "AvenirNextLTPro.ttf"
-    }
-
-    FontLoader {
-        id: boldFont
-        source: "AvenirNextLTProBold.ttf"
-    }
-
-    FontLoader {
-        id: italicFont
-        source: "AvenirNextLTProIt.ttf"
-    }
-
     Execution {
         id: execution
         objectName: "execution"
+    }
+
+    AssistanceDialog {
+        id: confirmationDialog
+        title: "Demande d'aide"
+        withCancelButton: true
+        text: "Souhaitez-vous obtenir l'aide d'un gestionnaire ?"
+        acceptText: "Obtenir de l'aide"
+        onAccepted: {
+            execution.open(
+                        "http://" + serverAddress + "/neos-digital-space/service/assistance-talk")
+            mainAppliWindow.hide()
+        }
     }
 
     Item {
@@ -122,6 +119,14 @@ ApplicationWindow {
                             execution.openScreenDisplaySettings()
                         }
                     }
+                    SideBarIcon {
+                        label: "Assistance"
+                        icon: "assistance.png"
+                        visible: assistance
+                        onAction: {
+                            confirmationDialog.open()
+                        }
+                    }
                 }
 
                 ColumnLayout {
@@ -134,8 +139,9 @@ ApplicationWindow {
                         label: "Mon profil"
                         icon: "profile.png"
                         onAction: {
-                            execution.open("http://" + serverAddress + "/edutice/#mon-compte");
-                            mainAppliWindow.hide();
+                            execution.open(
+                                        "http://" + serverAddress + "/edutice/#mon-compte")
+                            mainAppliWindow.hide()
                         }
                     }
                     SideBarIcon {
@@ -143,8 +149,9 @@ ApplicationWindow {
                         visible: user_is_teacher
                         icon: "password.svg"
                         onAction: {
-                            execution.open("http://" + serverAddress + "/edutice#mot-de-passe-eleves");
-                            mainAppliWindow.hide();
+                            execution.open(
+                                        "http://" + serverAddress + "/edutice#mot-de-passe-eleves")
+                            mainAppliWindow.hide()
                         }
                     }
                     SideBarIcon {
@@ -152,8 +159,9 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         visible: user_is_teacher
                         onAction: {
-                            execution.open("http://" + serverAddress + "/edutice/#classe-virtuelle");
-                            mainAppliWindow.hide();
+                            execution.open(
+                                        "http://" + serverAddress + "/edutice/#classe-virtuelle")
+                            mainAppliWindow.hide()
                         }
                     }
                     SideBarIcon {
@@ -178,7 +186,7 @@ ApplicationWindow {
                     }
                     Rectangle {
                         height: 1
-                        width: parent.width * (6/10)
+                        width: parent.width * (6 / 10)
                         color: "grey"
                         Layout.alignment: Qt.AlignHCenter
                     }
@@ -203,7 +211,7 @@ ApplicationWindow {
                         visible: false
                         opacity: 0.1
                         onAction: {
-                            execution.shutdown();
+                            execution.shutdown()
                         }
                     }
                 }
@@ -212,7 +220,7 @@ ApplicationWindow {
             // Menu
             Item {
                 id: menu
-                width: (parent.width - sideBar.width) * (4/10)
+                width: (parent.width - sideBar.width) * (4 / 10)
                 height: parent.height
 
                 Rectangle {
@@ -222,7 +230,7 @@ ApplicationWindow {
                 }
 
                 ColumnLayout {
-                    width: parent.width * (9/10)
+                    width: parent.width * (9 / 10)
                     height: parent.height
                     spacing: 0
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -234,8 +242,8 @@ ApplicationWindow {
                         Image {
                             fillMode: Image.PreserveAspectFit
                             source: "novatice.png"
-                            height: parent.height * (2/5)
-                            width: parent.height * (2/5)
+                            height: parent.height * (2 / 5)
+                            width: parent.height * (2 / 5)
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -243,7 +251,7 @@ ApplicationWindow {
 
                     Item {
                         width: parent.width
-                        height: parent.height * (4/7)
+                        height: parent.height * (4 / 7)
 
                         ColumnLayout {
                             width: parent.width
@@ -267,8 +275,8 @@ ApplicationWindow {
                                 Text {
                                     text: qsTr("Applications")
                                     color: "white"
-                                    font.pointSize: parent.height * (1/4)
-                                    font.family: normalFont.name
+                                    font.pointSize: parent.height * (1 / 4)
+                                    font.family: AvenirFonts.regular.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                     anchors.leftMargin: 20
@@ -278,10 +286,12 @@ ApplicationWindow {
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
                                     onEntered: {
-                                        applicationsMenuBack.color = applicationsMenuBack.color == "#066198" ? "#066198" : "#444444"
+                                        applicationsMenuBack.color = applicationsMenuBack.color
+                                                == "#066198" ? "#066198" : "#444444"
                                     }
                                     onExited: {
-                                        applicationsMenuBack.color = applicationsMenuBack.color == "#066198" ? "#066198" : "transparent"
+                                        applicationsMenuBack.color = applicationsMenuBack.color
+                                                == "#066198" ? "#066198" : "transparent"
                                     }
                                     onClicked: {
                                         filesContainer.visible = false
@@ -311,8 +321,8 @@ ApplicationWindow {
                                 Text {
                                     text: qsTr("Mes documents")
                                     color: "white"
-                                    font.pointSize: parent.height * (1/4)
-                                    font.family: normalFont.name
+                                    font.pointSize: parent.height * (1 / 4)
+                                    font.family: AvenirFonts.regular.name
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                     anchors.leftMargin: 20
@@ -322,10 +332,12 @@ ApplicationWindow {
                                     cursorShape: Qt.PointingHandCursor
                                     hoverEnabled: true
                                     onEntered: {
-                                        filesMenuBack.color = filesMenuBack.color == "#066198" ? "#066198" : "#444444"
+                                        filesMenuBack.color = filesMenuBack.color
+                                                == "#066198" ? "#066198" : "#444444"
                                     }
                                     onExited: {
-                                        filesMenuBack.color = filesMenuBack.color == "#066198" ? "#066198" : "transparent"
+                                        filesMenuBack.color = filesMenuBack.color
+                                                == "#066198" ? "#066198" : "transparent"
                                     }
                                     onClicked: {
                                         applicationsContainer.visible = false
@@ -340,13 +352,12 @@ ApplicationWindow {
 
                     Item {
                         width: parent.width
-                        height: parent.height * (2/7)
+                        height: parent.height * (2 / 7)
                         visible: !missing_default_browser
-
 
                         ColumnLayout {
                             width: parent.width
-                            height: parent.height * (2/7)
+                            height: parent.height * (2 / 7)
                             spacing: 10
                             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -360,16 +371,16 @@ ApplicationWindow {
                                 visible: linksModel.rowCount() !== 0
                                 text: qsTr("Ressources en ligne")
                                 color: "white"
-                                font.pointSize: parent.height * (1/4)
-                                font.family: italicFont.name
+                                font.pointSize: parent.height * (1 / 4)
+                                font.family: AvenirFonts.italic.name
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.leftMargin: 20
                             }
                             Item {
-                                height: linksModel.rowCount() === 0 ? 0 : parent.width * (1/5)
+                                height: linksModel.rowCount(
+                                            ) === 0 ? 0 : parent.width * (1 / 5)
                                 width: linksModel.rowCount() * height
                                 Layout.alignment: Qt.AlignHCenter
-
 
                                 DelegateModel {
                                     id: linksModelDelegate
@@ -391,7 +402,7 @@ ApplicationWindow {
                                 }
                                 ListView {
                                     model: linksModelDelegate
-                                    anchors.fill : parent
+                                    anchors.fill: parent
                                     orientation: ListView.Horizontal
                                 }
                             }
@@ -400,12 +411,12 @@ ApplicationWindow {
 
                     Item {
                         width: parent.width
-                        height: parent.height * (2/7)
+                        height: parent.height * (2 / 7)
                         visible: missing_default_browser
 
                         ColumnLayout {
                             width: parent.width
-                            height: parent.height * (2/7)
+                            height: parent.height * (2 / 7)
                             spacing: 10
                             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -419,8 +430,8 @@ ApplicationWindow {
                                 visible: missing_default_browser
                                 text: qsTr("Navigateur par défaut non autorisé \nContactez un administrateur")
                                 color: "orange"
-                                font.pointSize: parent.height * (1/4)
-                                font.family: italicFont.name
+                                font.pointSize: parent.height * (1 / 4)
+                                font.family: AvenirFonts.italic.name
                                 Layout.alignment: Qt.AlignVCenter
                                 Layout.leftMargin: 20
                             }
@@ -431,203 +442,70 @@ ApplicationWindow {
 
             // Content
             Item {
-                    id: content
-                    width: (parent.width - sideBar.width) * (6/10)
-                    height: parent.height
+                id: content
+                width: (parent.width - sideBar.width) * (6 / 10)
+                height: parent.height
 
-                    Rectangle {
-                        color: "white"
-                        width: parent.width
-                        height: parent.height
+                Rectangle {
+                    color: "white"
+                    width: parent.width
+                    height: parent.height
+                }
+
+                // Files container
+                ColumnLayout {
+                    id: filesContainer
+                    height: parent.height - parent.width / 10
+                    width: parent.width * (8 / 10)
+                    spacing: parent.width / 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+
+                    Text {
+                        text: qsTr("Mes documents")
+                        font.pointSize: 20
+                        font.family: AvenirFonts.bold.name
+                        color: theme.mainTitleColor
+                        Layout.alignment: Qt.AlignHCenter
                     }
 
-                    // Files container
-                    ColumnLayout {
-                        id: filesContainer
-                        height: parent.height - parent.width/10
-                        width: parent.width * (8/10)
-                        spacing: parent.width / 20
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                        visible: false
+                    Text {
+                        text: qsTr("Mes dossiers partagés")
+                        font.pointSize: 15
+                        font.family: AvenirFonts.bold.name
+                        color: theme.mainTitleColor
+                        visible: mountedDirectoriesModel.rowCount() > 0
+                    }
 
-                        Text {
-                            text: qsTr("Mes documents")
-                            font.pointSize: 20
-                            font.family: boldFont.name
-                            color: theme.mainTitleColor
-                            Layout.alignment: Qt.AlignHCenter
-                        }
+                    // Mounted directories
+                    Rectangle {
+                        id: mountedDirectories
+                        height: mountedDirectoriesModel.rowCount(
+                                    ) > 0 ? childrenRect.height : 0
+                        width: parent.width
+                        color: "transparent"
 
-
-                        Text {
-                            text: qsTr("Mes dossiers partagés")
-                            font.pointSize: 15
-                            font.family: boldFont.name
-                            color: theme.mainTitleColor
-                            visible: mountedDirectoriesModel.rowCount() > 0
-                        }
-
-                        // Mounted directories
-                        Rectangle {
-                            id: mountedDirectories
-                            height: mountedDirectoriesModel.rowCount() > 0 ? childrenRect.height : 0
-                            width: parent.width
-                            color: "transparent"
-
-
-                            Item {
-                                width: parent.width
-                                height: mountedDirectoriesList.childrenRect.height
-                                anchors.horizontalCenter: parent.horizontalCenter
-
-
-                                ScrollView {
-                                    id: mountedDirectoriesScrollView
-                                    height: parent.height
-                                    width: parent.width
-                                    contentHeight: (mountedDirectoriesList.childrenRect.height > parent.height) ? mountedDirectoriesList.childrenRect.height : parent.height
-                                    ScrollBar.vertical: ScrollBar {
-                                        id: mountedDirectoriesScrollBar
-                                        policy: ScrollBar.SnapOnRelease
-                                        height: mountedDirectoriesScrollView.availableHeight
-                                        x: mountedDirectoriesScrollView.mirrored ? 0 : mountedDirectoriesScrollView.width - width
-                                        y: mountedDirectoriesScrollView.topPadding
-                                        active: false
-                                        snapMode: ScrollBar.SnapAlways
-                                        visible: mountedDirectoriesScrollView.contentHeight
-                                                 > mountedDirectoriesScrollView.height ? true : false
-                                        //stepSize: 0.5
-                                        //active: scrollV.ScrollBar.horizontal.active
-                                        contentItem: Rectangle {
-                                            implicitWidth: 6
-                                            implicitHeight: 100
-                                            opacity: 0.5
-                                            radius: width / 2
-                                            color: mountedDirectoriesScrollBar.pressed ? "#0092CC" : "grey"
-                                        }
-                                    }
-
-                                    clip: true
-                                    MouseArea {
-                                        onWheel: {
-                                            if (wheel.angleDelta.y > 0) {
-                                                scroller.decrease()
-                                            } else {
-                                                scroller.increase()
-                                            }
-                                        }
-                                    }
-
-                                    Component {
-                                        id: mountedDirectoriesDelegate
-
-                                        Item {
-                                            height: sizeUnit.heightUnit * 2
-                                            width: parent.parent.width
-
-                                            Rectangle {
-                                                id: mountedDirectoriesBack
-                                                height: parent.height
-                                                width: parent.width
-                                                radius: 5
-                                                color: "lightsteelblue"
-                                                visible: false
-                                            }
-
-                                            Item {
-                                                id: mountedDirectoriesIcon
-                                                height: parent.height
-                                                width: parent.height
-
-                                                Image {
-                                                    source: icon
-                                                    fillMode: Image.PreserveAspectFit
-                                                    //fillMode: Image.PreserveAspectFit
-                                                    width: parent.height * (2/3)
-                                                    height: parent.height * (2/3)
-                                                    anchors.verticalCenter: parent.verticalCenter
-                                                    anchors.horizontalCenter: parent.horizontalCenter
-                                                }
-                                            }
-
-                                            Item {
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                height: childrenRect.height
-                                                Layout.fillWidth: parent
-                                                Layout.leftMargin: 10
-                                                anchors.left: mountedDirectoriesIcon.right
-
-                                                Text {
-                                                    id: mountedDirectoriessName
-                                                    font.pointSize: parent.parent.height * (1/5)
-                                                    font.family: normalFont.name
-                                                    text: qsTr(name)
-                                                }
-                                            }
-
-                                            MouseArea {
-                                                id: mountedDirectoriesMouseArea
-                                                anchors.fill: parent
-                                                cursorShape: Qt.PointingHandCursor
-                                                hoverEnabled: true
-
-                                                onClicked: {
-                                                    if (mouse.button === Qt.LeftButton) {
-                                                        execution.open(path)
-                                                        mainAppliWindow.visible = false
-                                                    }
-                                                }
-                                                onEntered: {
-                                                    //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
-                                                    mountedDirectoriesBack.visible = true
-                                                }
-                                                onExited: {
-                                                    //backg.color = "transparent"
-                                                    mountedDirectoriesBack.visible = false
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    ListView {
-                                        id: mountedDirectoriesList
-                                        anchors.fill: parent
-                                        property bool first: true
-                                        delegate: mountedDirectoriesDelegate
-
-                                        model: mountedDirectoriesModel
-                                    }
-                                }
-                            }
-                        }
-
-                        Text {
-                            text: qsTr("Mes dossiers personnels")
-                            font.pointSize: 15
-                            font.family: boldFont.name
-                            color: theme.mainTitleColor
-                        }
-                        // Default directories: fills the ColumnLayout
                         Item {
                             width: parent.width
-                            height: parent.height
-                            Layout.alignment: Qt.AlignHCenter
+                            height: mountedDirectoriesList.childrenRect.height
+                            anchors.horizontalCenter: parent.horizontalCenter
 
                             ScrollView {
-                                id: defaultFilesScrollView
+                                id: mountedDirectoriesScrollView
                                 height: parent.height
                                 width: parent.width
-                                contentHeight: (defaultFilesList.childrenRect.height > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
+                                contentHeight: (mountedDirectoriesList.childrenRect.height > parent.height) ? mountedDirectoriesList.childrenRect.height : parent.height
                                 ScrollBar.vertical: ScrollBar {
-                                    id: defaultFilesScrollBar
+                                    id: mountedDirectoriesScrollBar
                                     policy: ScrollBar.SnapOnRelease
-                                    height: defaultFilesScrollView.height
-                                    x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
-                                    y: defaultFilesScrollView.topPadding
+                                    height: mountedDirectoriesScrollView.availableHeight
+                                    x: mountedDirectoriesScrollView.mirrored ? 0 : mountedDirectoriesScrollView.width - width
+                                    y: mountedDirectoriesScrollView.topPadding
                                     active: false
                                     snapMode: ScrollBar.SnapAlways
-                                    visible: false
+                                    visible: mountedDirectoriesScrollView.contentHeight
+                                             > mountedDirectoriesScrollView.height ? true : false
                                     //stepSize: 0.5
                                     //active: scrollV.ScrollBar.horizontal.active
                                     contentItem: Rectangle {
@@ -635,19 +513,12 @@ ApplicationWindow {
                                         implicitHeight: 100
                                         opacity: 0.5
                                         radius: width / 2
-                                        color: defaultFilesScrollBar.pressed ? "#0092CC" : "grey"
+                                        color: mountedDirectoriesScrollBar.pressed ? "#0092CC" : "grey"
                                     }
                                 }
 
                                 clip: true
                                 MouseArea {
-                                    onEntered: {
-                                        defaultFilesScrollBar.visible = defaultFilesScrollView.contentHeight
-                                                > defaultFilesScrollView.height
-                                    }
-                                    onExited: {
-                                        defaultFilesScrollBar.visible = false
-                                    }
                                     onWheel: {
                                         if (wheel.angleDelta.y > 0) {
                                             scroller.decrease()
@@ -658,14 +529,14 @@ ApplicationWindow {
                                 }
 
                                 Component {
-                                    id: defaultFilesDelegate
+                                    id: mountedDirectoriesDelegate
 
                                     Item {
                                         height: sizeUnit.heightUnit * 2
                                         width: parent.parent.width
 
                                         Rectangle {
-                                            id: defaultFilesBack
+                                            id: mountedDirectoriesBack
                                             height: parent.height
                                             width: parent.width
                                             radius: 5
@@ -674,15 +545,16 @@ ApplicationWindow {
                                         }
 
                                         Item {
-                                            id: defaultFilesIcon
+                                            id: mountedDirectoriesIcon
                                             height: parent.height
                                             width: parent.height
 
                                             Image {
                                                 source: icon
                                                 fillMode: Image.PreserveAspectFit
-                                                width: parent.height * (2/3)
-                                                height: parent.height * (2/3)
+                                                //fillMode: Image.PreserveAspectFit
+                                                width: parent.height * (2 / 3)
+                                                height: parent.height * (2 / 3)
                                                 anchors.verticalCenter: parent.verticalCenter
                                                 anchors.horizontalCenter: parent.horizontalCenter
                                             }
@@ -693,316 +565,465 @@ ApplicationWindow {
                                             height: childrenRect.height
                                             Layout.fillWidth: parent
                                             Layout.leftMargin: 10
-                                            anchors.left: defaultFilesIcon.right
+                                            anchors.left: mountedDirectoriesIcon.right
 
                                             Text {
-                                                id: defaultFilesName
-                                                font.pointSize: parent.parent.height * (1/5)
-                                                font.family: normalFont.name
+                                                id: mountedDirectoriessName
+                                                font.pointSize: parent.parent.height * (1 / 5)
+                                                font.family: AvenirFonts.regular.name
                                                 text: qsTr(name)
-                                                color: "black"
                                             }
                                         }
 
                                         MouseArea {
-                                            id: defaultFilesMouseArea
+                                            id: mountedDirectoriesMouseArea
                                             anchors.fill: parent
                                             cursorShape: Qt.PointingHandCursor
                                             hoverEnabled: true
 
                                             onClicked: {
                                                 if (mouse.button === Qt.LeftButton) {
-                                                    execution.openFolder(path)
+                                                    execution.open(path)
                                                     mainAppliWindow.visible = false
                                                 }
                                             }
                                             onEntered: {
                                                 //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
-                                                defaultFilesBack.visible = true
+                                                mountedDirectoriesBack.visible = true
                                             }
                                             onExited: {
                                                 //backg.color = "transparent"
-                                                defaultFilesBack.visible = false
+                                                mountedDirectoriesBack.visible = false
                                             }
                                         }
                                     }
                                 }
 
                                 ListView {
-                                    id: defaultFilesList
+                                    id: mountedDirectoriesList
                                     anchors.fill: parent
                                     property bool first: true
-                                    delegate: defaultFilesDelegate
+                                    delegate: mountedDirectoriesDelegate
 
-                                    model: defaultDirectoriesModel
+                                    model: mountedDirectoriesModel
                                 }
                             }
                         }
                     }
 
-                    // Applications container
-                    ColumnLayout {
-                        id: applicationsContainer
-                        height: parent.height - parent.width/10
-                        width: parent.width * (8/10)
-                        spacing: parent.width / 20
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                        visible: true
+                    Text {
+                        text: qsTr("Mes dossiers personnels")
+                        font.pointSize: 15
+                        font.family: AvenirFonts.bold.name
+                        color: theme.mainTitleColor
+                    }
+                    // Default directories: fills the ColumnLayout
+                    Item {
+                        width: parent.width
+                        height: parent.height
+                        Layout.alignment: Qt.AlignHCenter
 
-                        // Search
-                        Rectangle {
-                            height: 50
-                            width: parent.width * (3/4)
-                            radius: height / 2
-                            color: "lightgrey"
-                            Layout.alignment: Qt.AlignHCenter
-                            RowLayout {
-                                height: parent.height
-                                width: parent.width
+                        ScrollView {
+                            id: defaultFilesScrollView
+                            height: parent.height
+                            width: parent.width
+                            contentHeight: (defaultFilesList.childrenRect.height
+                                            > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
+                            ScrollBar.vertical: ScrollBar {
+                                id: defaultFilesScrollBar
+                                policy: ScrollBar.SnapOnRelease
+                                height: defaultFilesScrollView.height
+                                x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
+                                y: defaultFilesScrollView.topPadding
+                                active: false
+                                snapMode: ScrollBar.SnapAlways
+                                visible: false
+                                //stepSize: 0.5
+                                //active: scrollV.ScrollBar.horizontal.active
+                                contentItem: Rectangle {
+                                    implicitWidth: 6
+                                    implicitHeight: 100
+                                    opacity: 0.5
+                                    radius: width / 2
+                                    color: defaultFilesScrollBar.pressed ? "#0092CC" : "grey"
+                                }
+                            }
+
+                            clip: true
+                            MouseArea {
+                                onEntered: {
+                                    defaultFilesScrollBar.visible
+                                            = defaultFilesScrollView.contentHeight
+                                            > defaultFilesScrollView.height
+                                }
+                                onExited: {
+                                    defaultFilesScrollBar.visible = false
+                                }
+                                onWheel: {
+                                    if (wheel.angleDelta.y > 0) {
+                                        scroller.decrease()
+                                    } else {
+                                        scroller.increase()
+                                    }
+                                }
+                            }
+
+                            Component {
+                                id: defaultFilesDelegate
 
                                 Item {
-                                    Layout.preferredHeight: parent.height
-                                    width: parent.height
-                                    //color:"red"
-                                    Image {
-                                        id: iconSearchtext
-                                        smooth: true
-                                        fillMode: Image.PreserveAspectFit
-                                        asynchronous: true
-                                        source: "magnifying-glass-solid.svg"
-                                        anchors.horizontalCenter: parent.horizontalCenter
+                                    height: sizeUnit.heightUnit * 2
+                                    width: parent.parent.width
+
+                                    Rectangle {
+                                        id: defaultFilesBack
+                                        height: parent.height
+                                        width: parent.width
+                                        radius: 5
+                                        color: "lightsteelblue"
+                                        visible: false
+                                    }
+
+                                    Item {
+                                        id: defaultFilesIcon
+                                        height: parent.height
+                                        width: parent.height
+
+                                        Image {
+                                            source: icon
+                                            fillMode: Image.PreserveAspectFit
+                                            width: parent.height * (2 / 3)
+                                            height: parent.height * (2 / 3)
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
+                                    }
+
+                                    Item {
                                         anchors.verticalCenter: parent.verticalCenter
-                                        height: parent.height / 2
-                                        width: parent.height / 2
-                                    }
-                                    ColorOverlay {
-                                        anchors.fill: iconSearchtext
-                                        source: iconSearchtext
-                                        color: "#888888"
-                                    }
-                                }
-                                TextField {
-                                    width: parent.width
-                                    id: searchText
-                                    placeholderText: qsTr("Rechercher")
-                                    color: "black"
-                                    font.pointSize: parent.height / 3
-                                    Layout.alignment: Qt.AlignVCenter
-                                    font.bold: true
-                                    font.family: boldFont.name
-                                    onTextChanged: {
-                                        delegateModel.update()
-                                    }
-                                    background: Item {
-                                        opacity: 0
-                                    }
-                                }
-                            }
-                        }
+                                        height: childrenRect.height
+                                        Layout.fillWidth: parent
+                                        Layout.leftMargin: 10
+                                        anchors.left: defaultFilesIcon.right
 
-                        Text {
-                            // Try to find a better way of displaying it if there are no recommended apps
-                            visible: favoritesModel.rowCount() !== 0
-                            text: qsTr("Applications recommandées")
-                            font.pointSize: 15
-                            font.family: boldFont.name
-                            color: theme.mainTitleColor
-                        }
-
-                        Item {
-                            height: favoritesModel.rowCount() === 0 ? 0 : parent.width * (1/5)
-                            width: favoritesModel.rowCount() * height
-                            Layout.alignment: Qt.AlignHCenter
-
-                            DelegateModel {
-                                id: favoritesApplications
-                                model: favoritesModel
-                                delegate: ZoomableIcon {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    width: parent.height
-                                    height: parent.height
-                                    backgroundColor: installed ? "lightblue" : "lightslategrey"
-                                    textColor: installed ? "black" : "grey"
-                                    iconSrc: qsTr(icon)
-                                    label: qsTr(name)
-                                    active: installed
-                                    onAction: {
-                                        execution.launch(src)
-                                        mainAppliWindow.hide()
-                                    }
-                                }
-                            }
-                            ListView {
-                                model: favoritesApplications
-                                anchors.fill : parent
-                                orientation: ListView.Horizontal
-                            }
-                        }
-
-                        Text {
-                            text: qsTr("Toutes les applications (" + modelApplication.rowCount() + ")")
-                            font.pointSize: 15
-                            font.family: boldFont.name
-                            color: theme.mainTitleColor
-                        }
-                        // Conteneur liste d'Applications
-                        Rectangle {
-                            width: parent.width
-                            Layout.alignment: Qt.AlignHCenter
-                            Layout.fillHeight: true
-                            color: "transparent"
-
-                            Item {
-                                width: parent.width
-                                height: parent.height
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.top: parent.top
-
-                                ScrollView {
-                                    id: scrollV
-                                    anchors.fill: parent
-                                    contentHeight: (applicationsList.childrenRect.height > parent.height) ? applicationsList.childrenRect.height : parent.height
-                                    ScrollBar.vertical: ScrollBar {
-                                        id: scrollBar
-                                        parent: scrollV.parent
-                                        policy: ScrollBar.SnapOnRelease
-                                        height: scrollV.availableHeight
-                                        x: scrollV.mirrored ? 0 : scrollV.width - width
-                                        y: scrollV.topPadding
-                                        active: false
-                                        snapMode: ScrollBar.SnapAlways
-                                        visible: scrollV.contentHeight > scrollV.height
-                                        //stepSize: 0.5
-                                        //active: scrollV.ScrollBar.horizontal.active
-                                        contentItem: Rectangle {
-                                            implicitWidth: 6
-                                            implicitHeight: 100
-                                            opacity: 0.5
-                                            radius: width / 2
-                                            color: scrollBar.pressed ? "#0092CC" : "grey"
+                                        Text {
+                                            id: defaultFilesName
+                                            font.pointSize: parent.parent.height * (1 / 5)
+                                            font.family: AvenirFonts.regular.name
+                                            text: qsTr(name)
+                                            color: "black"
                                         }
                                     }
 
-                                    clip: true
                                     MouseArea {
-                                        onWheel: {
-                                            if (wheel.angleDelta.y > 0) {
-                                                scroller.decrease()
-                                            } else {
-                                                scroller.increase()
-                                            }
-                                        }
-                                    }
-
-                                    SortFilterModel {
-                                        id: delegateModel
-                                        model: modelApplication
-
-                                        lessThan: function(left, right) {
-                                            // Left name has pattern
-                                            var lnhp = left.name.toLowerCase().includes(searchText.text.toLowerCase());
-                                            // Right name has pattern
-                                            var rnhp = left.name.toLowerCase().includes(searchText.text.toLowerCase());
-
-                                            // Left description has pattern
-                                            //var ldhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
-                                            // Right description has pattern
-                                            //var rdhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
-
-                                            // This is useless for now but will be used when we'll display applications description
-                                            if (lnhp && !rnhp)
-                                                return -1;
-                                            if (rnhp && !lnhp)
-                                                return 1;
-
-                                            return left.name < right.name ? -1 : 1;
-                                        }
-
-                                        filterAcceptsItem: function(item) {
-                                            return item.name.toLowerCase().includes(searchText.text.toLowerCase());
-                                        }
-
-                                        delegate : Item {
-                                            height: sizeUnit.heightUnit * 2
-                                            width: parent.parent.width
-
-                                            Rectangle {
-                                                id: applicationBack
-                                                height: parent.height
-                                                width: parent.width
-                                                radius: 5
-                                                color: "lightsteelblue"
-                                                visible: false
-                                            }
-
-                                            Item {
-                                                id: applicationIcon
-                                                height: parent.height
-                                                width: parent.height
-
-                                                Image {
-                                                    source: icon
-                                                    fillMode: Image.PreserveAspectFit
-                                                    width: parent.height * (2/3)
-                                                    height: parent.height * (2/3)
-                                                    anchors.verticalCenter: parent.verticalCenter
-                                                    anchors.horizontalCenter: parent.horizontalCenter
-                                                }
-                                            }
-
-                                            Item {
-                                                anchors.verticalCenter: parent.verticalCenter
-                                                height: childrenRect.height
-                                                Layout.fillWidth: parent
-                                                Layout.leftMargin: 10
-                                                anchors.left: applicationIcon.right
-
-                                                Text {
-                                                    id: applicationName
-                                                    font.pointSize: parent.parent.height * (1/5)
-                                                    font.family: installed ? normalFont.name : italicFont.name
-                                                    color: installed ? "black" : "grey"
-                                                    text: qsTr(name)
-                                                }
-                                            }
-
-                                            MouseArea {
-                                                id: applicationMouseArea
-                                                anchors.fill: parent
-                                                cursorShape: installed ? Qt.PointingHandCursor : Qt.ArrowCursor
-                                                hoverEnabled: installed
-
-                                                onClicked: {
-                                                    if (mouse.button === Qt.LeftButton && installed) {
-                                                        execution.launch(src)
-                                                        mainAppliWindow.visible = false
-                                                    }
-                                                }
-                                                onEntered: {
-                                                    if(installed)
-                                                        applicationBack.visible = true
-                                                }
-                                                onExited: {
-                                                    if (installed)
-                                                        applicationBack.visible = false
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    ListView {
-                                        id: applicationsList
+                                        id: defaultFilesMouseArea
                                         anchors.fill: parent
-                                        property bool first: true
-                                        model: delegateModel
+                                        cursorShape: Qt.PointingHandCursor
+                                        hoverEnabled: true
+
+                                        onClicked: {
+                                            if (mouse.button === Qt.LeftButton) {
+                                                execution.openFolder(path)
+                                                mainAppliWindow.visible = false
+                                            }
+                                        }
+                                        onEntered: {
+                                            //backg.color = theme.mainBorderColor //"a9a9a9" //"lightsteelblue"
+                                            defaultFilesBack.visible = true
+                                        }
+                                        onExited: {
+                                            //backg.color = "transparent"
+                                            defaultFilesBack.visible = false
+                                        }
                                     }
                                 }
                             }
 
+                            ListView {
+                                id: defaultFilesList
+                                anchors.fill: parent
+                                property bool first: true
+                                delegate: defaultFilesDelegate
+
+                                model: defaultDirectoriesModel
+                            }
                         }
                     }
                 }
+
+                // Applications container
+                ColumnLayout {
+                    id: applicationsContainer
+                    height: parent.height - parent.width / 10
+                    width: parent.width * (8 / 10)
+                    spacing: parent.width / 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: true
+
+                    // Search
+                    Rectangle {
+                        height: 50
+                        width: parent.width * (3 / 4)
+                        radius: height / 2
+                        color: "lightgrey"
+                        Layout.alignment: Qt.AlignHCenter
+                        RowLayout {
+                            height: parent.height
+                            width: parent.width
+
+                            Item {
+                                Layout.preferredHeight: parent.height
+                                width: parent.height
+                                //color:"red"
+                                Image {
+                                    id: iconSearchtext
+                                    smooth: true
+                                    fillMode: Image.PreserveAspectFit
+                                    asynchronous: true
+                                    source: "magnifying-glass-solid.svg"
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    height: parent.height / 2
+                                    width: parent.height / 2
+                                }
+                                ColorOverlay {
+                                    anchors.fill: iconSearchtext
+                                    source: iconSearchtext
+                                    color: "#888888"
+                                }
+                            }
+                            TextField {
+                                width: parent.width
+                                id: searchText
+                                placeholderText: qsTr("Rechercher")
+                                color: "black"
+                                font.pointSize: parent.height / 3
+                                Layout.alignment: Qt.AlignVCenter
+                                font.bold: true
+                                font.family: AvenirFonts.bold.name
+                                onTextChanged: {
+                                    delegateModel.update()
+                                }
+                                background: Item {
+                                    opacity: 0
+                                }
+                            }
+                        }
+                    }
+
+                    Text {
+                        // Try to find a better way of displaying it if there are no recommended apps
+                        visible: favoritesModel.rowCount() !== 0
+                        text: qsTr("Applications recommandées")
+                        font.pointSize: 15
+                        font.family: AvenirFonts.bold.name
+                        color: theme.mainTitleColor
+                    }
+
+                    Item {
+                        height: favoritesModel.rowCount(
+                                    ) === 0 ? 0 : parent.width * (1 / 5)
+                        width: favoritesModel.rowCount() * height
+                        Layout.alignment: Qt.AlignHCenter
+
+                        DelegateModel {
+                            id: favoritesApplications
+                            model: favoritesModel
+                            delegate: ZoomableIcon {
+                                Layout.alignment: Qt.AlignVCenter
+                                width: parent.height
+                                height: parent.height
+                                backgroundColor: installed ? "lightblue" : "lightslategrey"
+                                textColor: installed ? "black" : "grey"
+                                iconSrc: qsTr(icon)
+                                label: qsTr(name)
+                                active: installed
+                                onAction: {
+                                    execution.launch(src)
+                                    mainAppliWindow.hide()
+                                }
+                            }
+                        }
+                        ListView {
+                            model: favoritesApplications
+                            anchors.fill: parent
+                            orientation: ListView.Horizontal
+                        }
+                    }
+
+                    Text {
+                        text: qsTr("Toutes les applications (" + modelApplication.rowCount(
+                                       ) + ")")
+                        font.pointSize: 15
+                        font.family: AvenirFonts.bold.name
+                        color: theme.mainTitleColor
+                    }
+                    // Conteneur liste d'Applications
+                    Rectangle {
+                        width: parent.width
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.fillHeight: true
+                        color: "transparent"
+
+                        Item {
+                            width: parent.width
+                            height: parent.height
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.top: parent.top
+
+                            ScrollView {
+                                id: scrollV
+                                anchors.fill: parent
+                                contentHeight: (applicationsList.childrenRect.height > parent.height) ? applicationsList.childrenRect.height : parent.height
+                                ScrollBar.vertical: ScrollBar {
+                                    id: scrollBar
+                                    parent: scrollV.parent
+                                    policy: ScrollBar.SnapOnRelease
+                                    height: scrollV.availableHeight
+                                    x: scrollV.mirrored ? 0 : scrollV.width - width
+                                    y: scrollV.topPadding
+                                    active: false
+                                    snapMode: ScrollBar.SnapAlways
+                                    visible: scrollV.contentHeight > scrollV.height
+                                    //stepSize: 0.5
+                                    //active: scrollV.ScrollBar.horizontal.active
+                                    contentItem: Rectangle {
+                                        implicitWidth: 6
+                                        implicitHeight: 100
+                                        opacity: 0.5
+                                        radius: width / 2
+                                        color: scrollBar.pressed ? "#0092CC" : "grey"
+                                    }
+                                }
+
+                                clip: true
+                                MouseArea {
+                                    onWheel: {
+                                        if (wheel.angleDelta.y > 0) {
+                                            scroller.decrease()
+                                        } else {
+                                            scroller.increase()
+                                        }
+                                    }
+                                }
+
+                                SortFilterModel {
+                                    id: delegateModel
+                                    model: modelApplication
+
+                                    lessThan: function (left, right) {
+                                        // Left name has pattern
+                                        var lnhp = left.name.toLowerCase(
+                                                    ).includes(
+                                                    searchText.text.toLowerCase(
+                                                        ))
+                                        // Right name has pattern
+                                        var rnhp = left.name.toLowerCase(
+                                                    ).includes(
+                                                    searchText.text.toLowerCase(
+                                                        ))
+
+                                        // Left description has pattern
+                                        //var ldhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
+                                        // Right description has pattern
+                                        //var rdhp = left.description.toLowerCase().includes(searchText.text.toLowerCase());
+
+                                        // This is useless for now but will be used when we'll display applications description
+                                        if (lnhp && !rnhp)
+                                            return -1
+                                        if (rnhp && !lnhp)
+                                            return 1
+
+                                        return left.name < right.name ? -1 : 1
+                                    }
+
+                                    filterAcceptsItem: function (item) {
+                                        return item.name.toLowerCase().includes(
+                                                    searchText.text.toLowerCase(
+                                                        ))
+                                    }
+
+                                    delegate: Item {
+                                        height: sizeUnit.heightUnit * 2
+                                        width: parent.parent.width
+
+                                        Rectangle {
+                                            id: applicationBack
+                                            height: parent.height
+                                            width: parent.width
+                                            radius: 5
+                                            color: "lightsteelblue"
+                                            visible: false
+                                        }
+
+                                        Item {
+                                            id: applicationIcon
+                                            height: parent.height
+                                            width: parent.height
+
+                                            Image {
+                                                source: icon
+                                                fillMode: Image.PreserveAspectFit
+                                                width: parent.height * (2 / 3)
+                                                height: parent.height * (2 / 3)
+                                                anchors.verticalCenter: parent.verticalCenter
+                                                anchors.horizontalCenter: parent.horizontalCenter
+                                            }
+                                        }
+
+                                        Item {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            height: childrenRect.height
+                                            Layout.fillWidth: parent
+                                            Layout.leftMargin: 10
+                                            anchors.left: applicationIcon.right
+
+                                            Text {
+                                                id: applicationName
+                                                font.pointSize: parent.parent.height * (1 / 5)
+                                                font.family: installed ? AvenirFonts.regular.name : AvenirFonts.italic.name
+                                                color: installed ? "black" : "grey"
+                                                text: qsTr(name)
+                                            }
+                                        }
+
+                                        MouseArea {
+                                            id: applicationMouseArea
+                                            anchors.fill: parent
+                                            cursorShape: installed ? Qt.PointingHandCursor : Qt.ArrowCursor
+                                            hoverEnabled: installed
+
+                                            onClicked: {
+                                                if (mouse.button === Qt.LeftButton
+                                                        && installed) {
+                                                    execution.launch(src)
+                                                    mainAppliWindow.visible = false
+                                                }
+                                            }
+                                            onEntered: {
+                                                if (installed)
+                                                    applicationBack.visible = true
+                                            }
+                                            onExited: {
+                                                if (installed)
+                                                    applicationBack.visible = false
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ListView {
+                                    id: applicationsList
+                                    anchors.fill: parent
+                                    property bool first: true
+                                    model: delegateModel
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

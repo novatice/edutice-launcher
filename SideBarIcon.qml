@@ -1,35 +1,35 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.12
+import AvenirFonts 1.0
 
 Item {
-    function indexOfChild (item, child) {
-        var ret = -1;
+    function indexOfChild(item, child) {
+        var ret = -1
         if (item && child && "children" in item) {
             for (var idx = 0; ret < 0 && idx < item.children.length; idx++) {
-                if (item.children [idx] === child) {
-                    ret = idx;
+                if (item.children[idx] === child) {
+                    ret = idx
                 }
             }
         }
-        return ret;
+        return ret
     }
 
-    function prevSibling (item, child) {
-        return (item.children [indexOfChild (item, child) -1] || null);
+    function prevSibling(item, child) {
+        return (item.children[indexOfChild(item, child) - 1] || null)
     }
 
-    function nextSibling (item, child) {
-        return (item.children [indexOfChild (item, child) +1] || null);
+    function nextSibling(item, child) {
+        return (item.children[indexOfChild(item, child) + 1] || null)
     }
 
     property string label
     property string icon
 
-    signal action();
+    signal action
     // Override this function to make your Item useful !
-    function onAction() {
-    }
+    function onAction() {}
 
     width: parent.width
     height: parent.width
@@ -47,8 +47,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             opacity: 1
-            height: parent.height * (2/5)
-            width: parent.height * (2/5)
+            height: parent.height * (2 / 5)
+            width: parent.height * (2 / 5)
         }
         MouseArea {
             anchors.fill: parent
@@ -78,7 +78,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             anchors.leftMargin: 20
-            font.family: normalFont.name
+            font.family: AvenirFonts.regular.name
             font.pointSize: 10
             color: "white"
             text: qsTr(label)
