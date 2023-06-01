@@ -4,7 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>SortFilterModel.qml</file>
         <file>SwipeFilterModel.qml</file>
-        <file>Categories.qml</file>
         <file>SideBarIcon.qml</file>
         <file>ZoomableIcon.qml</file>
         <file>AssistanceDialog.qml</file>
@@ -15,5 +14,7 @@
         <file>AvenirFonts/AvenirFonts.qml</file>
         <file>AvenirFonts/qmldir</file>
         <file>AvenirFonts/AvenirFont.qml</file>
+        <file>FilesContainer.qml</file>
+        <file>ApplicationsContainer.qml</file>
     </qresource>
 </RCC>

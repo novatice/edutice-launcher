@@ -71,11 +71,6 @@ int main(int argc, char *argv[]) {
 
   QGuiApplication app(argc, argv);
 
-<<<<<<< HEAD
-    QQmlApplicationEngine engine;
-    engine.addImportPath("qrc:/");
-    engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
-=======
   QCommandLineParser parser;
   QCommandLineOption hideOption(QStringList() << "hidden",
                                 "start with window hidden");
@@ -83,7 +78,6 @@ int main(int argc, char *argv[]) {
   parser.process(app);
 
   QQmlApplicationEngine engine;
->>>>>>> feat: permet le lancement des applications avec des arguments
 
   engine.rootContext()->setContextProperty(
       "applicationDirPath", QGuiApplication::applicationDirPath());
@@ -195,118 +189,12 @@ int main(int argc, char *argv[]) {
   val = file.readAll();
   file.close();
 
-<<<<<<< HEAD
-    // Fill defaultDirectoriesModel with some directories
-    Directory downloads = Directory(
-                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
-                QStandardPaths::displayName(QStandardPaths::DownloadLocation),
-                "downloads.png",
-                "Dossier contenant les fichiers téléchargés");
-    Directory documents = Directory(
-                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-                QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
-                "documents.png",
-                "Dossier contenant les documents de la session");
-    Directory pictures = Directory(
-                QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
-                QStandardPaths::displayName(QStandardPaths::PicturesLocation),
-                "pictures.png",
-                "Dossier contenant les images de la session");
-
-    QString temp = QString(QDir::homePath() + "/Ressources temporaires");
-    QString name = "Resources Temporaires";
-
-    Directory TemporaryResources = Directory(
-                temp,
-                name,
-                "dossier temporaire.png",
-                "Resources Temporaires de la session"
-                );
-
-    defaultDirectoriesModel->addDirectory(documents);
-    defaultDirectoriesModel->addDirectory(pictures);
-    defaultDirectoriesModel->addDirectory(downloads);
-    defaultDirectoriesModel->addDirectory(TemporaryResources);
-
-    QScreen* screen = app.primaryScreen();
-
-    QPoint globalCursorPos = QCursor::pos();
-    QScreen* mouseScreen = app.screenAt(globalCursorPos);
-    QSize screenSize = screen->availableSize();
-
-    engine.rootContext()->setContextProperty("screenWidth", screenSize.width());
-    engine.rootContext()->setContextProperty("screenHeight", screenSize.height());
-    engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
-
-    qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
-
-    modelCategorie->addCategorie(Categorie("1", "Default"));
-
-    QJsonParseError err;
-
-    QString val;
-    QFile file;
-    // Modifier le chemin d'accès au Json
-    QString jsonPath;
-    #ifdef linux
-        jsonPath = QDir::homePath() + "/.config/edutice/launcher.json";
-    #else
-        jsonPath = QDir::homePath() + "/AppData/Local/Novatice/Edutice/Launcher/launcher.json";
-    #endif
-
-    file.setFileName(jsonPath);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    val = file.readAll();
-    file.close();
-
-    QByteArray utf8String = val.toUtf8();
-    QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
-    QJsonValue agentVersion = d.object().value("agentVersion");
-    engine.rootContext()->setContextProperty("agentVersion",  agentVersion.isUndefined() ? "Non renseigné" : agentVersion);
-
-    QJsonValue OSVersion = d.object().value("OSVersion");
-    engine.rootContext()->setContextProperty("OSVersion", OSVersion.isUndefined() ? "Non renseigné" : OSVersion);
-
-    engine.rootContext()->setContextProperty("launcherVersion", VERSION);
-
-    QJsonValue serverAddress = d.object().value("serverAddress");
-    engine.rootContext()->setContextProperty("serverAddress", serverAddress);
-
-    QJsonValue assistance = d.object().value("assistance");
-    if(assistance.isUndefined()){
-        assistance = false;
-    }
-    engine.rootContext()->setContextProperty("assistance",assistance.toBool());
-
-    engine.rootContext()->setContextProperty(
-                "username",
-            #ifdef WIN32
-                qgetenv("USERNAME")
-            #else
-                qgetenv("USER")
-            #endif
-                );
-
-    QJsonObject workspace = d.object().value("workspace").toObject();
-    QString workspaceName = workspace.value("name").toString();
-    engine.rootContext()->setContextProperty("workspace", workspaceName);
-
-    engine.rootContext()->setContextProperty("group", "");
-    engine.rootContext()->setContextProperty("machine", QHostInfo::localHostName());
-
-    QJsonValue lock_screen_enable = workspace.value("lock_screen_enable");
-    if (lock_screen_enable.isUndefined()){
-        lock_screen_enable = true;
-    }
-    engine.rootContext()->setContextProperty("lock_screen_enable", lock_screen_enable.toBool());
-=======
   QByteArray utf8String = val.toUtf8();
   QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
   QJsonValue agentVersion = d.object().value("agentVersion");
   engine.rootContext()->setContextProperty(
       "agentVersion",
       agentVersion.isUndefined() ? "Non renseigné" : agentVersion);
->>>>>>> feat: permet le lancement des applications avec des arguments
 
   QJsonValue OSVersion = d.object().value("OSVersion");
   engine.rootContext()->setContextProperty(
@@ -316,6 +204,12 @@ int main(int argc, char *argv[]) {
 
   QJsonValue serverAddress = d.object().value("serverAddress");
   engine.rootContext()->setContextProperty("serverAddress", serverAddress);
+
+  QJsonValue assistance = d.object().value("assistance");
+  if (assistance.isUndefined()) {
+    assistance = false;
+  }
+  engine.rootContext()->setContextProperty("assistance", assistance.toBool());
 
   engine.rootContext()->setContextProperty("username",
 #ifdef WIN32
@@ -339,6 +233,14 @@ int main(int argc, char *argv[]) {
   }
   engine.rootContext()->setContextProperty("lock_screen_enable",
                                            lock_screen_enable.toBool());
+
+  engine.rootContext()->setContextProperty("username",
+#ifdef WIN32
+                                           qgetenv("USERNAME")
+#else
+                                           qgetenv("USER")
+#endif
+  );
 
   QJsonValue missing_default_browser =
       workspace.value("missing_default_browser");
