@@ -38,7 +38,7 @@ ApplicationWindow {
         onStateChanged: {
             if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.raise()
-                //Forces UI to be active on Windows, freezes after first use otherwise.
+                // Forces UI to be active on Windows, freezes after first use otherwise.
                 mainAppliWindow.visible = true
             } else {
                 delay(100, function () {
@@ -840,7 +840,7 @@ ApplicationWindow {
                                 label: qsTr(name)
                                 active: installed
                                 onAction: {
-                                    execution.launch(src)
+                                    execution.launch(src, args)
                                     mainAppliWindow.hide()
                                 }
                             }
@@ -997,7 +997,7 @@ ApplicationWindow {
                                             onClicked: {
                                                 if (mouse.button === Qt.LeftButton
                                                         && installed) {
-                                                    execution.launch(src)
+                                                    execution.launch(src, args)
                                                     mainAppliWindow.visible = false
                                                 }
                                             }
