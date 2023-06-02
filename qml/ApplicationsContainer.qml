@@ -247,6 +247,7 @@ ColumnLayout {
                                 if (mouse.button === Qt.LeftButton
                                         && installed) {
                                     execution.launch(src, args)
+                                    searchText.clear()
                                     mainAppliWindow.visible = false
                                 }
                             }
