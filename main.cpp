@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
   engine.rootContext()->setContextProperty("screenHeight", screenSize.height());
   engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
 
-  qmlRegisterType<Execution>("Eexecution", 1, 0, "Execution");
+  qmlRegisterType<Execution>("Execution", 1, 0, "Execution");
 
   modelCategorie->addCategorie(Categorie("1", "Default"));
 

@@ -4,8 +4,8 @@ import QtQuick.Window 2.3
 import QtQuick.Layouts 1.3
 import QtQml.Models 2.3
 import QtGraphicalEffects 1.12
-import Eexecution 1.0
 import AvenirFonts 1.0
+import Execution 1.0
 
 ApplicationWindow {
     id: mainAppliWindow
