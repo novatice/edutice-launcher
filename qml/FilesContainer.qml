@@ -100,7 +100,7 @@ ColumnLayout {
                             width: parent.height
 
                             Image {
-                                source: icon
+                                source: "qrc:/icons/" + icon
                                 fillMode: Image.PreserveAspectFit
                                 //fillMode: Image.PreserveAspectFit
                                 width: parent.height * (2 / 3)
@@ -239,7 +239,7 @@ ColumnLayout {
                         width: parent.height
 
                         Image {
-                            source: icon
+                            source: "qrc:/icons/" + icon
                             fillMode: Image.PreserveAspectFit
                             width: parent.height * (2 / 3)
                             height: parent.height * (2 / 3)

@@ -241,7 +241,7 @@ ApplicationWindow {
                         width: parent.width
                         Image {
                             fillMode: Image.PreserveAspectFit
-                            source: "novatice.png"
+                            source: "qrc:/icons/novatice.png"
                             height: parent.height * (2 / 5)
                             width: parent.height * (2 / 5)
                             anchors.horizontalCenter: parent.horizontalCenter

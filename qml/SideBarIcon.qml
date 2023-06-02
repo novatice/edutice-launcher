@@ -43,7 +43,7 @@ Item {
 
         Image {
             fillMode: Image.PreserveAspectFit
-            source: icon
+            source: "qrc:/icons/" + icon
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             opacity: 1

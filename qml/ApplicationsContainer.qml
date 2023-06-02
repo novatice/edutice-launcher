@@ -33,7 +33,7 @@ ColumnLayout {
                     smooth: true
                     fillMode: Image.PreserveAspectFit
                     asynchronous: true
-                    source: "magnifying-glass-solid.svg"
+                    source: "qrc:/icons/magnifying-glass-solid.svg"
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     height: parent.height / 2

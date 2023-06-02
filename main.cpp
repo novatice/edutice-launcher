@@ -260,7 +260,7 @@ int main(int argc, char *argv[]) {
   while (!apps.isEmpty()) {
     QJsonObject application = apps.first().toObject();
     QString name = application.value("name").toString();
-    QString icon = "not_installed_app.svg";
+    QString icon = "qrc:/icons/not_installed_app.svg";
     QString path = application.value("path").toString();
     QString category = application.value("category").toString();
     QVariantList args =
@@ -279,7 +279,7 @@ int main(int argc, char *argv[]) {
     if (path != "") {
       installed = true;
       if (application.value("icon").isUndefined()) {
-        icon = "applications.png";
+        icon = "qrc:/icons/applications.png";
       } else {
         icon = "file:" + application.value("icon").toString();
       }
@@ -308,7 +308,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+  engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
   if (engine.rootObjects().isEmpty())
     return -1;
 
