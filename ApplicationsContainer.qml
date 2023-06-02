@@ -60,6 +60,7 @@ ColumnLayout {
                 background: Item {
                     opacity: 0
                 }
+                selectByMouse: true
             }
         }
     }
