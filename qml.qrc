@@ -7,9 +7,6 @@
         <file>qml/SideBarIcon.qml</file>
         <file>qml/SortFilterModel.qml</file>
         <file>qml/ZoomableIcon.qml</file>
-        <file>fonts/AvenirNextLTPro.ttf</file>
-        <file>fonts/AvenirNextLTProBold.ttf</file>
-        <file>fonts/AvenirNextLTProIt.ttf</file>
         <file>icons/accessibility.png</file>
         <file>icons/applications.png</file>
         <file>icons/connected.png</file>
@@ -33,5 +30,12 @@
         <file>icons/virtualclass.png</file>
         <file>qml/AssistanceDialog.qml</file>
         <file>qml/AssistanceDialogButton.qml</file>
+        <file>AvenirFonts/AvenirFont.qml</file>
+        <file>AvenirFonts/AvenirFonts.qml</file>
+        <file>AvenirFonts/qmldir</file>
+        <file>fonts/avenir_next_lt_pro_bold.otf</file>
+        <file>fonts/avenir_next_lt_pro_it.otf</file>
+        <file>fonts/avenir_next_lt_pro_regular.otf</file>
+        <file>icons/assistance.png</file>
     </qresource>
 </RCC>

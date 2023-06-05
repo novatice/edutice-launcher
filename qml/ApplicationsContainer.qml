@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.12
 import QtQuick.Controls 2.3
 import QtQml.Models 2.3
+import AvenirFonts 1.0
 
 ColumnLayout {
     id: applicationsContainer
@@ -53,7 +54,7 @@ ColumnLayout {
                 font.pointSize: parent.height / 3
                 Layout.alignment: Qt.AlignVCenter
                 font.bold: true
-                font.family: boldFont.name
+                font.family: AvenirFonts.bold.name
                 onTextChanged: {
                     delegateModel.update()
                 }
@@ -70,7 +71,7 @@ ColumnLayout {
         visible: favoritesModel.rowCount() !== 0
         text: qsTr("Applications recommandées")
         font.pointSize: 15
-        font.family: boldFont.name
+        font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
     }
 
@@ -108,7 +109,7 @@ ColumnLayout {
         text: qsTr("Toutes les applications (" + modelApplication.rowCount(
                        ) + ")")
         font.pointSize: 15
-        font.family: boldFont.name
+        font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
     }
     // Conteneur liste d'Applications
@@ -231,7 +232,7 @@ ColumnLayout {
                             Text {
                                 id: applicationName
                                 font.pointSize: parent.parent.height * (1 / 5)
-                                font.family: installed ? normalFont.name : italicFont.name
+                                font.family: installed ? AvenirFonts.regular.name : AvenirFonts.italic.name
                                 color: installed ? "black" : "grey"
                                 text: qsTr(name)
                             }

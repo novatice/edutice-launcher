@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
+import AvenirFonts 1.0
 
 //import QtQml.Models 2.3
 ColumnLayout {
@@ -15,7 +16,7 @@ ColumnLayout {
     Text {
         text: qsTr("Mes documents")
         font.pointSize: 20
-        font.family: boldFont.name
+        font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
         Layout.alignment: Qt.AlignHCenter
     }
@@ -23,7 +24,7 @@ ColumnLayout {
     Text {
         text: qsTr("Mes dossiers partagés")
         font.pointSize: 15
-        font.family: boldFont.name
+        font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
         visible: mountedDirectoriesModel.rowCount() > 0
     }
@@ -164,7 +165,7 @@ ColumnLayout {
     Text {
         text: qsTr("Mes dossiers personnels")
         font.pointSize: 15
-        font.family: boldFont.name
+        font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
     }
     // Default directories: fills the ColumnLayout
@@ -258,7 +259,7 @@ ColumnLayout {
                         Text {
                             id: defaultFilesName
                             font.pointSize: parent.parent.height * (1 / 5)
-                            font.family: normalFont.name
+                            font.family: AvenirFonts.regular.name
                             text: qsTr(name)
                             color: "black"
                         }

@@ -79,6 +79,8 @@ int main(int argc, char *argv[]) {
 
   QQmlApplicationEngine engine;
 
+  engine.addImportPath("qrc:/");
+
   engine.rootContext()->setContextProperty(
       "applicationDirPath", QGuiApplication::applicationDirPath());
 
