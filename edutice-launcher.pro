@@ -19,8 +19,7 @@ SOURCES += main.cpp \
     directorymodel.cpp \
     execution.cpp \
     filter.cpp \
-    appmodel.cpp \
-    categoriemodel.cpp
+    appmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,5 +38,4 @@ HEADERS += \
     directorymodel.h \
     execution.h \
     filter.h \
-    appmodel.h \
-    categoriemodel.h
+    appmodel.h

@@ -18,7 +18,6 @@
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QQuickView>
 #include <appmodel.h>
-#include <categoriemodel.h>
 #include <directorymodel.h>
 #include <iostream>
 //#include <keyemitter.h>
@@ -90,7 +89,6 @@ int main(int argc, char *argv[]) {
 
   AppModel *recommendedApplications = new AppModel();
 
-  CategorieModel *modelCategorie = new CategorieModel();
   // The default directories (Documents, Pictures, Downloads, ...)
   DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
   // The mounted directories from logon script
@@ -107,7 +105,6 @@ int main(int argc, char *argv[]) {
   engine.rootContext()->setContextProperty("mountedDirectoriesModel",
                                            mountedDirectoriesModel);
   engine.rootContext()->setContextProperty("linksModel", linksModel);
-  engine.rootContext()->setContextProperty("modelCategorie", modelCategorie);
 
   // Fill mountedDirectoriesModel
   QString userShareHome = "";
@@ -170,8 +167,6 @@ int main(int argc, char *argv[]) {
   engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
 
   qmlRegisterType<Execution>("Execution", 1, 0, "Execution");
-
-  modelCategorie->addCategorie(Categorie("1", "Default"));
 
   QJsonParseError err;
 
@@ -288,8 +283,7 @@ int main(int argc, char *argv[]) {
     } else {
       name += " [Non installée]";
     }
-    Application app =
-        Application(name, icon, path, "Default", installed, parsedArgs);
+    Application app = Application(name, icon, path, installed, parsedArgs);
     modelApplication->addApplication(app);
     if (application.value("recommended").toBool())
       recommendedApplications->addApplication(app);

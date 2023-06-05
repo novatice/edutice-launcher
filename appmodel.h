@@ -9,12 +9,10 @@
 class Application {
 public:
   Application(const QString &type, const QString &size, const QString &src,
-              const QString &categorie, const bool installed,
-              const QStringList &args);
+              const bool installed, const QStringList &args);
   QString type() const;
   QString size() const;
   QString src() const;
-  QString categorie() const;
   bool installed() const;
   QStringList args() const;
 
@@ -24,7 +22,6 @@ public:
   QString m_type;
   QString m_size;
   QString m_src;
-  QString m_categorie;
   bool m_installed;
   QStringList m_args;
 };
@@ -32,14 +29,7 @@ public:
 class AppModel : public QAbstractListModel {
   Q_OBJECT
 public:
-  enum DemoRoles {
-    name = Qt::UserRole + 1,
-    icon,
-    src,
-    categorie,
-    installed,
-    args
-  };
+  enum DemoRoles { name = Qt::UserRole + 1, icon, src, installed, args };
 
   explicit AppModel(QObject *parent = 0);
 
