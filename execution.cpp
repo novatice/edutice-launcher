@@ -16,10 +16,8 @@ QString Execution::launch(const QString &program, const QStringList &args) {
     // There are some applications(BiblioManuels) that do not launch with the
     // path of the json file. We move to the desired folder. Then, we define the
     // currentpath.
-    QString fileName = info.fileName();
     QString path = info.absolutePath();
     process->setWorkingDirectory(path + "/");
-    process->start(fileName, args);
 #endif
 
 #ifdef __linux
@@ -28,15 +26,16 @@ QString Execution::launch(const QString &program, const QStringList &args) {
     env.insert("LD_LIBRARY_PATH", "");
 
     process->setProcessEnvironment(env);
+#endif
+
     // keep full path as file might not be in PATH
     process->start(program, args);
-#endif
 
     if (process->waitForStarted()) {
       qInfo() << "Launched with success";
     } else {
       qInfo() << "Launched with error";
-      qWarning() << "error during launch";
+      qWarning() << "error during launch: " << process->errorString();
     }
   } else {
     qWarning() << "the programe " << program << " doesn't exist";

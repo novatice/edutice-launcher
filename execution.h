@@ -2,7 +2,6 @@
 #define EXECUTION_H
 
 #ifdef WIN32
-#include "WinUser.h"
 #include "windows.h"
 #endif
 

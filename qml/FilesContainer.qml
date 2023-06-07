@@ -121,7 +121,7 @@ ColumnLayout {
                             Text {
                                 id: mountedDirectoriessName
                                 font.pointSize: parent.parent.height * (1 / 5)
-                                font.family: normalFont.name
+                                font.family: AvenirFonts.regular.name
                                 text: qsTr(name)
                             }
                         }
