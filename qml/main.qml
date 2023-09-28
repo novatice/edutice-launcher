@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.Tool
     color: "transparent"
-    screen: screenNumberId
+    screen: defaultValues.mouseScreen
     width: 750
     height: 560
     x: 0
@@ -22,7 +22,6 @@ ApplicationWindow {
             requestActivate()
         }
     }
-
     Timer {
         id: timer
     }
@@ -72,7 +71,7 @@ ApplicationWindow {
         acceptText: "Obtenir de l'aide"
         onAccepted: {
             execution.open(
-                        "http://" + serverAddress + "/neos-digital-space/service/assistance-talk")
+                        "http://" + config.serverAdress + "/neos-digital-space/service/assistance-talk")
             mainAppliWindow.hide()
         }
     }
@@ -122,7 +121,7 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Assistance"
                         icon: "assistance.png"
-                        visible: assistance
+                        visible: config.assistance
                         onAction: {
                             confirmationDialog.open()
                         }
@@ -140,27 +139,27 @@ ApplicationWindow {
                         icon: "profile.png"
                         onAction: {
                             execution.open(
-                                        "http://" + serverAddress + "/edutice/#mon-compte")
+                                        "http://" + config.serverAdress + "/edutice/#mon-compte")
                             mainAppliWindow.hide()
                         }
                     }
                     SideBarIcon {
                         label: "Gérer les mots de passe"
-                        visible: user_is_teacher
+                        visible: config.workspace.userIsTeacher
                         icon: "password.svg"
                         onAction: {
                             execution.open(
-                                        "http://" + serverAddress + "/edutice#mot-de-passe-eleves")
+                                        "http://" + config.serverAddress + "/edutice#mot-de-passe-eleves")
                             mainAppliWindow.hide()
                         }
                     }
                     SideBarIcon {
                         label: "Ma classe virtuelle"
                         icon: "virtualclass.png"
-                        visible: user_is_teacher
+                        visible: config.workspace.userIsTeacher
                         onAction: {
                             execution.open(
-                                        "http://" + serverAddress + "/edutice/#classe-virtuelle")
+                                        "http://" + config.serverAddress + "/edutice/#classe-virtuelle")
                             mainAppliWindow.hide()
                         }
                     }
@@ -193,7 +192,7 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Verrouiller"
                         icon: "lock.png"
-                        visible: lock_screen_enable
+                        visible: config.workspace.lockScreenEnable
                         onAction: {
                             execution.lockScreen()
                         }
@@ -353,7 +352,7 @@ ApplicationWindow {
                     Item {
                         width: parent.width
                         height: parent.height * (2 / 7)
-                        visible: !missing_default_browser
+                        visible: !config.workspace.missingDefaultBrowser
 
                         ColumnLayout {
                             width: parent.width
@@ -362,13 +361,13 @@ ApplicationWindow {
                             anchors.horizontalCenter: parent.horizontalCenter
 
                             Rectangle {
-                                visible: linksModel.rowCount() !== 0
+                                visible: config.workspace.links.rowCount() !== 0
                                 height: 2
                                 width: parent.width
                                 color: "grey"
                             }
                             Text {
-                                visible: linksModel.rowCount() !== 0
+                                visible: config.workspace.links.rowCount() !== 0
                                 text: qsTr("Ressources en ligne")
                                 color: "white"
                                 font.pointSize: parent.height * (1 / 4)
@@ -377,14 +376,14 @@ ApplicationWindow {
                                 Layout.leftMargin: 20
                             }
                             Item {
-                                height: linksModel.rowCount(
+                                height: config.workspace.links.rowCount(
                                             ) === 0 ? 0 : parent.width * (1 / 5)
-                                width: linksModel.rowCount() * height
+                                width: config.workspace.links.rowCount() * height
                                 Layout.alignment: Qt.AlignHCenter
 
                                 DelegateModel {
                                     id: linksModelDelegate
-                                    model: linksModel
+                                    model: config.workspace.links
                                     delegate: ZoomableIcon {
                                         Layout.alignment: Qt.AlignVCenter
                                         width: parent.height
@@ -412,7 +411,7 @@ ApplicationWindow {
                     Item {
                         width: parent.width
                         height: parent.height * (2 / 7)
-                        visible: missing_default_browser
+                        visible: config.workspace.missingDefaultBrowser
 
                         ColumnLayout {
                             width: parent.width
@@ -421,13 +420,13 @@ ApplicationWindow {
                             anchors.horizontalCenter: parent.horizontalCenter
 
                             Rectangle {
-                                visible: missing_default_browser
+                                visible: config.workspace.missingDefaultBrowser
                                 height: 2
                                 width: parent.width
                                 color: "grey"
                             }
                             Text {
-                                visible: missing_default_browser
+                                visible: config.workspace.missingDefaultBrowser
                                 text: qsTr("Navigateur par défaut non autorisé \nContactez un administrateur")
                                 color: "orange"
                                 font.pointSize: parent.height * (1 / 4)

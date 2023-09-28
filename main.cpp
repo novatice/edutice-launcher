@@ -22,6 +22,8 @@
 #include <iostream>
 //#include <keyemitter.h>
 #include <execution.h>
+#include <config.h>
+#include <configparser.h>
 
 #ifdef linux
 #include <signal.h>
@@ -83,93 +85,12 @@ int main(int argc, char *argv[]) {
   engine.rootContext()->setContextProperty(
       "applicationDirPath", QGuiApplication::applicationDirPath());
 
-  // Create a new model for Files
-
-  AppModel *modelApplication = new AppModel();
-
-  AppModel *recommendedApplications = new AppModel();
-
-  // The default directories (Documents, Pictures, Downloads, ...)
-  DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
-  // The mounted directories from logon script
-  DirectoryModel *mountedDirectoriesModel = new DirectoryModel();
-
-  DirectoryModel *linksModel = new DirectoryModel();
-
-  engine.rootContext()->setContextProperty("modelApplication",
-                                           modelApplication);
-  engine.rootContext()->setContextProperty("favoritesModel",
-                                           recommendedApplications);
-  engine.rootContext()->setContextProperty("defaultDirectoriesModel",
-                                           defaultDirectoriesModel);
-  engine.rootContext()->setContextProperty("mountedDirectoriesModel",
-                                           mountedDirectoriesModel);
-  engine.rootContext()->setContextProperty("linksModel", linksModel);
-
-  // Fill mountedDirectoriesModel
-  QString userShareHome = "";
-  QString userShares = "";
-#ifdef WIN32
-  // Z
-  userShareHome = "Z:/";
-  // Y
-  userShares = "Y:/";
-#else
-  userShareHome = "/media/" + qgetenv("USER") + "/home";
-  userShares = "/media/" + qgetenv("USER") + "/partages";
-#endif
-  QDir dir;
-  if (dir.exists(userShareHome)) {
-    mountedDirectoriesModel->addDirectory(
-        Directory(userShareHome, "Dossier personnel", "documents.png",
-                  "Dossier personnel enregistré sur le serveur"));
-  }
-  if (dir.exists(userShares)) {
-    mountedDirectoriesModel->addDirectory(
-        Directory(userShares, "Dossiers partagés", "documents.png",
-                  "Dossiers partagés enregistrés sur le serveur"));
-  }
-
-  // Fill defaultDirectoriesModel with some directories
-  Directory downloads = Directory(
-      QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
-      QStandardPaths::displayName(QStandardPaths::DownloadLocation),
-      "downloads.png", "Dossier contenant les fichiers téléchargés");
-  Directory documents = Directory(
-      QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-      QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
-      "documents.png", "Dossier contenant les documents de la session");
-  Directory pictures = Directory(
-      QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
-      QStandardPaths::displayName(QStandardPaths::PicturesLocation),
-      "pictures.png", "Dossier contenant les images de la session");
-
-  QString temp = QString(QDir::homePath() + "/Ressources temporaires");
-  QString name = "Resources Temporaires";
-
-  Directory TemporaryResources =
-      Directory(temp, name, "dossier temporaire.png",
-                "Resources Temporaires de la session");
-
-  defaultDirectoriesModel->addDirectory(documents);
-  defaultDirectoriesModel->addDirectory(pictures);
-  defaultDirectoriesModel->addDirectory(downloads);
-  defaultDirectoriesModel->addDirectory(TemporaryResources);
-
-  QScreen *screen = app.primaryScreen();
-
-  QPoint globalCursorPos = QCursor::pos();
-  QScreen *mouseScreen = app.screenAt(globalCursorPos);
-  QSize screenSize = screen->availableSize();
-
-  engine.rootContext()->setContextProperty("screenWidth", screenSize.width());
-  engine.rootContext()->setContextProperty("screenHeight", screenSize.height());
-  engine.rootContext()->setContextProperty("screenNumberId", mouseScreen);
+  DefaultValues* defaultValues = setDefaultValues(&app);
+  engine.rootContext()->setContextProperty("defaultValues",defaultValues);
 
   qmlRegisterType<Execution>("Execution", 1, 0, "Execution");
 
   QJsonParseError err;
-
   QString val;
   QFile file;
   // Modifier le chemin d'accès au Json
@@ -180,7 +101,6 @@ int main(int argc, char *argv[]) {
   jsonPath = QDir::homePath() +
              "/AppData/Local/Novatice/Edutice/Launcher/launcher.json";
 #endif
-
   file.setFileName(jsonPath);
   file.open(QIODevice::ReadOnly | QIODevice::Text);
   val = file.readAll();
@@ -188,121 +108,9 @@ int main(int argc, char *argv[]) {
 
   QByteArray utf8String = val.toUtf8();
   QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
-  QJsonValue agentVersion = d.object().value("agentVersion");
-  engine.rootContext()->setContextProperty(
-      "agentVersion",
-      agentVersion.isUndefined() ? "Non renseigné" : agentVersion);
 
-  QJsonValue OSVersion = d.object().value("OSVersion");
-  engine.rootContext()->setContextProperty(
-      "OSVersion", OSVersion.isUndefined() ? "Non renseigné" : OSVersion);
-
-  engine.rootContext()->setContextProperty("launcherVersion", VERSION);
-
-  QJsonValue serverAddress = d.object().value("serverAddress");
-  engine.rootContext()->setContextProperty("serverAddress", serverAddress);
-
-  QJsonValue assistance = d.object().value("assistance");
-  if (assistance.isUndefined()) {
-    assistance = false;
-  }
-  engine.rootContext()->setContextProperty("assistance", assistance.toBool());
-
-  engine.rootContext()->setContextProperty("username",
-#ifdef WIN32
-                                           qgetenv("USERNAME")
-#else
-                                           qgetenv("USER")
-#endif
-  );
-
-  QJsonObject workspace = d.object().value("workspace").toObject();
-  QString workspaceName = workspace.value("name").toString();
-  engine.rootContext()->setContextProperty("workspace", workspaceName);
-
-  engine.rootContext()->setContextProperty("group", "");
-  engine.rootContext()->setContextProperty("machine",
-                                           QHostInfo::localHostName());
-
-  QJsonValue lock_screen_enable = workspace.value("lock_screen_enable");
-  if (lock_screen_enable.isUndefined()) {
-    lock_screen_enable = true;
-  }
-  engine.rootContext()->setContextProperty("lock_screen_enable",
-                                           lock_screen_enable.toBool());
-
-  engine.rootContext()->setContextProperty("username",
-#ifdef WIN32
-                                           qgetenv("USERNAME")
-#else
-                                           qgetenv("USER")
-#endif
-  );
-
-  QJsonValue missing_default_browser =
-      workspace.value("missing_default_browser");
-  if (missing_default_browser.isUndefined()) {
-    missing_default_browser = false;
-  }
-  engine.rootContext()->setContextProperty("missing_default_browser",
-                                           missing_default_browser.toBool());
-
-  QJsonValue user_is_teacher = workspace.value("user_is_teacher");
-  if (user_is_teacher.isUndefined()) {
-    user_is_teacher = true;
-  }
-  engine.rootContext()->setContextProperty("user_is_teacher",
-                                           user_is_teacher.toBool());
-  QJsonArray apps = workspace.value("applications").toArray();
-  while (!apps.isEmpty()) {
-    QJsonObject application = apps.first().toObject();
-    QString name = application.value("name").toString();
-    QString icon = "qrc:/icons/not_installed_app.svg";
-    QString path = application.value("path").toString();
-    QString category = application.value("category").toString();
-    QVariantList args =
-        application.value("arguments").toArray().toVariantList();
-
-    QStringList parsedArgs = QStringList();
-
-    std::for_each(args.begin(), args.end(), [&parsedArgs](QVariant v) {
-      // qDebug() << v.toString();
-      parsedArgs.append(v.toString());
-    });
-
-    qDebug() << parsedArgs;
-
-    bool installed = false;
-    if (path != "") {
-      installed = true;
-      if (application.value("icon").isUndefined()) {
-        icon = "qrc:/icons/applications.png";
-      } else {
-        icon = "file:" + application.value("icon").toString();
-      }
-    } else {
-      name += " [Non installée]";
-    }
-    Application app = Application(name, icon, path, installed, parsedArgs);
-    modelApplication->addApplication(app);
-    if (application.value("recommended").toBool())
-      recommendedApplications->addApplication(app);
-    apps.removeFirst();
-  }
-
-  QJsonValue links = workspace.value("links");
-  if (!links.isUndefined()) {
-    QJsonArray linksArray = links.toArray();
-    while (!linksArray.isEmpty()) {
-      QJsonObject link = linksArray.first().toObject();
-      QString name = link.value("name").toString();
-      QString icon = link.value("icon").toString();
-      QString path = link.value("url").toString();
-      Directory dir = Directory(path, name, icon, "");
-      linksModel->addDirectory(dir);
-      linksArray.removeFirst();
-    }
-  }
+  Config* config = parseConfig(d);
+  engine.rootContext()->setContextProperty("config",config);
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
   if (engine.rootObjects().isEmpty())

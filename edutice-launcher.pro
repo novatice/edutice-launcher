@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
+    config.cpp \
+    configparser.cpp \
     directorymodel.cpp \
     execution.cpp \
     filter.cpp \
@@ -35,6 +37,17 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 win32:LIBS += -luser32
 HEADERS += \
+    config.h \
+    config.h \
+    configparser.h \
+    directorymodel.h \
+    execution.h \
+    filter.h \
+    appmodel.h
+
+win32:LIBS += -luser32
+HEADERS += \
+    config.h \
     directorymodel.h \
     execution.h \
     filter.h \

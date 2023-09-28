@@ -68,7 +68,7 @@ ColumnLayout {
 
     Text {
         // Try to find a better way of displaying it if there are no recommended apps
-        visible: favoritesModel.rowCount() !== 0
+        visible: config.workspace.recommendedApps.rowCount() !== 0
         text: qsTr("Applications recommandées")
         font.pointSize: 15
         font.family: AvenirFonts.bold.name
@@ -76,13 +76,13 @@ ColumnLayout {
     }
 
     Item {
-        height: favoritesModel.rowCount() === 0 ? 0 : parent.width * (1 / 5)
-        width: favoritesModel.rowCount() * height
+        height: config.workspace.recommendedApps.rowCount() === 0 ? 0 : parent.width * (1 / 5)
+        width: config.workspace.recommendedApps.rowCount() * height
         Layout.alignment: Qt.AlignHCenter
 
         DelegateModel {
             id: favoritesApplications
-            model: favoritesModel
+            model: config.workspace.recommendedApps
             delegate: ZoomableIcon {
                 Layout.alignment: Qt.AlignVCenter
                 width: parent.height
@@ -106,7 +106,7 @@ ColumnLayout {
     }
 
     Text {
-        text: qsTr("Toutes les applications (" + modelApplication.rowCount(
+        text: qsTr("Toutes les applications (" + config.workspace.applications.rowCount(
                        ) + ")")
         font.pointSize: 15
         font.family: AvenirFonts.bold.name
@@ -164,7 +164,7 @@ ColumnLayout {
 
                 SortFilterModel {
                     id: delegateModel
-                    model: modelApplication
+                    model: config.workspace.applications
 
                     lessThan: function (left, right) {
                         // Left name has pattern

@@ -26,13 +26,13 @@ ColumnLayout {
         font.pointSize: 15
         font.family: AvenirFonts.bold.name
         color: theme.mainTitleColor
-        visible: mountedDirectoriesModel.rowCount() > 0
+        visible: defaultValues.mountedDirectoriesModel.rowCount() > 0
     }
 
     // Mounted directories
     Rectangle {
         id: mountedDirectories
-        height: mountedDirectoriesModel.rowCount() > 0 ? childrenRect.height : 0
+        height: defaultValues.mountedDirectoriesModel.rowCount() > 0 ? childrenRect.height : 0
         width: parent.width
         color: "transparent"
 
@@ -156,7 +156,7 @@ ColumnLayout {
                     property bool first: true
                     delegate: mountedDirectoriesDelegate
 
-                    model: mountedDirectoriesModel
+                    model: defaultValues.mountedDirectoriesModel
                 }
             }
         }
@@ -295,7 +295,7 @@ ColumnLayout {
                 property bool first: true
                 delegate: defaultFilesDelegate
 
-                model: defaultDirectoriesModel
+                model: defaultValues.defaultDirectoriesModel
             }
         }
     }
