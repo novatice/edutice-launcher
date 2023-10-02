@@ -1,4 +1,5 @@
 #include "qcursor.h"
+#include "qdebug.h"
 #include "qdir.h"
 #include "qguiapplication.h"
 #include <QJsonObject>
@@ -14,7 +15,8 @@
 Config* parseConfig(QJsonDocument &jsonDocument){
     QString agentVersion = jsonDocument.object().value("agentVersion").toString();
     QString OSVersion = jsonDocument.object().value("OSVersion").toString();
-    QString serverAdress = jsonDocument.object().value("serverAdress").toString();
+    QString serverAddress = jsonDocument.object().value("serverAddress").toString();
+    QString token = jsonDocument.object().value("token").toString();
     bool assistance = jsonDocument.object().value("assistance").toBool();
     QJsonObject workspaceJson = jsonDocument.object().value("workspace").toObject();
     bool userIsTeacher = workspaceJson.value("user_is_teacher").toBool();
@@ -72,7 +74,7 @@ Config* parseConfig(QJsonDocument &jsonDocument){
         }
     }
     Workspace* workspace = new Workspace(userIsTeacher,lockScreenEnable,missingDefaultBrowser,applications,recommendedApplications,linksModel);
-    Config* config = new Config(agentVersion,assistance,OSVersion,serverAdress,workspace);
+    Config* config = new Config(agentVersion,assistance,OSVersion,serverAddress,token,workspace);
     return config;
 }
 

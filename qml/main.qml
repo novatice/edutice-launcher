@@ -70,9 +70,15 @@ ApplicationWindow {
         text: "Souhaitez-vous obtenir l'aide d'un gestionnaire ?"
         acceptText: "Obtenir de l'aide"
         onAccepted: {
-            execution.open(
-                        "http://" + config.serverAdress + "/neos-digital-space/service/assistance-talk")
-            mainAppliWindow.hide()
+            if(config.token !== ""){
+                execution.open(
+                            "http://" + config.serverAddress + "/neos-digital-space/service/assistance-talk?token="+config.token)
+                mainAppliWindow.hide()
+            }else{
+                execution.open(
+                            "http://" + config.serverAddress + "/neos-digital-space/service/assistance-talk")
+                mainAppliWindow.hide()
+            }
         }
     }
 
@@ -137,10 +143,16 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Mon profil"
                         icon: "profile.png"
-                        onAction: {
-                            execution.open(
-                                        "http://" + config.serverAdress + "/edutice/#mon-compte")
-                            mainAppliWindow.hide()
+                        onAction: {                            
+                            if(config.token !== ""){
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos?token="+ config.token +"#mon-compte")
+                                mainAppliWindow.hide()
+                            }else{
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos#mon-compte")
+                                mainAppliWindow.hide()
+                            }
                         }
                     }
                     SideBarIcon {
@@ -148,9 +160,15 @@ ApplicationWindow {
                         visible: config.workspace.userIsTeacher
                         icon: "password.svg"
                         onAction: {
-                            execution.open(
-                                        "http://" + config.serverAddress + "/edutice#mot-de-passe-eleves")
-                            mainAppliWindow.hide()
+                            if(config.token !==""){
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos?token="+ config.token +"#mot-de-passe-eleves")
+                                mainAppliWindow.hide()
+                            }else{
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos#mot-de-passe-eleves")
+                                mainAppliWindow.hide()
+                            }
                         }
                     }
                     SideBarIcon {
@@ -158,9 +176,15 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         visible: config.workspace.userIsTeacher
                         onAction: {
-                            execution.open(
-                                        "http://" + config.serverAddress + "/edutice/#classe-virtuelle")
-                            mainAppliWindow.hide()
+                            if(config.token !==""){
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos?token=" + config.token + "#classe-virtuelle")
+                                mainAppliWindow.hide()
+                            }else{
+                                execution.open(
+                                            "http://" + config.serverAddress + "/neos#classe-virtuelle")
+                                mainAppliWindow.hide()
+                            }
                         }
                     }
                     SideBarIcon {

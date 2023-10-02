@@ -49,20 +49,23 @@ class Config: public QObject {
     Q_PROPERTY(QString agentVersion READ agentVersion CONSTANT)
     Q_PROPERTY(bool assistance READ assistance CONSTANT)
     Q_PROPERTY(QString OSVersion READ OSVersion CONSTANT)
-    Q_PROPERTY(QString serverAdress READ serverAdress CONSTANT)
+    Q_PROPERTY(QString serverAddress READ serverAddress CONSTANT)
     Q_PROPERTY(Workspace* workspace READ workspace CONSTANT)
+    Q_PROPERTY(QString token READ token CONSTANT)
 
 public:
-    Config(const QString &agentVersion, const bool assistance, const QString &OSVersion, const QString &serverAdress,
-           Workspace* workspace);
+    Config(const QString &agentVersion, const bool assistance, const QString &OSVersion, const QString &serverAddress,
+           const QString &token,Workspace* workspace);
     QString agentVersion() const
     {return m_agentVersion;}
     bool assistance() const
     {return m_assistance;}
     QString OSVersion() const
     {return m_OSVersion;}
-    QString serverAdress() const
-    {return m_serverAdress;}
+    QString serverAddress() const
+    {return m_serverAddress;}
+    QString token() const
+    {return m_token;}
     Workspace* workspace()
     {return m_workspace;}
 
@@ -70,7 +73,8 @@ private:
     QString m_agentVersion;
     bool m_assistance;
     QString m_OSVersion;
-    QString m_serverAdress;
+    QString m_serverAddress;
+    QString m_token;
     Workspace* m_workspace;
 };
 

@@ -1,7 +1,7 @@
 #include "config.h"
 
-Config::Config(const QString &agentVersion, const bool assistance, const QString &OSVersion,const QString &serverAdress, Workspace* workspace)
-    : m_agentVersion(agentVersion), m_assistance(assistance),m_OSVersion(OSVersion), m_serverAdress(serverAdress), m_workspace(workspace) {}
+Config::Config(const QString &agentVersion, const bool assistance, const QString &OSVersion, const QString &serverAddress, const QString &token, Workspace* workspace)
+    : m_agentVersion(agentVersion), m_assistance(assistance),m_OSVersion(OSVersion), m_serverAddress(serverAddress),m_token(token), m_workspace(workspace) {}
 
 Workspace::Workspace(const bool userIsTeacher,const bool lockScreenEnable,
           const bool missingDefaultBrowser, AppModel* applications,
