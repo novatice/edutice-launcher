@@ -1,91 +1,98 @@
 #include "qcursor.h"
-#include "qdebug.h"
 #include "qdir.h"
 #include "qguiapplication.h"
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonValue>
 #include <QJsonArray>
-#include <config.h>
-#include <appmodel.h>
-#include <directorymodel.h>
-#include <QStandardPaths>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QScreen>
+#include <QStandardPaths>
+#include <appmodel.h>
+#include <config.h>
+#include <directorymodel.h>
 
-Config* parseConfig(QJsonDocument &jsonDocument){
-    QString agentVersion = jsonDocument.object().value("agentVersion").toString();
-    QString OSVersion = jsonDocument.object().value("OSVersion").toString();
-    QString serverAddress = jsonDocument.object().value("serverAddress").toString();
-    QString token = jsonDocument.object().value("token").toString();
-    bool assistance = jsonDocument.object().value("assistance").toBool();
-    QJsonObject workspaceJson = jsonDocument.object().value("workspace").toObject();
-    bool userIsTeacher = workspaceJson.value("user_is_teacher").toBool();
-    bool missingDefaultBrowser =workspaceJson.value("missing_default_browser").toBool();
-    bool lockScreenEnable = workspaceJson.value("lock_screen_enable").toBool();
+Config *parseConfig(QJsonDocument &jsonDocument) {
+  QString agentVersion = jsonDocument.object().value("agentVersion").toString();
+  QString OSVersion = jsonDocument.object().value("OSVersion").toString();
+  QString serverAddress =
+      jsonDocument.object().value("serverAddress").toString();
+  QString token = jsonDocument.object().value("token").toString();
+  bool assistance = jsonDocument.object().value("assistance").toBool();
+  // printings is false by default
+  bool printings = jsonDocument.object().value("printingsQueue").toBool();
+  QJsonObject workspaceJson =
+      jsonDocument.object().value("workspace").toObject();
+  bool userIsTeacher = workspaceJson.value("user_is_teacher").toBool();
+  bool missingDefaultBrowser =
+      workspaceJson.value("missing_default_browser").toBool();
+  bool lockScreenEnable = workspaceJson.value("lock_screen_enable").toBool();
 
-    AppModel *applications = new AppModel();
-    AppModel *recommendedApplications= new AppModel();
-    DirectoryModel *linksModel = new DirectoryModel();
-    QJsonArray apps = workspaceJson.value("applications").toArray();
-    while (!apps.isEmpty()) {
-        QJsonObject application = apps.first().toObject();
-        QString name = application.value("name").toString();
-        QString icon = "qrc:/icons/not_installed_app.svg";
-        QString path = application.value("path").toString();
-        QVariantList args =
-            application.value("arguments").toArray().toVariantList();
+  AppModel *applications = new AppModel();
+  AppModel *recommendedApplications = new AppModel();
+  DirectoryModel *linksModel = new DirectoryModel();
+  QJsonArray apps = workspaceJson.value("applications").toArray();
+  while (!apps.isEmpty()) {
+    QJsonObject application = apps.first().toObject();
+    QString name = application.value("name").toString();
+    QString icon = "qrc:/icons/not_installed_app.svg";
+    QString path = application.value("path").toString();
+    QVariantList args =
+        application.value("arguments").toArray().toVariantList();
 
-        QStringList parsedArgs = QStringList();
+    QStringList parsedArgs = QStringList();
 
-        std::for_each(args.begin(), args.end(), [&parsedArgs](QVariant v) {
-            // qDebug() << v.toString();
-            parsedArgs.append(v.toString());
-        });
+    std::for_each(args.begin(), args.end(), [&parsedArgs](QVariant v) {
+      // qDebug() << v.toString();
+      parsedArgs.append(v.toString());
+    });
 
-        bool installed = false;
-        if (path != "") {
-            installed = true;
-            if (application.value("icon").isUndefined()) {
-                icon = "qrc:/icons/applications.png";
-            } else {
-                icon = "file:" + application.value("icon").toString();
-            }
-        } else {
-            name += " [Non installée]";
-        }
-        Application app (name, icon, path, installed, parsedArgs);
-        applications->addApplication(app);
-        if (application.value("recommended").toBool())
-            recommendedApplications->addApplication(app);
-        apps.removeFirst();
+    bool installed = false;
+    if (path != "") {
+      installed = true;
+      if (application.value("icon").isUndefined()) {
+        icon = "qrc:/icons/applications.png";
+      } else {
+        icon = "file:" + application.value("icon").toString();
+      }
+    } else {
+      name += " [Non installée]";
     }
+    Application app(name, icon, path, installed, parsedArgs);
+    applications->addApplication(app);
+    if (application.value("recommended").toBool())
+      recommendedApplications->addApplication(app);
+    apps.removeFirst();
+  }
 
-    QJsonValue links = workspaceJson.value("links");
-    if (!links.isUndefined()) {
-        QJsonArray linksArray = links.toArray();
-        while (!linksArray.isEmpty()) {
-            QJsonObject link = linksArray.first().toObject();
-            QString name = link.value("name").toString();
-            QString icon = link.value("icon").toString();
-            QString path = link.value("url").toString();
-            Directory dir = Directory(path, name, icon, "");
-            linksModel->addDirectory(dir);
-            linksArray.removeFirst();
-        }
+  QJsonValue links = workspaceJson.value("links");
+  if (!links.isUndefined()) {
+    QJsonArray linksArray = links.toArray();
+    while (!linksArray.isEmpty()) {
+      QJsonObject link = linksArray.first().toObject();
+      QString name = link.value("name").toString();
+      QString icon = link.value("icon").toString();
+      QString path = link.value("url").toString();
+      Directory dir = Directory(path, name, icon, "");
+      linksModel->addDirectory(dir);
+      linksArray.removeFirst();
     }
-    Workspace* workspace = new Workspace(userIsTeacher,lockScreenEnable,missingDefaultBrowser,applications,recommendedApplications,linksModel);
-    Config* config = new Config(agentVersion,assistance,OSVersion,serverAddress,token,workspace);
-    return config;
+  }
+  Workspace *workspace =
+      new Workspace(userIsTeacher, lockScreenEnable, missingDefaultBrowser,
+                    applications, recommendedApplications, linksModel);
+  Config *config = new Config(agentVersion, assistance, printings, OSVersion,
+                              serverAddress, token, workspace);
+  return config;
 }
 
-DefaultValues* setDefaultValues(QGuiApplication* app){
-// The default directories (Documents, Pictures, Downloads, ...)
-DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
-// The mounted directories from logon script
-DirectoryModel *mountedDirectoriesModel = new DirectoryModel();
-// Fill mountedDirectoriesModel
-QString userShareHome = "";
-QString userShares = "";
+DefaultValues *setDefaultValues(QGuiApplication *app) {
+  // The default directories (Documents, Pictures, Downloads, ...)
+  DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
+  // The mounted directories from logon script
+  DirectoryModel *mountedDirectoriesModel = new DirectoryModel();
+  // Fill mountedDirectoriesModel
+  QString userShareHome = "";
+  QString userShares = "";
 #ifdef WIN32
   // Z
   userShareHome = "Z:/";
@@ -135,6 +142,8 @@ QString userShares = "";
   QPoint globalCursorPos = QCursor::pos();
   QScreen *mouseScreen = app->screenAt(globalCursorPos);
   QSize screenSize = screen->availableSize();
-  DefaultValues* defaultValues = new DefaultValues(defaultDirectoriesModel,mountedDirectoriesModel,mouseScreen,screenSize);
+  DefaultValues *defaultValues =
+      new DefaultValues(defaultDirectoriesModel, mountedDirectoriesModel,
+                        mouseScreen, screenSize);
   return defaultValues;
 }

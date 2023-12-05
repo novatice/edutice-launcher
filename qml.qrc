@@ -37,5 +37,6 @@
         <file>fonts/avenir_next_lt_pro_it.otf</file>
         <file>fonts/avenir_next_lt_pro_regular.otf</file>
         <file>icons/assistance.png</file>
+        <file>icons/printings_queue.svg</file>
     </qresource>
 </RCC>

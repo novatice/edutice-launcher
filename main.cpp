@@ -21,9 +21,9 @@
 #include <directorymodel.h>
 #include <iostream>
 //#include <keyemitter.h>
-#include <execution.h>
 #include <config.h>
 #include <configparser.h>
+#include <execution.h>
 
 #ifdef linux
 #include <signal.h>
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
   engine.rootContext()->setContextProperty(
       "applicationDirPath", QGuiApplication::applicationDirPath());
 
-  DefaultValues* defaultValues = setDefaultValues(&app);
-  engine.rootContext()->setContextProperty("defaultValues",defaultValues);
+  DefaultValues *defaultValues = setDefaultValues(&app);
+  engine.rootContext()->setContextProperty("defaultValues", defaultValues);
 
   qmlRegisterType<Execution>("Execution", 1, 0, "Execution");
 
@@ -109,8 +109,8 @@ int main(int argc, char *argv[]) {
   QByteArray utf8String = val.toUtf8();
   QJsonDocument d = QJsonDocument::fromJson(utf8String, &err);
 
-  Config* config = parseConfig(d);
-  engine.rootContext()->setContextProperty("config",config);
+  Config *config = parseConfig(d);
+  engine.rootContext()->setContextProperty("config", config);
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
   if (engine.rootObjects().isEmpty())
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
   //    engine.rootContext()->setContextProperty("keyEmitter", &keyEmitter);
 
   QObject *rect =
-      (engine.rootObjects().first())->findChild<QObject *>("execution");
+      (engine.rootObjects().constFirst())->findChild<QObject *>("execution");
   Execution *ex = (qobject_cast<Execution *>(rect));
 
   if (rect) {

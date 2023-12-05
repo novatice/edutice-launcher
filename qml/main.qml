@@ -70,13 +70,15 @@ ApplicationWindow {
         text: "Souhaitez-vous obtenir l'aide d'un gestionnaire ?"
         acceptText: "Obtenir de l'aide"
         onAccepted: {
-            if(config.token !== ""){
+            openNeosPage()
+            if (config.token !== "") {
                 execution.open(
-                            "http://" + config.serverAddress + "/neos-digital-space/service/assistance-talk?token="+config.token)
+                            "http://" + config.serverAddress
+                            + "/neos-digital-space/service/assistance-talk?token=" + config.token)
                 mainAppliWindow.hide()
-            }else{
-                execution.open(
-                            "http://" + config.serverAddress + "/neos-digital-space/service/assistance-talk")
+            } else {
+                execution.open("http://" + config.serverAddress
+                               + "/neos-digital-space/service/assistance-talk")
                 mainAppliWindow.hide()
             }
         }
@@ -158,6 +160,13 @@ ApplicationWindow {
                             openNeosPage("mon-compte")
                         }
                     }
+
+                    SideBarIcon {
+                        label: "Ouvrir la file d'impressions"
+                        visible: config.printingsQueue
+                        icon: "printings_queue.svg"
+                        onAction: {
+                            openNeosPage("printing-queue")
                         }
                     }
 
@@ -392,7 +401,8 @@ ApplicationWindow {
                             Item {
                                 height: config.workspace.links.rowCount(
                                             ) === 0 ? 0 : parent.width * (1 / 5)
-                                width: config.workspace.links.rowCount() * height
+                                width: config.workspace.links.rowCount(
+                                           ) * height
                                 Layout.alignment: Qt.AlignHCenter
 
                                 DelegateModel {
