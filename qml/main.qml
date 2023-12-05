@@ -82,6 +82,17 @@ ApplicationWindow {
         }
     }
 
+    function openNeosPage(page) {
+        let urlToOpen = "http://" + config.serverAddress + "/neos"
+        if (config.token !== "") {
+            urlToOpen += "?token=" + config.token + "#" + page
+        } else {
+            urlToOpen += "#" + page
+        }
+        execution.open(urlToOpen)
+        mainAppliWindow.hide()
+    }
+
     Item {
         width: mainAppliWindow.width
         height: mainAppliWindow.height
@@ -143,32 +154,19 @@ ApplicationWindow {
                     SideBarIcon {
                         label: "Mon profil"
                         icon: "profile.png"
-                        onAction: {                            
-                            if(config.token !== ""){
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos?token="+ config.token +"#mon-compte")
-                                mainAppliWindow.hide()
-                            }else{
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos#mon-compte")
-                                mainAppliWindow.hide()
-                            }
+                        onAction: {
+                            openNeosPage("mon-compte")
                         }
                     }
+                        }
+                    }
+
                     SideBarIcon {
                         label: "Gérer les mots de passe"
                         visible: config.workspace.userIsTeacher
                         icon: "password.svg"
                         onAction: {
-                            if(config.token !==""){
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos?token="+ config.token +"#mot-de-passe-eleves")
-                                mainAppliWindow.hide()
-                            }else{
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos#mot-de-passe-eleves")
-                                mainAppliWindow.hide()
-                            }
+                            openNeosPage("mot-de-passe-eleves")
                         }
                     }
                     SideBarIcon {
@@ -176,15 +174,7 @@ ApplicationWindow {
                         icon: "virtualclass.png"
                         visible: config.workspace.userIsTeacher
                         onAction: {
-                            if(config.token !==""){
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos?token=" + config.token + "#classe-virtuelle")
-                                mainAppliWindow.hide()
-                            }else{
-                                execution.open(
-                                            "http://" + config.serverAddress + "/neos#classe-virtuelle")
-                                mainAppliWindow.hide()
-                            }
+                            openNeosPage("classe-virtuelle")
                         }
                     }
                     SideBarIcon {
