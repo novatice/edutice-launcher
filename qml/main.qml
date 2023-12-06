@@ -70,7 +70,6 @@ ApplicationWindow {
         text: "Souhaitez-vous obtenir l'aide d'un gestionnaire ?"
         acceptText: "Obtenir de l'aide"
         onAccepted: {
-            openNeosPage()
             if (config.token !== "") {
                 execution.open(
                             "http://" + config.serverAddress
