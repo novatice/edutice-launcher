@@ -127,7 +127,7 @@ DefaultValues *setDefaultValues(QGuiApplication *app) {
       QStandardPaths::displayName(QStandardPaths::PicturesLocation),
       "pictures.png", "Dossier contenant les images de la session");
   QString temp = QString(QDir::homePath() + "/Ressources temporaires");
-  QString name = "Resources Temporaires";
+  QString name = "Ressources temporaires";
 
   Directory TemporaryResources =
       Directory(temp, name, "dossier temporaire.png",
