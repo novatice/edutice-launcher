@@ -1,6 +1,6 @@
-import QtQuick 2.12
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.3
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls.Basic
 import AvenirFonts 1.0
 
 //import QtQml.Models 2.3
@@ -132,7 +132,7 @@ ColumnLayout {
                             cursorShape: Qt.PointingHandCursor
                             hoverEnabled: true
 
-                            onClicked: {
+                            onClicked: (mouse) => {
                                 if (mouse.button === Qt.LeftButton) {
                                     execution.open(path)
                                     mainAppliWindow.visible = false
@@ -271,7 +271,7 @@ ColumnLayout {
                         cursorShape: Qt.PointingHandCursor
                         hoverEnabled: true
 
-                        onClicked: {
+                        onClicked: (mouse) =>{
                             if (mouse.button === Qt.LeftButton) {
                                 execution.openFolder(path)
                                 mainAppliWindow.visible = false

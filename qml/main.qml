@@ -1,9 +1,9 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.3
-import QtQuick.Window 2.3
-import QtQuick.Layouts 1.3
-import QtQml.Models 2.3
-import QtGraphicalEffects 1.12
+import QtQuick
+import QtQuick.Controls.Basic
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQml.Models
+import Qt5Compat.GraphicalEffects
 import AvenirFonts 1.0
 import Execution 1.0
 
@@ -34,7 +34,7 @@ ApplicationWindow {
 
     Connections {
         target: Qt.application
-        onStateChanged: {
+        function onStateChanged() {
             if (Qt.application.state === Qt.ApplicationActive) {
                 mainAppliWindow.raise()
                 // Forces UI to be active on Windows, freezes after first use otherwise.

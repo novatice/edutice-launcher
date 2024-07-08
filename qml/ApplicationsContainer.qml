@@ -1,8 +1,8 @@
-import QtQuick 2.12
-import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.12
-import QtQuick.Controls 2.3
-import QtQml.Models 2.3
+import QtQuick
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
+import QtQuick.Controls.Basic
+import QtQml.Models
 import AvenirFonts 1.0
 
 ColumnLayout {
@@ -244,7 +244,7 @@ ColumnLayout {
                             cursorShape: installed ? Qt.PointingHandCursor : Qt.ArrowCursor
                             hoverEnabled: installed
 
-                            onClicked: {
+                            onClicked: (mouse) => {
                                 if (mouse.button === Qt.LeftButton
                                         && installed) {
                                     execution.launch(src, args)
