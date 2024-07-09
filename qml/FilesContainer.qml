@@ -49,15 +49,15 @@ ColumnLayout {
                                 > parent.height) ? mountedDirectoriesList.childrenRect.height : parent.height
                 ScrollBar.vertical: ScrollBar {
                     id: mountedDirectoriesScrollBar
-                    policy: ScrollBar.SnapOnRelease
+                    policy: ScrollBar.AsNeeded
                     height: mountedDirectoriesScrollView.availableHeight
                     x: mountedDirectoriesScrollView.mirrored ? 0 : mountedDirectoriesScrollView.width - width
                     y: mountedDirectoriesScrollView.topPadding
                     active: false
-                    snapMode: ScrollBar.SnapAlways
+                    snapMode: ScrollBar.SnapOnRelease
                     visible: mountedDirectoriesScrollView.contentHeight
                              > mountedDirectoriesScrollView.height ? true : false
-                    //stepSize: 0.5
+                    stepSize: 0.05
                     //active: scrollV.ScrollBar.horizontal.active
                     contentItem: Rectangle {
                         implicitWidth: 6
@@ -69,16 +69,6 @@ ColumnLayout {
                 }
 
                 clip: true
-                MouseArea {
-                    onWheel: {
-                        if (wheel.angleDelta.y > 0) {
-                            scroller.decrease()
-                        } else {
-                            scroller.increase()
-                        }
-                    }
-                }
-
                 Component {
                     id: mountedDirectoriesDelegate
 
@@ -146,6 +136,13 @@ ColumnLayout {
                                 //backg.color = "transparent"
                                 mountedDirectoriesBack.visible = false
                             }
+                            onWheel: (wheel) =>{
+                                if (wheel.angleDelta.y > 0) {
+                                    mountedDirectoriesScrollBar.decrease()
+                                } else {
+                                    mountedDirectoriesScrollBar.increase()
+                                }
+                            }
                         }
                     }
                 }
@@ -182,14 +179,15 @@ ColumnLayout {
                             > parent.height) ? defaultFilesList.childrenRect.height : parent.parent.height
             ScrollBar.vertical: ScrollBar {
                 id: defaultFilesScrollBar
-                policy: ScrollBar.SnapOnRelease
+                policy: ScrollBar.AsNeeded
                 height: defaultFilesScrollView.height
                 x: defaultFilesScrollView.mirrored ? 0 : defaultFilesScrollView.width - width
                 y: defaultFilesScrollView.topPadding
                 active: false
-                snapMode: ScrollBar.SnapAlways
-                visible: false
-                //stepSize: 0.5
+                visible: defaultFilesList.contentHeight
+                         > defaultFilesScrollView.height ? true : false
+                snapMode: ScrollBar.SnapOnRelease
+                stepSize: 0.05
                 //active: scrollV.ScrollBar.horizontal.active
                 contentItem: Rectangle {
                     implicitWidth: 6
@@ -201,23 +199,6 @@ ColumnLayout {
             }
 
             clip: true
-            MouseArea {
-                onEntered: {
-                    defaultFilesScrollBar.visible = defaultFilesScrollView.contentHeight
-                            > defaultFilesScrollView.height
-                }
-                onExited: {
-                    defaultFilesScrollBar.visible = false
-                }
-                onWheel: {
-                    if (wheel.angleDelta.y > 0) {
-                        scroller.decrease()
-                    } else {
-                        scroller.increase()
-                    }
-                }
-            }
-
             Component {
                 id: defaultFilesDelegate
 
@@ -284,6 +265,13 @@ ColumnLayout {
                         onExited: {
                             //backg.color = "transparent"
                             defaultFilesBack.visible = false
+                        }
+                        onWheel: (wheel) => {
+                            if (wheel.angleDelta.y > 0) {
+                                defaultFilesScrollBar.decrease()
+                            } else {
+                                defaultFilesScrollBar.increase()
+                            }
                         }
                     }
                 }

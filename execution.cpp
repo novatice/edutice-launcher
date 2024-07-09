@@ -56,29 +56,33 @@ QString Execution::open(const QString &path) {
 }
 void Execution::lockScreen() {
   QString l = "";
+  QStringList args = {""};
   std::cout << "def" << std::endl;
 #ifdef linux
   // todo: replace qdbus command by "pure" Qt DBus code
   l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
 #endif
 #ifdef _WIN32
-  l = "rundll32.exe user32.dll,LockWorkStation";
+  l = "rundll32.exe";
+  args = {"user32.dll","LockWorkStation"};
 #endif
-  QProcess::startDetached(l);
+  QProcess::startDetached(l,args);
   // m_process->waitForFinished(-1);
 }
 
 void Execution::disconnectScreen() {
   QString l = "";
+  QStringList args = {""};
 #ifdef linux
   // todo: replace qdbus command by "pure" Qt DBus code
   l = "qdbus org.kde.ksmserver /KSMServer logout 0 0 0";
 #endif
 #ifdef _WIN32
-  l = "shutdown -L";
+  l = "shutdown";
+  args = {"-L"};
 #endif
   // m_process->startDetached(l);
-  QProcess::startDetached(l);
+  QProcess::startDetached(l, args);
   // m_process->waitForFinished(-1);
 }
 
@@ -122,6 +126,7 @@ void Execution::quit() {
 #endif
 }
 
+//Needs to be changed to put arguments in QStringList if we want to reimplement it.
 void Execution::shutdown() {
   QString l = "";
 #ifdef linux

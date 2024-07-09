@@ -133,14 +133,14 @@ ColumnLayout {
                 ScrollBar.vertical: ScrollBar {
                     id: scrollBar
                     parent: scrollV.parent
-                    policy: ScrollBar.SnapOnRelease
+                    policy: ScrollBar.AsNeeded
                     height: scrollV.availableHeight
                     x: scrollV.mirrored ? 0 : scrollV.width - width
                     y: scrollV.topPadding
                     active: false
-                    snapMode: ScrollBar.SnapAlways
+                    snapMode: ScrollBar.SnapOnRelease
                     visible: scrollV.contentHeight > scrollV.height
-                    //stepSize: 0.5
+                    stepSize: 0.05
                     //active: scrollV.ScrollBar.horizontal.active
                     contentItem: Rectangle {
                         implicitWidth: 6
@@ -152,16 +152,6 @@ ColumnLayout {
                 }
 
                 clip: true
-                MouseArea {
-                    onWheel: {
-                        if (wheel.angleDelta.y > 0) {
-                            scroller.decrease()
-                        } else {
-                            scroller.increase()
-                        }
-                    }
-                }
-
                 SortFilterModel {
                     id: delegateModel
                     model: config.workspace.applications
@@ -259,6 +249,13 @@ ColumnLayout {
                             onExited: {
                                 if (installed)
                                     applicationBack.visible = false
+                            }
+                            onWheel: (wheel) => {
+                                if (wheel.angleDelta.y > 0) {
+                                    scrollBar.decrease()
+                                } else {
+                                    scrollBar.increase()
+                                }
                             }
                         }
                     }
