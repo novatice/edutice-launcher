@@ -114,17 +114,18 @@ DefaultValues *setDefaultValues(QGuiApplication *app) {
                   "Dossiers partagés enregistrés sur le serveur"));
   }
   // Fill defaultDirectoriesModel with some directories
+
   Directory downloads = Directory(
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
-      QStandardPaths::displayName(QStandardPaths::DownloadLocation),
+      "Téléchargements",
       "downloads.png", "Dossier contenant les fichiers téléchargés");
   Directory documents = Directory(
       QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-      QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
+      "Documents",
       "documents.png", "Dossier contenant les documents de la session");
   Directory pictures = Directory(
       QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
-      QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+      "Images",
       "pictures.png", "Dossier contenant les images de la session");
   QString temp = QString(QDir::homePath() + "/Ressources temporaires");
   QString name = "Ressources temporaires";
