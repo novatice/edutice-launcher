@@ -17,10 +17,12 @@
 #include <QSortFilterProxyModel>
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QQuickView>
+#include "windowsnativeeventfilter.h"
 #include <appmodel.h>
 #include <directorymodel.h>
 #include <iostream>
 //#include <keyemitter.h>
+#include <appconstants.h>
 #include <config.h>
 #include <configparser.h>
 #include <execution.h>
@@ -68,7 +70,6 @@ int main(int argc, char *argv[]) {
 #ifdef linux
   catchUnixSignals({SIGHUP});
 #endif
-  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication app(argc, argv);
 
@@ -80,13 +81,16 @@ int main(int argc, char *argv[]) {
 
   QQmlApplicationEngine engine;
 
+  ApplicationConstants::applicationEngine = &engine;
+  ApplicationConstants::guiApplication = &app;
+
   engine.addImportPath("qrc:/");
 
   engine.rootContext()->setContextProperty(
       "applicationDirPath", QGuiApplication::applicationDirPath());
-
-  DefaultValues *defaultValues = setDefaultValues(&app);
-  engine.rootContext()->setContextProperty("defaultValues", defaultValues);
+  ApplicationConstants::defaultValues = setDefaultValues(&app);
+  //engine.setInitialProperties({{"defaultValues", QVariant::fromValue(defaultValues)}});
+  engine.rootContext()->setContextProperty("defaultValues", ApplicationConstants::defaultValues);
 
   qmlRegisterType<Execution>("Execution", 1, 0, "Execution");
 
@@ -131,6 +135,7 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+  app.installNativeEventFilter(new WindowsNativeEventFilter());
 
   return app.exec();
 }

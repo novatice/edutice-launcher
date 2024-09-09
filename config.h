@@ -1,11 +1,11 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <QObject>
 #include "appmodel.h"
 #include "directorymodel.h"
 #include "qscreen.h"
 #include "qsize.h"
-#include <QObject>
 
 class Workspace : public QObject {
   Q_OBJECT
@@ -72,27 +72,26 @@ private:
 
 class DefaultValues : public QObject {
   Q_OBJECT
-  Q_PROPERTY(DirectoryModel *defaultDirectoriesModel READ
-                 defaultDirectoriesModel CONSTANT)
-  Q_PROPERTY(DirectoryModel *mountedDirectoriesModel READ
-                 mountedDirectoriesModel CONSTANT)
-  Q_PROPERTY(QScreen *mouseScreen READ mouseScreen CONSTANT)
-  Q_PROPERTY(QSize screenSize READ screenSize CONSTANT)
+  public:
+      Q_PROPERTY(DirectoryModel *defaultDirectoriesModel READ defaultDirectoriesModel NOTIFY
+                     defaultDirectoriesChanged)
+      Q_PROPERTY(DirectoryModel *mountedDirectoriesModel READ mountedDirectoriesModel NOTIFY
+                     mountedDirectoriesChanged)
+      Q_PROPERTY(QScreen *mouseScreen READ mouseScreen CONSTANT)
+      Q_PROPERTY(QSize screenSize READ screenSize CONSTANT)
+      DefaultValues(DirectoryModel *defaultDirectoriesModel,
+                    DirectoryModel *mountedDirectoriesModel,
+                    QScreen *mouseScreen,
+                    const QSize &screenSize);
+      DirectoryModel *defaultDirectoriesModel() const { return m_defaultDirectoriesModel; }
+      DirectoryModel *mountedDirectoriesModel() const { return m_mountedDirectoriesModel; }
+      QScreen *mouseScreen() const { return m_mouseScreen; }
+      QSize screenSize() const { return m_screenSize; }
+  signals:
+  void mountedDirectoriesChanged();
+  void defaultDirectoriesChanged();
 
-public:
-  DefaultValues(DirectoryModel *defaultDirectoriesModel,
-                DirectoryModel *mountedDirectoriesModel, QScreen *mouseScreen,
-                const QSize &screenSize);
-  DirectoryModel *defaultDirectoriesModel() const {
-    return m_defaultDirectoriesModel;
-  }
-  DirectoryModel *mountedDirectoriesModel() const {
-    return m_mountedDirectoriesModel;
-  }
-  QScreen *mouseScreen() const { return m_mouseScreen; }
-  QSize screenSize() const { return m_screenSize; }
-
-private:
+  private:
   DirectoryModel *m_defaultDirectoriesModel;
   DirectoryModel *m_mountedDirectoriesModel;
   QScreen *m_mouseScreen;

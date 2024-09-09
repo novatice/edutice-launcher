@@ -2,8 +2,7 @@ VERSION=6.5.0
 DEFINES += VERSION=\"\\\"$$VERSION\\\"\"
 
 QT += quick
-CONFIG += c++11
-
+CONFIG += c++17
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -37,18 +36,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 win32:LIBS += -luser32
 HEADERS += \
+    appconstants.h \
     config.h \
     config.h \
     configparser.h \
     directorymodel.h \
     execution.h \
     filter.h \
-    appmodel.h
-
-win32:LIBS += -luser32
-HEADERS += \
-    config.h \
-    directorymodel.h \
-    execution.h \
-    filter.h \
-    appmodel.h
+    appmodel.h \
+    windowsnativeeventfilter.h

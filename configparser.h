@@ -6,5 +6,6 @@
 
 Config* parseConfig(QJsonDocument &jsonDocument);
 DefaultValues* setDefaultValues(QGuiApplication* app);
+void UpdateDirectories(DefaultValues* defaultValues);
 
 #endif // CONFIGPARSER_H

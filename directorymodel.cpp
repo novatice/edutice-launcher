@@ -1,4 +1,5 @@
 #include "directorymodel.h"
+#include "qdir.h"
 
 Directory::Directory(const QString &path, const QString &name, const QString &icon, const QString &description)
     : m_path(path), m_name(name), m_icon(icon), m_description(description)
@@ -25,7 +26,8 @@ QString Directory::description() const
     return m_description;
 }
 
-DirectoryModel::DirectoryModel(QObject *parent) : QAbstractListModel(parent)
+DirectoryModel::DirectoryModel(QObject *parent)
+    : QAbstractListModel(parent)
 {
 }
 
@@ -71,4 +73,14 @@ QVariant DirectoryModel::data(const QModelIndex &index, int role) const
     }
 
     return QVariant();
+}
+
+bool DirectoryModel::ContainsDirectory(QString path)
+{
+    for (const Directory &directory : m_directories) {
+        if (directory.m_path == path) {
+            return true;
+        }
+    }
+    return false;
 }

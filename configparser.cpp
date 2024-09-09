@@ -85,14 +85,15 @@ Config *parseConfig(QJsonDocument &jsonDocument) {
   return config;
 }
 
-DefaultValues *setDefaultValues(QGuiApplication *app) {
-  // The default directories (Documents, Pictures, Downloads, ...)
-  DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
-  // The mounted directories from logon script
-  DirectoryModel *mountedDirectoriesModel = new DirectoryModel();
-  // Fill mountedDirectoriesModel
-  QString userShareHome = "";
-  QString userShares = "";
+DefaultValues *setDefaultValues(QGuiApplication *app)
+{
+    // The default directories (Documents, Pictures, Downloads, ...)
+    DirectoryModel *defaultDirectoriesModel = new DirectoryModel();
+    // The mounted directories from logon script
+    DirectoryModel *mountedDirectoriesModel = new DirectoryModel();
+    // Fill mountedDirectoriesModel
+    QString userShareHome = "";
+    QString userShares = "";
 #ifdef WIN32
   // Z
   userShareHome = "Z:/";
@@ -143,8 +144,43 @@ DefaultValues *setDefaultValues(QGuiApplication *app) {
   QPoint globalCursorPos = QCursor::pos();
   QScreen *mouseScreen = app->screenAt(globalCursorPos);
   QSize screenSize = screen->availableSize();
-  DefaultValues *defaultValues =
-      new DefaultValues(defaultDirectoriesModel, mountedDirectoriesModel,
-                        mouseScreen, screenSize);
+  DefaultValues *defaultValues = new DefaultValues(defaultDirectoriesModel,
+                                                   mountedDirectoriesModel,
+                                                   mouseScreen,
+                                                   screenSize);
   return defaultValues;
+}
+
+void UpdateDirectories(DefaultValues *defaultValues)
+{
+    QDir dir;
+    QString userShareHome;
+    QString userShares;
+#ifdef WIN32
+    // Z
+    userShareHome = "Z:/";
+    // Y
+    userShares = "Y:/";
+#else
+    userShareHome = "/media/" + qgetenv("USER") + "/home";
+    userShares = "/media/" + qgetenv("USER") + "/partages";
+#endif
+    if (!defaultValues->mountedDirectoriesModel()->ContainsDirectory(userShares)
+        && dir.exists(userShares)) {
+        defaultValues->mountedDirectoriesModel()->addDirectory(
+            Directory(userShares,
+                      "Dossiers partagés",
+                      "documents.png",
+                      "Dossiers partagés enregistrés sur le serveur"));
+        emit defaultValues->mountedDirectoriesChanged();
+    }
+    if (!defaultValues->mountedDirectoriesModel()->ContainsDirectory(userShareHome)
+        && dir.exists(userShareHome)) {
+        defaultValues->mountedDirectoriesModel()->addDirectory(
+            Directory(userShareHome,
+                      "Dossier personnel",
+                      "documents.png",
+                      "Dossier personnel enregistré sur le serveur"));
+        emit defaultValues->mountedDirectoriesChanged();
+    }
 }

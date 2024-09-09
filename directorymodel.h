@@ -36,6 +36,7 @@ class DirectoryModel : public QAbstractListModel
         void addDirectory(const Directory &directory);
         int rowCount(const QModelIndex &parent = QModelIndex()) const;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+        bool ContainsDirectory(QString path);
 
         QList<Directory> m_directories;
 };
