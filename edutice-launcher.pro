@@ -19,7 +19,6 @@ SOURCES += main.cpp \
     configparser.cpp \
     directorymodel.cpp \
     execution.cpp \
-    filter.cpp \
     appmodel.cpp
 
 RESOURCES += qml.qrc
@@ -42,6 +41,5 @@ HEADERS += \
     configparser.h \
     directorymodel.h \
     execution.h \
-    filter.h \
     appmodel.h \
     windowsnativeeventfilter.h
