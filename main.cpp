@@ -135,7 +135,9 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+#ifdef _WIN32
   app.installNativeEventFilter(new WindowsNativeEventFilter());
-
+#else
+#endif
   return app.exec();
 }

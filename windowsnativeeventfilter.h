@@ -1,6 +1,6 @@
+#ifdef _WIN32
 #ifndef WINDOWSNATIVEEVENTFILTER_H
 #define WINDOWSNATIVEEVENTFILTER_H
-
 #include <QAbstractNativeEventFilter>
 #include <QByteArray>
 #include <QGuiApplication>
@@ -9,6 +9,7 @@
 #include <appconstants.h>
 #include <configparser.h>
 #include <windows.h>
+
 
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter
 {
@@ -26,4 +27,5 @@ public:
         return false;
     }
 };
+#endif
 #endif // WINDOWSNATIVEEVENTFILTER_H
