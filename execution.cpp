@@ -1,5 +1,7 @@
 #include "execution.h"
 #include <QDir>
+#include <QDBusConnection>
+#include <QDBusMessage>
 
 Execution::Execution(QObject *parent)
     : QObject(parent), model(), mainWindows() {}
@@ -55,35 +57,34 @@ QString Execution::open(const QString &path) {
   return "";
 }
 void Execution::lockScreen() {
-  QString l = "";
-  QStringList args = {""};
   std::cout << "def" << std::endl;
 #ifdef linux
   // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+  //l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+  QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver",
+                                                        "/ScreenSaver",
+                                                        "org.freedesktop.ScreenSaver",
+                                                        "Lock");
+  QDBusConnection::sessionBus().send(message);
 #endif
 #ifdef _WIN32
-  l = "rundll32.exe";
-  args = {"user32.dll","LockWorkStation"};
-#endif
+  QString l = "rundll32.exe";
+  QStringList args = {"user32.dll","LockWorkStation"};
   QProcess::startDetached(l,args);
-  // m_process->waitForFinished(-1);
+#endif
 }
 
 void Execution::disconnectScreen() {
-  QString l = "";
-  QStringList args = {""};
 #ifdef linux
-  // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.kde.ksmserver /KSMServer logout 0 0 0";
+  QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver","/KSMServer","org.kde.KSMServerInterface","logout");
+  //Method args
+  message.setArguments({0,0,0});
+  QDBusConnection::sessionBus().send(message);
+#elif _WIN32
+  QString l = "shutdown";
+  QStringList args = {"-L"};
+  bool result = QProcess::startDetached(l,args);
 #endif
-#ifdef _WIN32
-  l = "shutdown";
-  args = {"-L"};
-#endif
-  // m_process->startDetached(l);
-  QProcess::startDetached(l, args);
-  // m_process->waitForFinished(-1);
 }
 
 void Execution::openScreenDisplaySettings() {
@@ -128,13 +129,14 @@ void Execution::quit() {
 
 //Needs to be changed to put arguments in QStringList if we want to reimplement it.
 void Execution::shutdown() {
-  QString l = "";
 #ifdef linux
   // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.kde.ksmserver /KSMServer logout 0 2 2";
-#endif
-#ifdef _WIN32
-  l = "shutdown -S -T 0";
-#endif
+  QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver","/KSMServer","org.kde.KSMServerInterface","logout");
+  //Method args
+  message.setArguments({0,2,2});
+  QDBusConnection::sessionBus().send(message);
+#elif _WIN32
+  QString l = "shutdown -S -T 0";
   QProcess::startDetached(l);
+#endif
 }
