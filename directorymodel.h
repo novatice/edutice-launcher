@@ -22,23 +22,23 @@ public:
 class DirectoryModel : public QAbstractListModel
 {
     Q_OBJECT
-    public:
-        enum DirectoryRoles {
-            path = Qt::UserRole + 1,
-            name,
-            icon,
-            description
-        };
+public:
+    enum DirectoryRoles {
+        path = Qt::UserRole + 1,
+        name,
+        icon,
+        description
+    };
 
-        explicit DirectoryModel(QObject *parent = 0);
+    explicit DirectoryModel(QObject *parent = 0);
 
-        QHash<int, QByteArray> roleNames() const;
-        void addDirectory(const Directory &directory);
-        int rowCount(const QModelIndex &parent = QModelIndex()) const;
-        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-        bool ContainsDirectory(QString path);
+    QHash<int, QByteArray> roleNames() const;
+    void addDirectory(const Directory &directory);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool ContainsDirectory(QString path);
 
-        QList<Directory> m_directories;
+    QList<Directory> m_directories;
 };
 
 #endif // DIRECTORYMODEL_H

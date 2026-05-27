@@ -62,14 +62,14 @@ QVariant DirectoryModel::data(const QModelIndex &index, int role) const
     const Directory &directory = m_directories[index.row()];
 
     switch (role) {
-        case path:
-            return directory.path();
-        case name:
-            return directory.name();
-        case icon:
-            return directory.icon();
-        case description:
-            return directory.description();
+    case path:
+        return directory.path();
+    case name:
+        return directory.name();
+    case icon:
+        return directory.icon();
+    case description:
+        return directory.description();
     }
 
     return QVariant();
