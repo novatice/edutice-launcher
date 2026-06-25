@@ -1,140 +1,142 @@
 #include "execution.h"
 #include <QDir>
+#include <QDBusConnection>
+#include <QDBusMessage>
 
 Execution::Execution(QObject *parent)
     : QObject(parent), model(), mainWindows() {}
 
 QString Execution::launch(const QString &program, const QStringList &args) {
-  qInfo() << "In Execution::launch with " << program << " with args " << args;
+    qInfo() << "In Execution::launch with " << program << " with args " << args;
 
-  QFileInfo info(program);
+    QFileInfo info(program);
 
-  if ((info.exists())) {
-    QProcess *process = new QProcess();
+    if ((info.exists())) {
+        QProcess *process = new QProcess();
 
 #ifdef _WIN32
-    // There are some applications(BiblioManuels) that do not launch with the
-    // path of the json file. We move to the desired folder. Then, we define the
-    // currentpath.
-    QString path = info.absolutePath();
-    process->setWorkingDirectory(path + "/");
+        // There are some applications(BiblioManuels) that do not launch with the
+        // path of the json file. We move to the desired folder. Then, we define the
+        // currentpath.
+        QString path = info.absolutePath();
+        process->setWorkingDirectory(path + "/");
 #endif
 
 #ifdef __linux
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    // this is done to avoid QProcess behavior that put a bad LD_LIBRARY_PATH
-    env.insert("LD_LIBRARY_PATH", "");
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        // this is done to avoid QProcess behavior that put a bad LD_LIBRARY_PATH
+        env.insert("LD_LIBRARY_PATH", "");
 
-    process->setProcessEnvironment(env);
+        process->setProcessEnvironment(env);
 #endif
 
-    // keep full path as file might not be in PATH
-    process->start(program, args);
+        // keep full path as file might not be in PATH
+        process->start(program, args);
 
-    if (process->waitForStarted()) {
-      qInfo() << "Launched with success";
+        if (process->waitForStarted()) {
+            qInfo() << "Launched with success";
+        } else {
+            qInfo() << "Launched with error";
+            qWarning() << "error during launch: " << process->errorString();
+        }
     } else {
-      qInfo() << "Launched with error";
-      qWarning() << "error during launch: " << process->errorString();
+        qWarning() << "the programe " << program << " doesn't exist";
     }
-  } else {
-    qWarning() << "the programe " << program << " doesn't exist";
-  }
 
-  return "";
+    return "";
 }
 
 QString Execution::openFolder(const QString &path) {
-  QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 
-  return "";
+    return "";
 }
 
 QString Execution::open(const QString &path) {
-  QDesktopServices::openUrl(path);
-  return "";
+    QDesktopServices::openUrl(path);
+    return "";
 }
 void Execution::lockScreen() {
-  QString l = "";
-  QStringList args = {""};
-  std::cout << "def" << std::endl;
+    std::cout << "def" << std::endl;
 #ifdef linux
-  // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+    // todo: replace qdbus command by "pure" Qt DBus code
+    //l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver",
+                                                          "/ScreenSaver",
+                                                          "org.freedesktop.ScreenSaver",
+                                                          "Lock");
+    QDBusConnection::sessionBus().send(message);
 #endif
 #ifdef _WIN32
-  l = "rundll32.exe";
-  args = {"user32.dll","LockWorkStation"};
+    QString l = "rundll32.exe";
+    QStringList args = {"user32.dll","LockWorkStation"};
+    QProcess::startDetached(l,args);
 #endif
-  QProcess::startDetached(l,args);
-  // m_process->waitForFinished(-1);
 }
 
 void Execution::disconnectScreen() {
-  QString l = "";
-  QStringList args = {""};
 #ifdef linux
-  // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.kde.ksmserver /KSMServer logout 0 0 0";
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver","/KSMServer","org.kde.KSMServerInterface","logout");
+    //Method args
+    message.setArguments({0,0,0});
+    QDBusConnection::sessionBus().send(message);
+#elif _WIN32
+    QString l = "shutdown";
+    QStringList args = {"-L"};
+    bool result = QProcess::startDetached(l,args);
 #endif
-#ifdef _WIN32
-  l = "shutdown";
-  args = {"-L"};
-#endif
-  // m_process->startDetached(l);
-  QProcess::startDetached(l, args);
-  // m_process->waitForFinished(-1);
 }
 
 void Execution::openScreenDisplaySettings() {
 #ifdef WIN32
-  INPUT inputs[4] = {};
-  ZeroMemory(inputs, sizeof(inputs));
+    INPUT inputs[4] = {};
+    ZeroMemory(inputs, sizeof(inputs));
 
-  inputs[0].type = INPUT_KEYBOARD;
-  inputs[0].ki.wVk = VK_LWIN;
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_LWIN;
 
-  inputs[1].type = INPUT_KEYBOARD;
-  inputs[1].ki.wVk = 0x50;
+    inputs[1].type = INPUT_KEYBOARD;
+    inputs[1].ki.wVk = 0x50;
 
-  inputs[2].type = INPUT_KEYBOARD;
-  inputs[2].ki.wVk = 0x50;
-  inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[2].type = INPUT_KEYBOARD;
+    inputs[2].ki.wVk = 0x50;
+    inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
 
-  inputs[3].type = INPUT_KEYBOARD;
-  inputs[3].ki.wVk = VK_LWIN;
-  inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[3].type = INPUT_KEYBOARD;
+    inputs[3].ki.wVk = VK_LWIN;
+    inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
 
-  SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+    SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
 
 #endif
 #ifdef linux
-  QString l = "xdotool key Super_L+p";
-  QProcess::startDetached(l);
+    QString l = "xdotool key Super_L+p";
+    QProcess::startDetached(l);
 #endif
 }
 
 void Execution::quit() {
 #ifdef _WIN32
-  HWND hWnd = (HWND)mainWindows->winId();
+    HWND hWnd = (HWND)mainWindows->winId();
 
-  ShowWindow(hWnd, SW_HIDE);
+    ShowWindow(hWnd, SW_HIDE);
 #endif
 
 #ifdef linux
-  mainWindows->hide();
+    mainWindows->hide();
 #endif
 }
 
 //Needs to be changed to put arguments in QStringList if we want to reimplement it.
 void Execution::shutdown() {
-  QString l = "";
 #ifdef linux
-  // todo: replace qdbus command by "pure" Qt DBus code
-  l = "qdbus org.kde.ksmserver /KSMServer logout 0 2 2";
+    // todo: replace qdbus command by "pure" Qt DBus code
+    QDBusMessage message = QDBusMessage::createMethodCall("org.kde.ksmserver","/KSMServer","org.kde.KSMServerInterface","logout");
+    //Method args
+    message.setArguments({0,2,2});
+    QDBusConnection::sessionBus().send(message);
+#elif _WIN32
+    QString l = "shutdown -S -T 0";
+    QProcess::startDetached(l);
 #endif
-#ifdef _WIN32
-  l = "shutdown -S -T 0";
-#endif
-  QProcess::startDetached(l);
 }

@@ -2,6 +2,7 @@ VERSION=6.5.0
 DEFINES += VERSION=\"\\\"$$VERSION\\\"\"
 
 QT += quick
+QT += dbus
 CONFIG += c++17
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

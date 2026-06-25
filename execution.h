@@ -19,25 +19,25 @@
 
 class Execution : public QObject {
 
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit Execution(QObject *parent = 0);
-  Q_INVOKABLE QString launch(const QString &program,
-                             const QStringList &args = QStringList());
-  Q_INVOKABLE QString open(const QString &path);
-  Q_INVOKABLE QString openFolder(const QString &path);
-  Q_INVOKABLE void lockScreen();
-  Q_INVOKABLE void disconnectScreen();
-  Q_INVOKABLE void openScreenDisplaySettings();
+    explicit Execution(QObject *parent = 0);
+    Q_INVOKABLE QString launch(const QString &program,
+                               const QStringList &args = QStringList());
+    Q_INVOKABLE QString open(const QString &path);
+    Q_INVOKABLE QString openFolder(const QString &path);
+    Q_INVOKABLE void lockScreen();
+    Q_INVOKABLE void disconnectScreen();
+    Q_INVOKABLE void openScreenDisplaySettings();
 
-  QQmlContext *ctxt;
-  AppModel *model;
-  QWindow *mainWindows;
-  Q_INVOKABLE void quit();
-  Q_INVOKABLE void shutdown();
+    QQmlContext *ctxt;
+    AppModel *model;
+    QWindow *mainWindows;
+    Q_INVOKABLE void quit();
+    Q_INVOKABLE void shutdown();
 signals:
-  void signalData(QString data);
-  void signalExit(void);
+    void signalData(QString data);
+    void signalExit(void);
 };
 
 #endif // EXECUTION_H
