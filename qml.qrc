@@ -1,11 +1,42 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>main.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>SortFilterModel.qml</file>
-        <file>ProgressCircle.qml</file>
-        <file>SwipeFilterModel.qml</file>
-        <file>Categories.qml</file>
+        <file>qml/ApplicationsContainer.qml</file>
+        <file>qml/FilesContainer.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/qtquickcontrols2.conf</file>
+        <file>qml/SideBarIcon.qml</file>
+        <file>qml/SortFilterModel.qml</file>
+        <file>qml/ZoomableIcon.qml</file>
+        <file>icons/accessibility.png</file>
+        <file>icons/applications.png</file>
+        <file>icons/connected.png</file>
+        <file>icons/directories.png</file>
+        <file>icons/documents.png</file>
+        <file>icons/dossier temporaire.png</file>
+        <file>icons/downloads.png</file>
+        <file>icons/duplicate.png</file>
+        <file>icons/lock.png</file>
+        <file>icons/logout.png</file>
+        <file>icons/magnifying-glass-solid.svg</file>
+        <file>icons/no_icon_app.svg</file>
+        <file>icons/not_installed_app.svg</file>
+        <file>icons/novatice.png</file>
+        <file>icons/password.svg</file>
+        <file>icons/pictures.png</file>
+        <file>icons/poll.png</file>
+        <file>icons/profile.png</file>
+        <file>icons/search.png</file>
+        <file>icons/shutdown.png</file>
+        <file>icons/virtualclass.png</file>
+        <file>qml/AssistanceDialog.qml</file>
+        <file>qml/AssistanceDialogButton.qml</file>
+        <file>AvenirFonts/AvenirFont.qml</file>
+        <file>AvenirFonts/AvenirFonts.qml</file>
+        <file>AvenirFonts/qmldir</file>
+        <file>fonts/avenir_next_lt_pro_bold.otf</file>
+        <file>fonts/avenir_next_lt_pro_it.otf</file>
+        <file>fonts/avenir_next_lt_pro_regular.otf</file>
+        <file>icons/assistance.png</file>
+        <file>icons/printings_queue.svg</file>
     </qresource>
 </RCC>

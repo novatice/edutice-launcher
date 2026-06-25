@@ -1,95 +1,140 @@
 #include "execution.h"
+#include <QDir>
 
+Execution::Execution(QObject *parent)
+    : QObject(parent), model(), mainWindows() {}
 
-Execution::Execution(QObject *parent) :
-    QObject(parent),
-    model(),
-    mainWindows(),
-    m_process(new QProcess(this))
-    {
-        p=3;
-    }
-/*
-    void Execution::setTimeR(char* time)
-    {
-        struct tm tm;
-        _strptime(time, "%H:%M:%S", &tm);
-        timeRemaining = mktime(&tm);
-        emit signalData("");
-    }
-    */
-    QString Execution::launch(const QString &program)
-    {
-        QString l = "";
+QString Execution::launch(const QString &program, const QStringList &args) {
+  qInfo() << "In Execution::launch with " << program << " with args " << args;
 
-        #ifdef linux
-            l = program.toLower();
-        #endif
-            m_process->startDetached(l);
-            std::cout << l.toStdString() << std::endl;
-        //emit signalExit();
-        quit();
-        //quit();
-        return "output";
-    }
-    void Execution::lockScreen()
-    {
-        QString l = "";
-        std::cout << "def" << std::endl;
-        #ifdef linux
-            l = "dbus-send --type=method_call --dest=org.gnome.ScreenSaver \
-                /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock";
-        #endif
-        #ifdef _WIN32
-            l = "rundll32.exe user32.dll,LockWorkStation";
-        #endif
-        m_process->startDetached(l);
-        m_process->waitForFinished(-1);
-    }
-    void Execution::disconnectScreen()
-    {
-        QString l = "";
-        #ifdef linux
-            l = "gnome-session-quit --no-prompt";
-        #endif
-        #ifdef _WIN32
-            l = "shutdown -L";
-        #endif
-            m_process->startDetached(l);
-            m_process->waitForFinished(-1);
-    }
-    QString Execution::getTimeRemaining(int interval)
-    {
-        //return QString::fromUtf8("%d,%d,%d",timeRemaining.tm_hour,timeRemaining.tm_min,timeRemaining.tm_sec);
-        return "null";
-    }
-    void Execution :: addRow(QString name, QString img,QString src,QString cat)
-    {
-        (model)->addApplication(Application(name, img, src, cat));
+  QFileInfo info(program);
 
+  if ((info.exists())) {
+    QProcess *process = new QProcess();
 
+#ifdef _WIN32
+    // There are some applications(BiblioManuels) that do not launch with the
+    // path of the json file. We move to the desired folder. Then, we define the
+    // currentpath.
+    QString path = info.absolutePath();
+    process->setWorkingDirectory(path + "/");
+#endif
+
+#ifdef __linux
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    // this is done to avoid QProcess behavior that put a bad LD_LIBRARY_PATH
+    env.insert("LD_LIBRARY_PATH", "");
+
+    process->setProcessEnvironment(env);
+#endif
+
+    // keep full path as file might not be in PATH
+    process->start(program, args);
+
+    if (process->waitForStarted()) {
+      qInfo() << "Launched with success";
+    } else {
+      qInfo() << "Launched with error";
+      qWarning() << "error during launch: " << process->errorString();
     }
-    void Execution::quit()
-    {
-            #ifdef _WIN32
-                HWND hWnd = (HWND)mainWindows->winId();
+  } else {
+    qWarning() << "the programe " << program << " doesn't exist";
+  }
 
-                ShowWindow(hWnd,SW_SHOWMINNOACTIVE);
-            #endif
+  return "";
+}
 
-            #ifdef linux
-                mainWindows->hide();
-            #endif
-    }
-    /*
-        std::cout << "de :"+model.m_animals[0].m_size.toStdString() << std::endl;
-        QString l = program.toLower();
-        std::cout << l.toStdString() << std::endl;
-        m_process->start(l);
-        m_process->waitForFinished(-1);
-        QByteArray bytes = m_process->readAllStandardOutput();
-        QString output = QString::fromLocal8Bit(bytes);
-        return output;
-    }
+QString Execution::openFolder(const QString &path) {
+  QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 
-*/
+  return "";
+}
+
+QString Execution::open(const QString &path) {
+  QDesktopServices::openUrl(path);
+  return "";
+}
+void Execution::lockScreen() {
+  QString l = "";
+  QStringList args = {""};
+  std::cout << "def" << std::endl;
+#ifdef linux
+  // todo: replace qdbus command by "pure" Qt DBus code
+  l = "qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock";
+#endif
+#ifdef _WIN32
+  l = "rundll32.exe";
+  args = {"user32.dll","LockWorkStation"};
+#endif
+  QProcess::startDetached(l,args);
+  // m_process->waitForFinished(-1);
+}
+
+void Execution::disconnectScreen() {
+  QString l = "";
+  QStringList args = {""};
+#ifdef linux
+  // todo: replace qdbus command by "pure" Qt DBus code
+  l = "qdbus org.kde.ksmserver /KSMServer logout 0 0 0";
+#endif
+#ifdef _WIN32
+  l = "shutdown";
+  args = {"-L"};
+#endif
+  // m_process->startDetached(l);
+  QProcess::startDetached(l, args);
+  // m_process->waitForFinished(-1);
+}
+
+void Execution::openScreenDisplaySettings() {
+#ifdef WIN32
+  INPUT inputs[4] = {};
+  ZeroMemory(inputs, sizeof(inputs));
+
+  inputs[0].type = INPUT_KEYBOARD;
+  inputs[0].ki.wVk = VK_LWIN;
+
+  inputs[1].type = INPUT_KEYBOARD;
+  inputs[1].ki.wVk = 0x50;
+
+  inputs[2].type = INPUT_KEYBOARD;
+  inputs[2].ki.wVk = 0x50;
+  inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+  inputs[3].type = INPUT_KEYBOARD;
+  inputs[3].ki.wVk = VK_LWIN;
+  inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+  SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+
+#endif
+#ifdef linux
+  QString l = "xdotool key Super_L+p";
+  QProcess::startDetached(l);
+#endif
+}
+
+void Execution::quit() {
+#ifdef _WIN32
+  HWND hWnd = (HWND)mainWindows->winId();
+
+  ShowWindow(hWnd, SW_HIDE);
+#endif
+
+#ifdef linux
+  mainWindows->hide();
+#endif
+}
+
+//Needs to be changed to put arguments in QStringList if we want to reimplement it.
+void Execution::shutdown() {
+  QString l = "";
+#ifdef linux
+  // todo: replace qdbus command by "pure" Qt DBus code
+  l = "qdbus org.kde.ksmserver /KSMServer logout 0 2 2";
+#endif
+#ifdef _WIN32
+  l = "shutdown -S -T 0";
+#endif
+  QProcess::startDetached(l);
+}
